@@ -1,2 +1,2 @@
 # super
-Group of personal plugins
+Group of personal Flutter plugins
