@@ -1,3 +1,6 @@
+# Only use .gitignore at root
+.gitignore
+
 # Miscellaneous
 *.class
 *.lock
