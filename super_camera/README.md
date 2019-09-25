@@ -1,6 +1,6 @@
 # super_camera
 
-A new Flutter plugin.
+A new flutter plugin project.
 
 ## Getting Started
 

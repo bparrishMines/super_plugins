@@ -1,4 +1,4 @@
-package super.plugins.super_camera_example;
+package super_plugins.super_camera_example;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
