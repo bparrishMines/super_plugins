@@ -5,8 +5,8 @@
 // **************************************************************************
 package super_plugins.super_camera;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import android.hardware.Camera;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -15,21 +15,18 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
-import android.hardware.Camera;
-
 
 public class ChannelGenerated implements MethodCallHandler {
   private static abstract class FlutterWrapper {
     final ChannelGenerated $channelGenerated;
     final String $uniqueId;
-
+    
     FlutterWrapper(ChannelGenerated $channelGenerated, String $uniqueId) {
       this.$channelGenerated = $channelGenerated;
       this.$uniqueId = $uniqueId;
     }
 
     abstract Object onMethodCall(MethodCall call) throws NotImplementedException;
-
     abstract Object $getValue();
 
     void allocate() {
@@ -44,7 +41,7 @@ public class ChannelGenerated implements MethodCallHandler {
 
   private static class NotImplementedException extends Exception {
     NotImplementedException(String method) {
-      super(String.format(Locale.getDefault(), "No implementation for %s.", method));
+      super(String.format(Locale.getDefault(),"No implementation for %s.", method));
     }
   }
 
@@ -103,22 +100,22 @@ public class ChannelGenerated implements MethodCallHandler {
   }
 
   private Object onMethodCall(MethodCall call) throws NoUniqueIdException, WrapperNotFoundException, NotImplementedException {
-    switch (call.method) {
+    switch(call.method) {
       case "MultiInvoke":
         final ArrayList<HashMap<String, Object>> allMethodCallData = (ArrayList<HashMap<String, Object>>) call.arguments;
         final ArrayList<Object> resultData = new ArrayList<>(allMethodCallData.size());
-        for (HashMap<String, Object> methodCallData : allMethodCallData) {
+        for(HashMap<String, Object> methodCallData : allMethodCallData) {
           final String method = (String) methodCallData.get("method");
           final HashMap<String, Object> arguments = (HashMap<String, Object>) methodCallData.get("arguments");
           final MethodCall methodCall = new MethodCall(method, arguments);
           resultData.add(onMethodCall(methodCall));
         }
         return resultData;
-
+      
       case "Camera#getNumberOfCameras": {
-        return CameraWrapper.onStaticMethodCall(this, call);
-      }
-
+          return CameraWrapper.onStaticMethodCall(this, call);
+        }
+      
       default:
         final String $uniqueId = call.argument("$uniqueId");
         if ($uniqueId == null) throw new NoUniqueIdException(call.method);
@@ -130,7 +127,7 @@ public class ChannelGenerated implements MethodCallHandler {
     }
   }
 
-
+  
   private static class CameraWrapper extends FlutterWrapper {
     private final Camera $value;
 
@@ -140,14 +137,15 @@ public class ChannelGenerated implements MethodCallHandler {
       $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
     }
 
-
+    
+    
     static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws NotImplementedException {
-      switch (call.method) {
-
+      switch(call.method) {
+        
         case "Camera#getNumberOfCameras": {
-          return CameraWrapper.getNumberOfCameras($channelGenerated, call);
-        }
-
+            return CameraWrapper.getNumberOfCameras($channelGenerated, call);
+          }
+        
         default:
           throw new NotImplementedException(call.method);
       }
@@ -155,38 +153,38 @@ public class ChannelGenerated implements MethodCallHandler {
 
     @Override
     public Object onMethodCall(MethodCall call) throws NotImplementedException {
-      switch (call.method) {
+      switch(call.method) {
         case "Camera#allocate":
           allocate();
           return null;
         case "Camera#deallocate":
           deallocate();
           return null;
-
+        
         default:
           throw new NotImplementedException(call.method);
       }
     }
-
+    
     @Override
     public Object $getValue() {
       return $value;
     }
 
-
+    
     static Object getNumberOfCameras(ChannelGenerated $channelGenerated, MethodCall call) {
-
+      
       return
-
-
-          Camera.getNumberOfCameras(
-
-          )
-
-          ;
-
+      
+      
+      Camera.getNumberOfCameras(
+      
+      )
+      
+      ;
+      
     }
-
+    
   }
-
+  
 }

@@ -5,37 +5,29 @@
 // **************************************************************************
 import 'package:flutter/services.dart';
 
-
 class $Camera extends $Wrapper {
   $Camera(String $uniqueId) : super($uniqueId);
 
-  
-
-  
   static MethodCall $getNumberOfCameras(
-  String $newUniqueId,
-  
+    String $newUniqueId,
   ) {
     return MethodCall(
       'Camera#getNumberOfCameras',
-       <String, dynamic>{
-       r'$newUniqueId': $newUniqueId,
-       
-       },
+      <String, dynamic>{
+        r'$newUniqueId': $newUniqueId,
+      },
     );
   }
-  
-  
+
   @override
   String get $platformClassName => 'Camera';
 }
-
 
 abstract class $Wrapper {
   $Wrapper(this.$uniqueId);
 
   final String $uniqueId;
-  
+
   String get $platformClassName;
 
   MethodCall $allocate() {
