@@ -5,16 +5,18 @@
 // **************************************************************************
 package super_plugins.super_camera;
 
-import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
-
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
-
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+
+import android.hardware.Camera;
+
+import android.hardware.Camera.CameraInfo;
 
 
 public class ChannelGenerated implements MethodCallHandler {

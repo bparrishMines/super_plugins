@@ -8,9 +8,9 @@ import 'package:flutter/services.dart';
 class $Camera extends $Wrapper {
   $Camera(String $uniqueId) : super($uniqueId);
 
-  static MethodCall $getNumberOfCameras(
+  static MethodCall $getNumberOfCameras([
     String $newUniqueId,
-  ) {
+  ]) {
     return MethodCall(
       'Camera#getNumberOfCameras',
       <String, dynamic>{
@@ -19,8 +19,50 @@ class $Camera extends $Wrapper {
     );
   }
 
+  static MethodCall $open(
+    int cameraId, [
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'Camera#open',
+      <String, dynamic>{
+        r'$newUniqueId': $newUniqueId,
+        'cameraId': cameraId,
+      },
+    );
+  }
+
+  static MethodCall $getCameraInfo(
+    int cameraId,
+    $CameraInfo cameraInfo, [
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'Camera#getCameraInfo',
+      <String, dynamic>{
+        r'$newUniqueId': $newUniqueId,
+        'cameraId': cameraId,
+        'cameraInfo': cameraInfo.$uniqueId,
+      },
+    );
+  }
+
   @override
   String get $platformClassName => 'Camera';
+}
+
+class $CameraInfo extends $Wrapper {
+  $CameraInfo(String $uniqueId) : super($uniqueId);
+
+  MethodCall $CameraInfoDefault() {
+    return MethodCall(
+      'CameraInfo()',
+      <String, String>{r'$uniqueId': $uniqueId},
+    );
+  }
+
+  @override
+  String get $platformClassName => 'CameraInfo';
 }
 
 abstract class $Wrapper {
@@ -45,11 +87,23 @@ abstract class $Wrapper {
   }
 }
 
-Future<List<dynamic>> $invoke(
+Future<T> $invoke<T>(MethodChannel channel, MethodCall call) {
+  return channel.invokeMethod<T>(call.method, call.arguments);
+}
+
+Future<List<T>> $invokeList<T>(MethodChannel channel, MethodCall call) {
+  return channel.invokeListMethod<T>(call.method, call.arguments);
+}
+
+Future<Map<S, T>> $invokeMap<S, T>(MethodChannel channel, MethodCall call) {
+  return channel.invokeMapMethod<S, T>(call.method, call.arguments);
+}
+
+Future<List<dynamic>> $invokeAll(
   MethodChannel channel,
   List<MethodCall> methodCalls,
 ) {
-  final List<Map<String, dynamic>> calls = methodCalls
+  final List<Map<String, dynamic>> serializedCalls = methodCalls
       .map<Map<String, dynamic>>(
         (MethodCall methodCall) => <String, dynamic>{
           'method': methodCall.method,
@@ -58,5 +112,10 @@ Future<List<dynamic>> $invoke(
       )
       .toList();
 
-  return channel.invokeListMethod<dynamic>('MultiInvoke', calls);
+  return channel.invokeListMethod<dynamic>('MultiInvoke', serializedCalls);
 }
+
+bool _isTypeOf<ThisType, OfType>() =>
+    _Instance<ThisType>() is _Instance<OfType>;
+
+class _Instance<T> {}
