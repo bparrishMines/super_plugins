@@ -18,6 +18,10 @@ import android.hardware.Camera;
 
 import android.hardware.Camera.CameraInfo;
 
+import android.graphics.SurfaceTexture;
+
+import io.flutter.view.TextureRegistry.SurfaceTextureEntry;
+
 
 public class ChannelGenerated implements MethodCallHandler {
   private static abstract class FlutterWrapper {
@@ -131,6 +135,10 @@ public class ChannelGenerated implements MethodCallHandler {
           return CameraWrapper.onStaticMethodCall(this, call);
         }
       
+      case "SuperCameraPlugin#getSurfaceTextureEntry": {
+          return SuperCameraPluginWrapper.onStaticMethodCall(this, call);
+        }
+      
       default:
         final String $uniqueId = call.argument("$uniqueId");
         if ($uniqueId == null) throw new NoUniqueIdException(call.method);
@@ -192,6 +200,9 @@ public class ChannelGenerated implements MethodCallHandler {
         
         case "Camera#stopPreview":
           return stopPreview(call);
+        
+        case "Camera#setPreviewTexture":
+          return setPreviewTexture(call);
         
         default:
           throw new NotImplementedException(call.method);
@@ -283,6 +294,21 @@ public class ChannelGenerated implements MethodCallHandler {
       
       
       $value.stopPreview(
+      
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+     Object setPreviewTexture( MethodCall call) {
+      
+      
+      
+      $value.setPreviewTexture(
+      
+      call.argument("surfaceTexture") != null ? ((SurfaceTextureWrapper) $channelGenerated.getWrapper((String) call.argument("surfaceTexture"))).$value : null
       
       )
       
@@ -387,6 +413,205 @@ public class ChannelGenerated implements MethodCallHandler {
     }
     
 
+    
+  }
+  
+  private static class SurfaceTextureWrapper extends FlutterWrapper {
+    private final SurfaceTexture $value;
+
+    public SurfaceTextureWrapper(ChannelGenerated $channelGenerated, String $uniqueId, SurfaceTexture $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws NotImplementedException {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws NotImplementedException {
+      switch(call.method) {
+        case "SurfaceTexture#allocate":
+          allocate();
+          return null;
+        case "SurfaceTexture#deallocate":
+          deallocate();
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+  }
+  
+  private static class SuperCameraPluginWrapper extends FlutterWrapper {
+    private final SuperCameraPlugin $value;
+
+    public SuperCameraPluginWrapper(ChannelGenerated $channelGenerated, String $uniqueId, SuperCameraPlugin $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws NotImplementedException {
+      switch(call.method) {
+        
+        case "SuperCameraPlugin#getSurfaceTextureEntry": {
+            return SuperCameraPluginWrapper.getSurfaceTextureEntry($channelGenerated, call);
+          }
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws NotImplementedException {
+      switch(call.method) {
+        case "SuperCameraPlugin#allocate":
+          allocate();
+          return null;
+        case "SuperCameraPlugin#deallocate":
+          deallocate();
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+    static Object getSurfaceTextureEntry(ChannelGenerated $channelGenerated, MethodCall call) {
+      
+      new SurfaceTextureEntryWrapper($channelGenerated, (String) call.argument("$newUniqueId"),
+      
+      
+      SuperCameraPlugin.getSurfaceTextureEntry(
+      
+      )
+      
+      );
+      return null;
+      
+    }
+    
+  }
+  
+  private static class SurfaceTextureEntryWrapper extends FlutterWrapper {
+    private final SurfaceTextureEntry $value;
+
+    public SurfaceTextureEntryWrapper(ChannelGenerated $channelGenerated, String $uniqueId, SurfaceTextureEntry $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws NotImplementedException {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws NotImplementedException {
+      switch(call.method) {
+        case "SurfaceTextureEntry#allocate":
+          allocate();
+          return null;
+        case "SurfaceTextureEntry#deallocate":
+          deallocate();
+          return null;
+        
+        case "SurfaceTextureEntry#id":
+          return id(call);
+        
+        case "SurfaceTextureEntry#release":
+          return release(call);
+        
+        case "SurfaceTextureEntry#surfaceTexture":
+          return surfaceTexture(call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+     Object id( MethodCall call) {
+      
+      return
+      
+      
+      $value.id(
+      
+      )
+      
+      ;
+      
+    }
+    
+     Object release( MethodCall call) {
+      
+      
+      
+      $value.release(
+      
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+     Object surfaceTexture( MethodCall call) {
+      
+      new SurfaceTextureWrapper($channelGenerated, (String) call.argument("$newUniqueId"),
+      
+      
+      $value.surfaceTexture(
+      
+      )
+      
+      );
+      return null;
+      
+    }
     
   }
   

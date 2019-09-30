@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:penguin/penguin.dart';
 import 'package:uuid/uuid.dart';
 
+import '../common/super_camera_plugin.dart';
 import '../../../penguin.g.dart';
 import '../../common/channel.dart';
 
@@ -103,6 +104,28 @@ class Camera {
   Future<void> stopPreview() {
     assert(!_isReleased, Channel.deallocatedMsg(this));
     return $invoke(Channel.channel, _camera.$stopPreview());
+  }
+
+  /// Sets the SurfaceTexture to be used for live preview.
+  ///
+  /// Either a surface or surface texture is necessary for preview, and preview
+  /// is necessary to take pictures. The same surface texture can be re-set
+  /// without harm. Setting a preview surface texture will un-set any preview
+  /// surface that was set.
+  ///
+  /// This method must be called before [startPreview]. The one exception is
+  /// that if the preview surface texture is not set (or set to null) before
+  /// [startPreview] is called, then this method may be called once with a
+  /// non-null parameter to set the preview surface. (This allows camera setup
+  /// and surface creation to happen in parallel, saving time.) The preview
+  /// surface texture may not otherwise change while preview is running.
+  @Method()
+  Future<void> setPreviewTexture(SurfaceTexture surfaceTexture) {
+    assert(!_isReleased, Channel.deallocatedMsg(this));
+    return $invoke(
+      Channel.channel,
+      _camera.$setPreviewTexture(surfaceTexture.surfaceTexture),
+    );
   }
 }
 

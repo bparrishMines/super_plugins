@@ -83,6 +83,20 @@ class $Camera extends $Wrapper {
     );
   }
 
+  MethodCall $setPreviewTexture(
+    $SurfaceTexture surfaceTexture, [
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'Camera#setPreviewTexture',
+      <String, dynamic>{
+        r'$uniqueId': $uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        'surfaceTexture': surfaceTexture?.$uniqueId,
+      },
+    );
+  }
+
   @override
   String get $platformClassName => 'Camera';
 }
@@ -127,6 +141,74 @@ class $CameraInfo extends $Wrapper {
 
   @override
   String get $platformClassName => 'CameraInfo';
+}
+
+class $SurfaceTexture extends $Wrapper {
+  $SurfaceTexture(String $uniqueId) : super($uniqueId);
+
+  @override
+  String get $platformClassName => 'SurfaceTexture';
+}
+
+class $SuperCameraPlugin extends $Wrapper {
+  $SuperCameraPlugin(String $uniqueId) : super($uniqueId);
+
+  static MethodCall $getSurfaceTextureEntry([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'SuperCameraPlugin#getSurfaceTextureEntry',
+      <String, dynamic>{
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+
+  @override
+  String get $platformClassName => 'SuperCameraPlugin';
+}
+
+class $SurfaceTextureEntry extends $Wrapper {
+  $SurfaceTextureEntry(String $uniqueId) : super($uniqueId);
+
+  MethodCall $id([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'SurfaceTextureEntry#id',
+      <String, dynamic>{
+        r'$uniqueId': $uniqueId,
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+
+  MethodCall $release([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'SurfaceTextureEntry#release',
+      <String, dynamic>{
+        r'$uniqueId': $uniqueId,
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+
+  MethodCall $surfaceTexture([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'SurfaceTextureEntry#surfaceTexture',
+      <String, dynamic>{
+        r'$uniqueId': $uniqueId,
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+
+  @override
+  String get $platformClassName => 'SurfaceTextureEntry';
 }
 
 abstract class $Wrapper {
