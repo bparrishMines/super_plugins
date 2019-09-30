@@ -42,7 +42,19 @@ class $Camera extends $Wrapper {
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
         'cameraId': cameraId,
-        'cameraInfo': cameraInfo.$uniqueId,
+        'cameraInfo': cameraInfo?.$uniqueId,
+      },
+    );
+  }
+
+  MethodCall $release([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'Camera#release',
+      <String, dynamic>{
+        r'$uniqueId': $uniqueId,
+        r'$newUniqueId': $newUniqueId,
       },
     );
   }
@@ -58,6 +70,34 @@ class $CameraInfo extends $Wrapper {
     return MethodCall(
       'CameraInfo()',
       <String, String>{r'$uniqueId': $uniqueId},
+    );
+  }
+
+  MethodCall $facing({
+    int facing,
+    String $newUniqueId,
+  }) {
+    return MethodCall(
+      'CameraInfo.facing',
+      <String, dynamic>{
+        r'$uniqueId': $uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        'facing': facing,
+      },
+    );
+  }
+
+  MethodCall $orientation({
+    int orientation,
+    String $newUniqueId,
+  }) {
+    return MethodCall(
+      'CameraInfo.orientation',
+      <String, dynamic>{
+        r'$uniqueId': $uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        'orientation': orientation,
+      },
     );
   }
 

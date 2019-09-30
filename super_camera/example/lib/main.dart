@@ -44,8 +44,18 @@ class _MyAppState extends State<MyApp> {
                 return;
               }
 
-              print(await Camera.getNumberOfCameras());
+              final int numCameras = await Camera.getNumberOfCameras();
+              print(numCameras);
+              final CameraInfo info = CameraInfo();
+              for (int i = 0; i < numCameras; i++) {
+                print('CameraId: $i');
+                await Camera.getCameraInfo(i, info);
+                print(info.facing);
+                print(info.orientation);
+              }
+
               final Camera camera = Camera.open(0);
+              await camera.release();
             },
             child: Text('Test'),
           ),

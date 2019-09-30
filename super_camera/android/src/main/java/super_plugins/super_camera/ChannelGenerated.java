@@ -5,16 +5,18 @@
 // **************************************************************************
 package super_plugins.super_camera;
 
-import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
-
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
-
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+
+import android.hardware.Camera;
+
+import android.hardware.Camera.CameraInfo;
 
 
 public class ChannelGenerated implements MethodCallHandler {
@@ -182,6 +184,9 @@ public class ChannelGenerated implements MethodCallHandler {
           deallocate();
           return null;
         
+        case "Camera#release":
+          return release(call);
+        
         default:
           throw new NotImplementedException(call.method);
       }
@@ -191,6 +196,8 @@ public class ChannelGenerated implements MethodCallHandler {
     public Object $getValue() {
       return $value;
     }
+    
+    
 
     
     static Object getNumberOfCameras(ChannelGenerated $channelGenerated, MethodCall call) {
@@ -213,7 +220,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
       Camera.open(
       
-      call.argument("cameraId") == null ? null : (Integer) call.argument("cameraId")
+      call.argument("cameraId") != null ? (Integer) call.argument("cameraId") : null
       
       )
       
@@ -228,9 +235,22 @@ public class ChannelGenerated implements MethodCallHandler {
       
       Camera.getCameraInfo(
       
-      call.argument("cameraId") == null ? null : (Integer) call.argument("cameraId")
+      call.argument("cameraId") != null ? (Integer) call.argument("cameraId") : null
       ,
-      ((CameraInfoWrapper) $channelGenerated.getWrapper((String) call.argument("cameraInfo"))).$value
+      call.argument("cameraInfo") != null ? ((CameraInfoWrapper) $channelGenerated.getWrapper((String) call.argument("cameraInfo"))).$value : null
+      
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+     Object release( MethodCall call) {
+      
+      
+      
+      $value.release(
       
       )
       
@@ -281,6 +301,12 @@ public class ChannelGenerated implements MethodCallHandler {
           deallocate();
           return null;
         
+        case "CameraInfo.facing":
+          return facing(call);
+        
+        case "CameraInfo.orientation":
+          return orientation(call);
+        
         default:
           throw new NotImplementedException(call.method);
       }
@@ -290,6 +316,44 @@ public class ChannelGenerated implements MethodCallHandler {
     public Object $getValue() {
       return $value;
     }
+    
+    
+     private Object facing( MethodCall call) {
+      if (call.argument("facing") != null) {
+        $value.facing =
+        
+        call.argument("facing") != null ? (Integer) call.argument("facing") : null;
+        
+      } 
+      
+      
+      return
+      
+      $value.facing
+      
+      
+      ;
+      
+    }
+    
+     private Object orientation( MethodCall call) {
+      if (call.argument("orientation") != null) {
+        $value.orientation =
+        
+        call.argument("orientation") != null ? (Integer) call.argument("orientation") : null;
+        
+      } 
+      
+      
+      return
+      
+      $value.orientation
+      
+      
+      ;
+      
+    }
+    
 
     
   }
