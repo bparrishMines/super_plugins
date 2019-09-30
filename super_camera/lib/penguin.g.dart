@@ -59,6 +59,30 @@ class $Camera extends $Wrapper {
     );
   }
 
+  MethodCall $startPreview([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'Camera#startPreview',
+      <String, dynamic>{
+        r'$uniqueId': $uniqueId,
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+
+  MethodCall $stopPreview([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'Camera#stopPreview',
+      <String, dynamic>{
+        r'$uniqueId': $uniqueId,
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+
   @override
   String get $platformClassName => 'Camera';
 }

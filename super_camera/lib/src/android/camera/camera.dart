@@ -85,6 +85,25 @@ class Camera {
 
     return completer.future;
   }
+
+  /// Starts capturing and drawing preview frames to the screen.
+  ///
+  /// Preview will not actually start until a surface is supplied with
+  /// [setPreviewTexture].
+  @Method()
+  Future<void> startPreview() {
+    assert(!_isReleased, Channel.deallocatedMsg(this));
+    return $invoke(Channel.channel, _camera.$startPreview());
+  }
+
+  /// Stops capturing and drawing preview frames to the surface.
+  ///
+  /// Resets the camera for a future call to [startPreview].
+  @Method()
+  Future<void> stopPreview() {
+    assert(!_isReleased, Channel.deallocatedMsg(this));
+    return $invoke(Channel.channel, _camera.$stopPreview());
+  }
 }
 
 /// Information about a camera.

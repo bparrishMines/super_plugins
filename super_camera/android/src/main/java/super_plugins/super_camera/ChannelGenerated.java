@@ -187,6 +187,12 @@ public class ChannelGenerated implements MethodCallHandler {
         case "Camera#release":
           return release(call);
         
+        case "Camera#startPreview":
+          return startPreview(call);
+        
+        case "Camera#stopPreview":
+          return stopPreview(call);
+        
         default:
           throw new NotImplementedException(call.method);
       }
@@ -251,6 +257,32 @@ public class ChannelGenerated implements MethodCallHandler {
       
       
       $value.release(
+      
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+     Object startPreview( MethodCall call) {
+      
+      
+      
+      $value.startPreview(
+      
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+     Object stopPreview( MethodCall call) {
+      
+      
+      
+      $value.stopPreview(
       
       )
       
