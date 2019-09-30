@@ -143,13 +143,6 @@ class $CameraInfo extends $Wrapper {
   String get $platformClassName => 'CameraInfo';
 }
 
-class $SurfaceTexture extends $Wrapper {
-  $SurfaceTexture(String $uniqueId) : super($uniqueId);
-
-  @override
-  String get $platformClassName => 'SurfaceTexture';
-}
-
 class $SuperCameraPlugin extends $Wrapper {
   $SuperCameraPlugin(String $uniqueId) : super($uniqueId);
 
@@ -209,6 +202,13 @@ class $SurfaceTextureEntry extends $Wrapper {
 
   @override
   String get $platformClassName => 'SurfaceTextureEntry';
+}
+
+class $SurfaceTexture extends $Wrapper {
+  $SurfaceTexture(String $uniqueId) : super($uniqueId);
+
+  @override
+  String get $platformClassName => 'SurfaceTexture';
 }
 
 abstract class $Wrapper {

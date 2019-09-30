@@ -13,7 +13,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   Future<bool> _getCameraPermission() async {
     final PermissionStatus permission =
-    await PermissionHandler().checkPermissionStatus(
+        await PermissionHandler().checkPermissionStatus(
       PermissionGroup.camera,
     );
 
@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     final Map<PermissionGroup, PermissionStatus> permissions =
-    await PermissionHandler().requestPermissions([PermissionGroup.camera]);
+        await PermissionHandler().requestPermissions([PermissionGroup.camera]);
 
     return permissions[PermissionGroup.camera] == PermissionStatus.granted;
   }
@@ -57,7 +57,6 @@ class _MyAppState extends State<MyApp> {
               final Camera camera = Camera.open(0);
               await camera.release();
             },
-            child: Text('Test'),
           ),
         ),
       ),

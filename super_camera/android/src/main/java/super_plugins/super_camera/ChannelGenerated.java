@@ -18,9 +18,9 @@ import android.hardware.Camera;
 
 import android.hardware.Camera.CameraInfo;
 
-import android.graphics.SurfaceTexture;
-
 import io.flutter.view.TextureRegistry.SurfaceTextureEntry;
+
+import android.graphics.SurfaceTexture;
 
 
 public class ChannelGenerated implements MethodCallHandler {
@@ -33,7 +33,7 @@ public class ChannelGenerated implements MethodCallHandler {
       this.$uniqueId = $uniqueId;
     }
 
-    abstract Object onMethodCall(MethodCall call) throws NotImplementedException;
+    abstract Object onMethodCall(MethodCall call) throws Exception;
     abstract Object $getValue();
 
     void allocate() {
@@ -68,7 +68,9 @@ public class ChannelGenerated implements MethodCallHandler {
   private final HashMap<String, FlutterWrapper> tempWrappers = new HashMap<>();
 
   private void addWrapper(
-      final String uniqueId, final FlutterWrapper wrapper, HashMap<String, FlutterWrapper> wrapperMap) {
+      final String uniqueId,
+      final FlutterWrapper wrapper,
+      HashMap<String, FlutterWrapper> wrapperMap) {
     if (wrapperMap.get(uniqueId) != null) {
       final String message = String.format("Object for uniqueId already exists: %s", uniqueId);
       throw new IllegalArgumentException(message);
@@ -95,18 +97,14 @@ public class ChannelGenerated implements MethodCallHandler {
     try {
       final Object value = onMethodCall(call);
       result.success(value);
-    } catch (WrapperNotFoundException exception) {
-      result.error(exception.getClass().getSimpleName(), exception.getMessage(), null);
-    } catch (NoUniqueIdException exception) {
-      result.error(exception.getClass().getSimpleName(), exception.getMessage(), null);
-    } catch (NotImplementedException exception) {
+    } catch (Exception exception) {
       result.error(exception.getClass().getSimpleName(), exception.getMessage(), null);
     } finally {
       tempWrappers.clear();
     }
   }
 
-  private Object onMethodCall(MethodCall call) throws NoUniqueIdException, WrapperNotFoundException, NotImplementedException {
+  private Object onMethodCall(MethodCall call) throws Exception {
     switch(call.method) {
       case "MultiInvoke":
         final ArrayList<HashMap<String, Object>> allMethodCallData = (ArrayList<HashMap<String, Object>>) call.arguments;
@@ -162,7 +160,7 @@ public class ChannelGenerated implements MethodCallHandler {
 
     
     
-    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws NotImplementedException {
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       switch(call.method) {
         
         case "Camera#getNumberOfCameras": {
@@ -183,7 +181,7 @@ public class ChannelGenerated implements MethodCallHandler {
     }
 
     @Override
-    public Object onMethodCall(MethodCall call) throws NotImplementedException {
+    public Object onMethodCall(MethodCall call) throws Exception {
       switch(call.method) {
         case "Camera#allocate":
           allocate();
@@ -217,7 +215,7 @@ public class ChannelGenerated implements MethodCallHandler {
     
 
     
-    static Object getNumberOfCameras(ChannelGenerated $channelGenerated, MethodCall call) {
+    static Object getNumberOfCameras(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       
       return
       
@@ -230,7 +228,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
     }
     
-    static Object open(ChannelGenerated $channelGenerated, MethodCall call) {
+    static Object open(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       
       new CameraWrapper($channelGenerated, (String) call.argument("$newUniqueId"),
       
@@ -246,7 +244,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
     }
     
-    static Object getCameraInfo(ChannelGenerated $channelGenerated, MethodCall call) {
+    static Object getCameraInfo(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       
       
       
@@ -263,7 +261,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
     }
     
-     Object release( MethodCall call) {
+     Object release( MethodCall call) throws Exception {
       
       
       
@@ -276,7 +274,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
     }
     
-     Object startPreview( MethodCall call) {
+     Object startPreview( MethodCall call) throws Exception {
       
       
       
@@ -289,7 +287,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
     }
     
-     Object stopPreview( MethodCall call) {
+     Object stopPreview( MethodCall call) throws Exception {
       
       
       
@@ -302,7 +300,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
     }
     
-     Object setPreviewTexture( MethodCall call) {
+     Object setPreviewTexture( MethodCall call) throws Exception {
       
       
       
@@ -336,7 +334,7 @@ public class ChannelGenerated implements MethodCallHandler {
     }
     
     
-    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws NotImplementedException {
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       switch(call.method) {
         
         case "CameraInfo()": {
@@ -350,7 +348,7 @@ public class ChannelGenerated implements MethodCallHandler {
     }
 
     @Override
-    public Object onMethodCall(MethodCall call) throws NotImplementedException {
+    public Object onMethodCall(MethodCall call) throws Exception {
       switch(call.method) {
         case "CameraInfo#allocate":
           allocate();
@@ -376,7 +374,7 @@ public class ChannelGenerated implements MethodCallHandler {
     }
     
     
-     private Object facing( MethodCall call) {
+     private Object facing( MethodCall call) throws Exception {
       if (call.argument("facing") != null) {
         $value.facing =
         
@@ -394,7 +392,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
     }
     
-     private Object orientation( MethodCall call) {
+     private Object orientation( MethodCall call) throws Exception {
       if (call.argument("orientation") != null) {
         $value.orientation =
         
@@ -416,50 +414,6 @@ public class ChannelGenerated implements MethodCallHandler {
     
   }
   
-  private static class SurfaceTextureWrapper extends FlutterWrapper {
-    private final SurfaceTexture $value;
-
-    public SurfaceTextureWrapper(ChannelGenerated $channelGenerated, String $uniqueId, SurfaceTexture $value) {
-      super($channelGenerated, $uniqueId);
-      this.$value = $value;
-      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
-    }
-
-    
-    
-    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws NotImplementedException {
-      switch(call.method) {
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(MethodCall call) throws NotImplementedException {
-      switch(call.method) {
-        case "SurfaceTexture#allocate":
-          allocate();
-          return null;
-        case "SurfaceTexture#deallocate":
-          deallocate();
-          return null;
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-
-    
-  }
-  
   private static class SuperCameraPluginWrapper extends FlutterWrapper {
     private final SuperCameraPlugin $value;
 
@@ -471,7 +425,7 @@ public class ChannelGenerated implements MethodCallHandler {
 
     
     
-    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws NotImplementedException {
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       switch(call.method) {
         
         case "SuperCameraPlugin#getSurfaceTextureEntry": {
@@ -484,7 +438,7 @@ public class ChannelGenerated implements MethodCallHandler {
     }
 
     @Override
-    public Object onMethodCall(MethodCall call) throws NotImplementedException {
+    public Object onMethodCall(MethodCall call) throws Exception {
       switch(call.method) {
         case "SuperCameraPlugin#allocate":
           allocate();
@@ -506,7 +460,7 @@ public class ChannelGenerated implements MethodCallHandler {
     
 
     
-    static Object getSurfaceTextureEntry(ChannelGenerated $channelGenerated, MethodCall call) {
+    static Object getSurfaceTextureEntry(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       
       new SurfaceTextureEntryWrapper($channelGenerated, (String) call.argument("$newUniqueId"),
       
@@ -533,7 +487,7 @@ public class ChannelGenerated implements MethodCallHandler {
 
     
     
-    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws NotImplementedException {
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       switch(call.method) {
         
         default:
@@ -542,7 +496,7 @@ public class ChannelGenerated implements MethodCallHandler {
     }
 
     @Override
-    public Object onMethodCall(MethodCall call) throws NotImplementedException {
+    public Object onMethodCall(MethodCall call) throws Exception {
       switch(call.method) {
         case "SurfaceTextureEntry#allocate":
           allocate();
@@ -573,7 +527,7 @@ public class ChannelGenerated implements MethodCallHandler {
     
 
     
-     Object id( MethodCall call) {
+     Object id( MethodCall call) throws Exception {
       
       return
       
@@ -586,7 +540,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
     }
     
-     Object release( MethodCall call) {
+     Object release( MethodCall call) throws Exception {
       
       
       
@@ -599,7 +553,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
     }
     
-     Object surfaceTexture( MethodCall call) {
+     Object surfaceTexture( MethodCall call) throws Exception {
       
       new SurfaceTextureWrapper($channelGenerated, (String) call.argument("$newUniqueId"),
       
@@ -612,6 +566,50 @@ public class ChannelGenerated implements MethodCallHandler {
       return null;
       
     }
+    
+  }
+  
+  private static class SurfaceTextureWrapper extends FlutterWrapper {
+    private final SurfaceTexture $value;
+
+    public SurfaceTextureWrapper(ChannelGenerated $channelGenerated, String $uniqueId, SurfaceTexture $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "SurfaceTexture#allocate":
+          allocate();
+          return null;
+        case "SurfaceTexture#deallocate":
+          deallocate();
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
     
   }
   
