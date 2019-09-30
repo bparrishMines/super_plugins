@@ -5,7 +5,7 @@ import 'package:penguin/penguin.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../penguin.g.dart';
-import '../../channel.dart';
+import '../../common/channel.dart';
 
 @Class(AndroidPlatform(AndroidType('android.hardware', 'Camera')))
 class Camera {
