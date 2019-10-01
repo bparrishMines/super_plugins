@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:penguin/penguin.dart';
+import 'package:super_camera/src/interface/camera_interface.dart';
 import 'package:uuid/uuid.dart';
 
 import '../common/super_camera_plugin.dart';
@@ -65,6 +66,7 @@ class Camera {
       ],
     );
 
+    cameraInfo.id = cameraId;
     cameraInfo.facing = result[2];
     cameraInfo.orientation = result[3];
   }
@@ -133,7 +135,7 @@ class Camera {
 ///
 /// Retrieve by calling [Camera.getCameraInfo].
 @Class(AndroidPlatform(AndroidType('android.hardware.Camera', 'CameraInfo')))
-class CameraInfo {
+class CameraInfo implements CameraDescription {
   @Constructor()
   CameraInfo() : _cameraInfo = $CameraInfo(Uuid().v4());
 
@@ -144,6 +146,11 @@ class CameraInfo {
   static const int CAMERA_FACING_FRONT = 0x00000001;
 
   final $CameraInfo _cameraInfo;
+
+  /// The identifier for this camera device.
+  ///
+  /// This can be used in [Camera.open].
+  int id;
 
   /// The direction that the camera faces.
   ///
@@ -166,4 +173,21 @@ class CameraInfo {
   /// the value should be 270.
   @Field()
   int orientation;
+
+  @override
+  LensDirection get direction {
+    switch (facing) {
+      case CAMERA_FACING_BACK:
+        return LensDirection.back;
+      case CAMERA_FACING_FRONT:
+        return LensDirection.front;
+    }
+
+    throw StateError(
+      'Facing `$facing` should be either $CAMERA_FACING_FRONT or $CAMERA_FACING_BACK',
+    );
+  }
+
+  @override
+  String get name => id.toString();
 }

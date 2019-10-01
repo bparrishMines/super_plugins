@@ -3,9 +3,12 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:super_camera/src/android/camera/android_camera_configurator.dart';
 
+import '../android/camera/camera.dart';
 import 'camera_interface.dart';
 
 /// Controls a device camera.
@@ -28,6 +31,9 @@ import 'camera_interface.dart';
 /// controller.start();
 /// ```
 class CameraController {
+  CameraController._({@required this.configurator})
+      : assert(configurator != null);
+
   /// Default constructor.
   ///
   /// Use [CameraController.availableCameras] to get a list of available
@@ -36,33 +42,13 @@ class CameraController {
   /// This will choose the best [CameraConfigurator] for the current device.
   factory CameraController({@required CameraDescription description}) {
     return CameraController._(
-      description: description,
       configurator: _createDefaultConfigurator(description),
-      api: _getCameraApi(description),
     );
   }
 
-  CameraController._({
-    @required this.description,
-    @required this.configurator,
-    @required this.api,
-  })  : assert(description != null),
-        assert(configurator != null),
-        assert(api != null);
-
   /// Constructor for defining your own [CameraConfigurator].
-  ///
-  /// Use [CameraController.availableCameras] to get a list of available
-  /// cameras.
-  factory CameraController.customConfigurator({
-    @required CameraDescription description,
-    @required CameraConfigurator configurator,
-  }) {
-    return CameraController._(
-      description: description,
-      configurator: configurator,
-      api: _getCameraApi(description),
-    );
+  factory CameraController.customConfigurator(CameraConfigurator configurator) {
+    return CameraController._(configurator: configurator);
   }
 
   static const String _isNotInitializedMessage = 'Initialize was not called.';
@@ -71,24 +57,30 @@ class CameraController {
   // Keep only one active instance of CameraController.
   static CameraController _instance;
 
-  bool _isDisposed = false;
-
-  /// Details for the camera this controller accesses.
-  final CameraDescription description;
-
   /// Configurator used to control the camera.
   final CameraConfigurator configurator;
 
-  /// Api used by the [configurator].
-  final CameraApi api;
-
+  bool _isDisposed = false;
   bool get isDisposed => _isDisposed;
 
   /// Retrieves a list of available cameras for the current device.
   ///
-  /// This will choose the best [CameraAPI] for the current device.
+  /// This will choose the appropriate Camera API for the current device.
   static Future<List<CameraDescription>> availableCameras() async {
-    throw UnimplementedError('$defaultTargetPlatform not supported');
+    final List<CameraDescription> descriptions = <CameraDescription>[];
+
+    if (Platform.isAndroid) {
+      final int cameraCount = await Camera.getNumberOfCameras();
+      for (int i = 0; i < cameraCount; i++) {
+        final CameraInfo info = CameraInfo();
+        await Camera.getCameraInfo(i, info);
+        descriptions.add(info);
+      }
+    } else {
+      throw UnsupportedError('${Platform.operatingSystem} is not supported.');
+    }
+
+    return descriptions;
   }
 
   /// Initializes the camera on the device.
@@ -143,29 +135,12 @@ class CameraController {
   static CameraConfigurator _createDefaultConfigurator(
     CameraDescription description,
   ) {
-    final CameraApi api = _getCameraApi(description);
-    switch (api) {
-      case CameraApi.android:
-        throw UnimplementedError();
-      case CameraApi.iOS:
-        throw UnimplementedError();
-      case CameraApi.supportAndroid:
-        throw UnimplementedError();
+    if (Platform.isAndroid && description is CameraInfo) {
+      return AndroidCameraConfigurator(description);
     }
 
-    return null; // Unreachable code
-  }
-
-  static CameraApi _getCameraApi(CameraDescription description) {
-    return CameraApi.iOS;
-
-    // TODO(bparrishMines): Uncomment this when platform specific code is added.
-    /*
-    throw ArgumentError.value(
-      description.runtimeType,
-      'description.runtimeType',
-      'Failed to get $CameraApi from',
+    throw UnsupportedError(
+      '${Platform.operatingSystem} is not supported with $CameraDescription `${description.runtimeType}`.',
     );
-    */
   }
 }

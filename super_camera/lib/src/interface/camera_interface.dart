@@ -4,18 +4,6 @@
 
 import 'dart:async';
 
-/// Available APIs compatible with [CameraController].
-enum CameraApi {
-  /// [Camera2](https://developer.android.com/reference/android/hardware/camera2/package-summary)
-  android,
-
-  /// [AVFoundation](https://developer.apple.com/av-foundation/)
-  iOS,
-
-  /// [Camera](https://developer.android.com/reference/android/hardware/Camera)
-  supportAndroid,
-}
-
 /// Location of the camera on the device.
 enum LensDirection { front, back, unknown }
 
@@ -27,12 +15,17 @@ abstract class CameraDescription {
   /// Location of the camera on the device.
   LensDirection get direction;
 
-  /// Identifier for this camera.
+  /// Unique identifier for this camera.
   String get name;
 }
 
 /// Abstract class used to create a common interface across platform APIs.
 abstract class CameraConfigurator {
+  CameraConfigurator(this.cameraDescription)
+      : assert(cameraDescription != null);
+
+  final CameraDescription cameraDescription;
+
   /// Texture id that can be used to send camera frames to a [Texture] widget.
   ///
   /// You must call [addPreviewTexture] first or this will only return null.
