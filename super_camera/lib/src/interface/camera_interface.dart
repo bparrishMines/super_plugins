@@ -1,8 +1,6 @@
-// Copyright 2019 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:async';
+
+import 'package:flutter/widgets.dart';
 
 /// Location of the camera on the device.
 enum LensDirection { front, back, unknown }
@@ -26,10 +24,8 @@ abstract class CameraConfigurator {
 
   final CameraDescription cameraDescription;
 
-  /// Texture id that can be used to send camera frames to a [Texture] widget.
-  ///
-  /// You must call [addPreviewTexture] first or this will only return null.
-  int get previewTextureId;
+  /// Retrieve a [Widget] that displays the preview frames of the camera.
+  Future<Widget> getPreviewWidget();
 
   /// Initializes the camera on the device.
   Future<void> initialize();
@@ -44,7 +40,4 @@ abstract class CameraConfigurator {
 
   /// Dispose all resources and disables further use of this configurator.
   Future<void> dispose();
-
-  /// Retrieves a valid texture Id to be used with a [Texture] widget.
-  Future<int> addPreviewTexture();
 }

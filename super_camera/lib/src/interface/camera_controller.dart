@@ -1,7 +1,3 @@
-// Copyright 2019 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 import 'dart:async';
 import 'dart:io';
 
@@ -98,13 +94,9 @@ class CameraController {
 
     final Completer<void> completer = Completer<void>();
 
-    if (_instance != null) {
-      _instance
-          .dispose()
-          .then((_) => configurator.initialize())
-          .then((_) => completer.complete());
-    }
+    if (_instance != null) _instance.dispose();
     _instance = this;
+    configurator.initialize().then((_) => completer.complete());
 
     return completer.future;
   }
@@ -112,7 +104,7 @@ class CameraController {
   /// Begins the flow of data between the inputs and outputs connected to the camera instance.
   Future<void> start() {
     assert(!_isDisposed, _isDisposedMessage);
-    assert(_instance != this, _isNotInitializedMessage);
+    assert(_instance == this, _isNotInitializedMessage);
 
     return configurator.start();
   }
@@ -120,7 +112,7 @@ class CameraController {
   /// Stops the flow of data between the inputs and outputs connected to the camera instance.
   Future<void> stop() {
     assert(!_isDisposed, _isDisposedMessage);
-    assert(_instance != this, _isNotInitializedMessage);
+    assert(_instance == this, _isNotInitializedMessage);
 
     return configurator.stop();
   }
@@ -132,6 +124,7 @@ class CameraController {
     return configurator.dispose();
   }
 
+  // Find the default configurator for platform and device version.
   static CameraConfigurator _createDefaultConfigurator(
     CameraDescription description,
   ) {

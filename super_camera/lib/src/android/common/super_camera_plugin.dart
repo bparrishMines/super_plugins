@@ -29,11 +29,12 @@ class SuperCameraPlugin {
         ),
         entry.$allocate(),
         entry.$surfaceTexture(surfaceTexture._surfaceTexture.$uniqueId),
+        surfaceTexture.surfaceTexture.$allocate(),
         entry.$id(),
       ],
     ).then(
       (List<dynamic> result) => completer.complete(
-        SurfaceTextureEntry._(entry, surfaceTexture, result[3]),
+        SurfaceTextureEntry._(entry, surfaceTexture, result[4]),
       ),
     );
 
@@ -64,7 +65,11 @@ class SurfaceTextureEntry {
   Future<void> release() {
     assert(!_isReleased, Channel.deallocatedMsg(this));
     _isReleased = true;
-    return $invoke(Channel.channel, _surfaceTextureEntry.$release());
+    return $invokeAll(Channel.channel, <MethodCall>[
+      _surfaceTextureEntry.$release(),
+      _surfaceTextureEntry.$deallocate(),
+      _surfaceTexture.surfaceTexture.$deallocate(),
+    ]);
   }
 
   @Method()

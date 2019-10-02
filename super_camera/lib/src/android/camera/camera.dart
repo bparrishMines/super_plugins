@@ -9,6 +9,13 @@ import '../common/super_camera_plugin.dart';
 import '../../../penguin.g.dart';
 import '../../common/channel.dart';
 
+/// The Camera class is used to set image capture settings, start/stop preview, snap pictures, and retrieve frames for encoding for video.
+///
+/// This class is a client for the Camera service, which manages the actual
+/// camera hardware.
+///
+/// This uses the [Camera](https://developer.android.com/reference/android/hardware/Camera)
+/// API and is deprecated for Android versions 21+.
 @Class(AndroidPlatform(AndroidType('android.hardware', 'Camera')))
 class Camera {
   Camera._() : _camera = $Camera(Uuid().v4());
