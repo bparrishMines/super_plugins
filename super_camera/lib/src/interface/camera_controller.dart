@@ -23,8 +23,8 @@ import 'camera_interface.dart';
 /// ```dart
 /// final List<CameraDescription> cameras = async CameraController.availableCameras();
 /// final CameraController controller = CameraController(description: cameras[0]);
-/// controller.initialize();
-/// controller.start();
+///
+/// final CameraPreview previewWidget = CameraPreview(controller);
 /// ```
 class CameraController {
   CameraController._({@required this.configurator})

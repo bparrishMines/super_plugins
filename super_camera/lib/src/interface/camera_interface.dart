@@ -31,8 +31,6 @@ abstract class CameraConfigurator {
   Future<void> initialize();
 
   /// Begins the flow of data between the inputs and outputs connected to the camera instance.
-  ///
-  /// This will start updating the texture with id: [previewTextureId].
   Future<void> start();
 
   /// Stops the flow of data between the inputs and outputs connected to the camera instance.

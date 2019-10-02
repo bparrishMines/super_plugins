@@ -7,12 +7,24 @@ import 'package:uuid/uuid.dart';
 
 import '../../common/channel.dart';
 
+/// Gives access to surfaces to draw frames to.
+///
+/// Use this to allocate a [SurfaceTexture] for a [Texture] widget.
+///
+/// ```dart
+/// final SurfaceTextureEntry entry =
+///     await SuperCameraPlugin.getSurfaceTextureEntry();
+/// final SurfaceTexture = entry.surfaceTexture();
+///
+/// final Texture cameraTexture = Texture(textureId: entry.id());
+/// ```
 @Class(AndroidPlatform(
   AndroidType('super_plugins.super_camera', 'SuperCameraPlugin'),
 ))
 class SuperCameraPlugin {
   SuperCameraPlugin._();
 
+  /// Allocate an entry for a [SurfaceTexture].
   @Method()
   static Future<SurfaceTextureEntry> getSurfaceTextureEntry() {
     final Completer<SurfaceTextureEntry> completer =
@@ -42,6 +54,7 @@ class SuperCameraPlugin {
   }
 }
 
+/// A registry entry for a managed [SurfaceTexture].
 @Class(AndroidPlatform(
   AndroidType('io.flutter.view.TextureRegistry', 'SurfaceTextureEntry'),
 ))
@@ -58,9 +71,13 @@ class SurfaceTextureEntry {
 
   bool _isReleased = false;
 
+  /// Unique identifier used to identify which [Texture] to draw to.
+  ///
+  /// Pass to `Texture({this.textureId});`.
   @Method()
   int id() => _id;
 
+  /// Unregisters and releases this [SurfaceTexture].
   @Method()
   Future<void> release() {
     assert(!_isReleased, Channel.deallocatedMsg(this));
@@ -72,6 +89,7 @@ class SurfaceTextureEntry {
     ]);
   }
 
+  /// The managed [SurfaceTexture].
   @Method()
   SurfaceTexture surfaceTexture() => _surfaceTexture;
 }

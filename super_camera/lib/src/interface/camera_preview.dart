@@ -6,9 +6,13 @@ import 'camera_controller.dart';
 import 'camera_interface.dart';
 import '../android/camera/camera.dart';
 
+/// Helper widget to display camera preview frames.
+///
+/// This widget will automatically orient the preview to display the camera.
 class CameraPreview extends StatefulWidget {
   CameraPreview(this.controller) : assert(controller != null);
 
+  /// Controls a device camera.
   final CameraController controller;
 
   @override
