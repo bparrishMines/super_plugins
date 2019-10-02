@@ -5,11 +5,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:super_camera/super_camera.dart';
 
 void main() {
-//  SystemChrome.setEnabledSystemUIOverlays([]);
-//  SystemChrome.setPreferredOrientations(<DeviceOrientation>[
-//    DeviceOrientation.portraitUp,
-//  ]);
-
   runApp(MaterialApp(home: MyApp()));
 }
 
@@ -26,6 +21,11 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+      DeviceOrientation.portraitUp,
+    ]);
+
     _getCameraPermission().then((bool success) {
       if (success) _setupCamera();
     });
@@ -144,5 +144,11 @@ class _MyAppState extends State<MyApp> {
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 }

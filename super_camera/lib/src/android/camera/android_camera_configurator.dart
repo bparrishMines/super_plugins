@@ -21,9 +21,9 @@ class AndroidCameraConfigurator extends CameraConfigurator {
   Future<void> dispose() {
     if (_isReleased) return Future<void>.value();
     _isReleased = true;
-    _camera = null;
     _texture = null;
-    return Future<void>.value();
+
+    return _camera.release();
   }
 
   @override
