@@ -8,19 +8,25 @@ environment:
   sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
-  uuid: 2.0.1
-  penguin:
-    path: ../../penguin/penguin2/todo_reporter.dart/penguin
   flutter:
     sdk: flutter
 
+  uuid: 2.0.1
+  penguin:
+    git:
+      url: git://github.com/bparrishMines/penguin.git
+      path: penguin
+
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
   permission_handler: ^3.2.2
   build_runner: ^1.6.7
   penguin_generator:
-    path: ../../penguin/penguin2/todo_reporter.dart/penguin_generator
-  flutter_test:
-    sdk: flutter
+    git:
+      url: git://github.com/bparrishMines/penguin.git
+      path: penguin_generator
 
 flutter:
   plugin:
