@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/widgets.dart';
-import 'package:super_camera/src/android/common/super_camera_plugin.dart';
+import 'package:super_camera/src/android/common/texture_registry.dart';
 
 import '../../common/channel.dart';
 import '../../interface/camera_interface.dart';
@@ -36,7 +36,7 @@ class AndroidCameraConfigurator extends CameraConfigurator {
 
     if (_camera != null) return Future<void>.value();
 
-    _camera = Camera.open((cameraDescription as CameraInfo).id);
+    _camera = Camera.open(int.parse(cameraDescription.name));
     return Future<void>.value();
   }
 
@@ -64,7 +64,7 @@ class AndroidCameraConfigurator extends CameraConfigurator {
 
     final Completer<Widget> completer = Completer<Widget>();
 
-    SuperCameraPlugin.getSurfaceTextureEntry().then(
+    TextureRegistry.instance.createSurfaceTexture().then(
       (SurfaceTextureEntry entry) {
         _camera.setPreviewTexture(entry.surfaceTexture());
         completer.complete(_texture = Texture(textureId: entry.id()));

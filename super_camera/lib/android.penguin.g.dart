@@ -3,6 +3,8 @@
 // **************************************************************************
 // PenguinGenerator
 // **************************************************************************
+import 'dart:async';
+
 import 'package:flutter/services.dart';
 
 class $Camera extends $Wrapper {
@@ -104,10 +106,12 @@ class $Camera extends $Wrapper {
 class $CameraInfo extends $Wrapper {
   $CameraInfo(String $uniqueId) : super($uniqueId);
 
-  MethodCall $CameraInfoDefault() {
+  MethodCall $CameraInfo$Default() {
     return MethodCall(
       'CameraInfo()',
-      <String, String>{r'$uniqueId': $uniqueId},
+      <String, String>{
+        r'$uniqueId': $uniqueId,
+      },
     );
   }
 
@@ -141,24 +145,6 @@ class $CameraInfo extends $Wrapper {
 
   @override
   String get $platformClassName => 'CameraInfo';
-}
-
-class $SuperCameraPlugin extends $Wrapper {
-  $SuperCameraPlugin(String $uniqueId) : super($uniqueId);
-
-  static MethodCall $getSurfaceTextureEntry([
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'SuperCameraPlugin#getSurfaceTextureEntry',
-      <String, dynamic>{
-        r'$newUniqueId': $newUniqueId,
-      },
-    );
-  }
-
-  @override
-  String get $platformClassName => 'SuperCameraPlugin';
 }
 
 class $SurfaceTextureEntry extends $Wrapper {
@@ -211,6 +197,25 @@ class $SurfaceTexture extends $Wrapper {
   String get $platformClassName => 'SurfaceTexture';
 }
 
+class $TextureRegistry extends $Wrapper {
+  $TextureRegistry(String $uniqueId) : super($uniqueId);
+
+  MethodCall $createSurfaceTexture([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'TextureRegistry#createSurfaceTexture',
+      <String, dynamic>{
+        r'$uniqueId': $uniqueId,
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+
+  @override
+  String get $platformClassName => 'TextureRegistry';
+}
+
 abstract class $Wrapper {
   $Wrapper(this.$uniqueId);
 
@@ -233,21 +238,60 @@ abstract class $Wrapper {
   }
 }
 
-Future<T> $invoke<T>(MethodChannel channel, MethodCall call) {
-  return channel.invokeMethod<T>(call.method, call.arguments);
+Future<T> $invoke<T>(
+  MethodChannel channel,
+  MethodCall call, [
+  Iterable<MethodCall> following = const <MethodCall>[],
+]) {
+  final Completer<T> completer = Completer<T>();
+
+  $invokeAll(
+    channel,
+    <MethodCall>[call, ...following].where((MethodCall call) => call != null),
+  ).then(
+    (List<dynamic> results) => completer.complete(results.last),
+  );
+
+  return completer.future;
 }
 
-Future<List<T>> $invokeList<T>(MethodChannel channel, MethodCall call) {
-  return channel.invokeListMethod<T>(call.method, call.arguments);
+Future<List<T>> $invokeList<T>(
+  MethodChannel channel,
+  MethodCall call, [
+  Iterable<MethodCall> following = const <MethodCall>[],
+]) {
+  final Completer<List<T>> completer = Completer<List<T>>();
+
+  $invokeAll(
+    channel,
+    <MethodCall>[call, ...following].where((MethodCall call) => call != null),
+  ).then(
+    (List<dynamic> results) => completer.complete(results.last.cast<T>()),
+  );
+
+  return completer.future;
 }
 
-Future<Map<S, T>> $invokeMap<S, T>(MethodChannel channel, MethodCall call) {
-  return channel.invokeMapMethod<S, T>(call.method, call.arguments);
+Future<Map<S, T>> $invokeMap<S, T>(
+  MethodChannel channel,
+  MethodCall call, [
+  Iterable<MethodCall> following = const <MethodCall>[],
+]) {
+  final Completer<Map<S, T>> completer = Completer<Map<S, T>>();
+
+  $invokeAll(
+    channel,
+    <MethodCall>[call, ...following].where((MethodCall call) => call != null),
+  ).then(
+    (List<dynamic> results) => completer.complete(results.last.cast<S, T>()),
+  );
+
+  return completer.future;
 }
 
 Future<List<dynamic>> $invokeAll(
   MethodChannel channel,
-  List<MethodCall> methodCalls,
+  Iterable<MethodCall> methodCalls,
 ) {
   final List<Map<String, dynamic>> serializedCalls = methodCalls
       .map<Map<String, dynamic>>(

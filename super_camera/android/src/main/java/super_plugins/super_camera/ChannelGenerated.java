@@ -5,6 +5,9 @@
 // **************************************************************************
 package super_plugins.super_camera;
 
+import android.content.Context;
+import android.view.View;
+import androidx.annotation.RequiresApi;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -13,6 +16,9 @@ import java.util.Locale;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
+import io.flutter.plugin.common.StandardMessageCodec;
+import io.flutter.plugin.platform.PlatformView;
+import io.flutter.plugin.platform.PlatformViewFactory;
 
 import android.hardware.Camera;
 
@@ -22,13 +28,26 @@ import io.flutter.view.TextureRegistry.SurfaceTextureEntry;
 
 import android.graphics.SurfaceTexture;
 
+import io.flutter.view.TextureRegistry;
+
 
 public class ChannelGenerated implements MethodCallHandler {
-  private static abstract class FlutterWrapper {
+  private class $ViewFactoryGenerated extends PlatformViewFactory {
+    $ViewFactoryGenerated() {
+      super(StandardMessageCodec.INSTANCE);
+    }
+
+    @Override
+    public PlatformView create(Context context, int viewId, Object args) {
+      return getWrapper((String) args);
+    }
+  }
+
+  public static abstract class FlutterWrapper implements PlatformView {
     final ChannelGenerated $channelGenerated;
     final String $uniqueId;
     
-    FlutterWrapper(ChannelGenerated $channelGenerated, String $uniqueId) {
+    private FlutterWrapper(ChannelGenerated $channelGenerated, String $uniqueId) {
       this.$channelGenerated = $channelGenerated;
       this.$uniqueId = $uniqueId;
     }
@@ -42,7 +61,17 @@ public class ChannelGenerated implements MethodCallHandler {
     }
 
     void deallocate() {
-      $channelGenerated.removeWrapper($uniqueId);
+      $channelGenerated.removeAllocatedWrapper($uniqueId);
+    }
+    
+    @Override
+    public View getView() {
+      return (View) $getValue();
+    }
+
+    @Override
+    public void dispose() {
+      // Do nothing
     }
   }
 
@@ -66,6 +95,11 @@ public class ChannelGenerated implements MethodCallHandler {
 
   private final HashMap<String, FlutterWrapper> allocatedWrappers = new HashMap<>();
   private final HashMap<String, FlutterWrapper> tempWrappers = new HashMap<>();
+  private final $ViewFactoryGenerated viewFactory = new $ViewFactoryGenerated();
+  
+  public PlatformViewFactory getPlatformViewFactory() {
+    return viewFactory;
+  }
 
   private void addWrapper(
       final String uniqueId,
@@ -77,8 +111,12 @@ public class ChannelGenerated implements MethodCallHandler {
     }
     wrapperMap.put(uniqueId, wrapper);
   }
+  
+  public void addAllocatedWrapper(final String uniqueId, final FlutterWrapper wrapper) {
+    addWrapper(uniqueId, wrapper, allocatedWrappers);
+  }
 
-  private void removeWrapper(String uniqueId) {
+  public void removeAllocatedWrapper(String uniqueId) {
     allocatedWrappers.remove(uniqueId);
   }
 
@@ -133,10 +171,6 @@ public class ChannelGenerated implements MethodCallHandler {
           return CameraWrapper.onStaticMethodCall(this, call);
         }
       
-      case "SuperCameraPlugin#getSurfaceTextureEntry": {
-          return SuperCameraPluginWrapper.onStaticMethodCall(this, call);
-        }
-      
       default:
         final String $uniqueId = call.argument("$uniqueId");
         if ($uniqueId == null) throw new NoUniqueIdException(call.method);
@@ -149,7 +183,8 @@ public class ChannelGenerated implements MethodCallHandler {
   }
 
   
-  private static class CameraWrapper extends FlutterWrapper {
+  
+  public static class CameraWrapper extends FlutterWrapper {
     private final Camera $value;
 
     public CameraWrapper(ChannelGenerated $channelGenerated, String $uniqueId, Camera $value) {
@@ -158,7 +193,15 @@ public class ChannelGenerated implements MethodCallHandler {
       $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
     }
 
-    
+    private CameraWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
     
     static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       switch(call.method) {
@@ -235,8 +278,8 @@ public class ChannelGenerated implements MethodCallHandler {
       
       Camera.open(
       
-      call.argument("cameraId") != null ? (Integer) call.argument("cameraId") : null
-      
+          call.argument("cameraId") != null ? (Integer) call.argument("cameraId") : null
+          
       )
       
       );
@@ -250,10 +293,10 @@ public class ChannelGenerated implements MethodCallHandler {
       
       Camera.getCameraInfo(
       
-      call.argument("cameraId") != null ? (Integer) call.argument("cameraId") : null
-      ,
-      call.argument("cameraInfo") != null ? ((CameraInfoWrapper) $channelGenerated.getWrapper((String) call.argument("cameraInfo"))).$value : null
-      
+          call.argument("cameraId") != null ? (Integer) call.argument("cameraId") : null
+          ,
+          call.argument("cameraInfo") != null ? ((CameraInfoWrapper) $channelGenerated.getWrapper((String) call.argument("cameraInfo"))).$value : null
+          
       )
       
       ;
@@ -306,8 +349,8 @@ public class ChannelGenerated implements MethodCallHandler {
       
       $value.setPreviewTexture(
       
-      call.argument("surfaceTexture") != null ? ((SurfaceTextureWrapper) $channelGenerated.getWrapper((String) call.argument("surfaceTexture"))).$value : null
-      
+          call.argument("surfaceTexture") != null ? ((SurfaceTextureWrapper) $channelGenerated.getWrapper((String) call.argument("surfaceTexture"))).$value : null
+          
       )
       
       ;
@@ -317,7 +360,8 @@ public class ChannelGenerated implements MethodCallHandler {
     
   }
   
-  private static class CameraInfoWrapper extends FlutterWrapper {
+  
+  public static class CameraInfoWrapper extends FlutterWrapper {
     private final CameraInfo $value;
 
     public CameraInfoWrapper(ChannelGenerated $channelGenerated, String $uniqueId, CameraInfo $value) {
@@ -326,19 +370,27 @@ public class ChannelGenerated implements MethodCallHandler {
       $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
     }
 
-    
-    private CameraInfoWrapper(ChannelGenerated $channelGenerated, final String $uniqueId) {
+    private CameraInfoWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
       super($channelGenerated, $uniqueId);
-      this.$value = new CameraInfo();
+      switch(call.method) {
+        
+        case "CameraInfo()":
+          this.$value = new CameraInfo(
+          
+          );
+          break; 
+        
+        default:
+          this.$value = null;
+      }
       $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
     }
-    
     
     static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       switch(call.method) {
         
         case "CameraInfo()": {
-            new CameraInfoWrapper($channelGenerated, (String) call.argument("$uniqueId"));
+            new CameraInfoWrapper($channelGenerated, (String) call.argument("$uniqueId"), call);
             return null;
           }
         
@@ -414,69 +466,8 @@ public class ChannelGenerated implements MethodCallHandler {
     
   }
   
-  private static class SuperCameraPluginWrapper extends FlutterWrapper {
-    private final SuperCameraPlugin $value;
-
-    public SuperCameraPluginWrapper(ChannelGenerated $channelGenerated, String $uniqueId, SuperCameraPlugin $value) {
-      super($channelGenerated, $uniqueId);
-      this.$value = $value;
-      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
-    }
-
-    
-    
-    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
-      switch(call.method) {
-        
-        case "SuperCameraPlugin#getSurfaceTextureEntry": {
-            return SuperCameraPluginWrapper.getSurfaceTextureEntry($channelGenerated, call);
-          }
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(MethodCall call) throws Exception {
-      switch(call.method) {
-        case "SuperCameraPlugin#allocate":
-          allocate();
-          return null;
-        case "SuperCameraPlugin#deallocate":
-          deallocate();
-          return null;
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-
-    
-    static Object getSurfaceTextureEntry(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
-      
-      new SurfaceTextureEntryWrapper($channelGenerated, (String) call.argument("$newUniqueId"),
-      
-      
-      SuperCameraPlugin.getSurfaceTextureEntry(
-      
-      )
-      
-      );
-      return null;
-      
-    }
-    
-  }
   
-  private static class SurfaceTextureEntryWrapper extends FlutterWrapper {
+  public static class SurfaceTextureEntryWrapper extends FlutterWrapper {
     private final SurfaceTextureEntry $value;
 
     public SurfaceTextureEntryWrapper(ChannelGenerated $channelGenerated, String $uniqueId, SurfaceTextureEntry $value) {
@@ -485,7 +476,15 @@ public class ChannelGenerated implements MethodCallHandler {
       $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
     }
 
-    
+    private SurfaceTextureEntryWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
     
     static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       switch(call.method) {
@@ -569,7 +568,8 @@ public class ChannelGenerated implements MethodCallHandler {
     
   }
   
-  private static class SurfaceTextureWrapper extends FlutterWrapper {
+  
+  public static class SurfaceTextureWrapper extends FlutterWrapper {
     private final SurfaceTexture $value;
 
     public SurfaceTextureWrapper(ChannelGenerated $channelGenerated, String $uniqueId, SurfaceTexture $value) {
@@ -578,7 +578,15 @@ public class ChannelGenerated implements MethodCallHandler {
       $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
     }
 
-    
+    private SurfaceTextureWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
     
     static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       switch(call.method) {
@@ -610,6 +618,76 @@ public class ChannelGenerated implements MethodCallHandler {
     
     
 
+    
+  }
+  
+  
+  public static class TextureRegistryWrapper extends FlutterWrapper {
+    private final TextureRegistry $value;
+
+    public TextureRegistryWrapper(ChannelGenerated $channelGenerated, String $uniqueId, TextureRegistry $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private TextureRegistryWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "TextureRegistry#allocate":
+          allocate();
+          return null;
+        case "TextureRegistry#deallocate":
+          deallocate();
+          return null;
+        
+        case "TextureRegistry#createSurfaceTexture":
+          return createSurfaceTexture(call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+     Object createSurfaceTexture( MethodCall call) throws Exception {
+      
+      new SurfaceTextureEntryWrapper($channelGenerated, (String) call.argument("$newUniqueId"),
+      
+      
+      $value.createSurfaceTexture(
+      
+      )
+      
+      );
+      return null;
+      
+    }
     
   }
   

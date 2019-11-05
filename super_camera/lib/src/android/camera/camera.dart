@@ -5,8 +5,8 @@ import 'package:penguin/penguin.dart';
 import 'package:super_camera/src/interface/camera_interface.dart';
 import 'package:uuid/uuid.dart';
 
-import '../common/super_camera_plugin.dart';
-import '../../../penguin.g.dart';
+import '../common/texture_registry.dart';
+import '../../../android.penguin.g.dart';
 import '../../common/channel.dart';
 
 /// The Camera class is used to set image capture settings, start/stop preview, snap pictures, and retrieve frames for encoding for video.
@@ -16,7 +16,7 @@ import '../../common/channel.dart';
 ///
 /// This uses the [Camera](https://developer.android.com/reference/android/hardware/Camera)
 /// API and is deprecated for Android versions 21+.
-@Class(AndroidPlatform(AndroidType('android.hardware', 'Camera')))
+@Class(AndroidPlatform(AndroidType('android.hardware', <String>['Camera'])))
 class Camera {
   Camera._() : _camera = $Camera(Uuid().v4());
 
@@ -66,7 +66,7 @@ class Camera {
     final List<dynamic> result = await $invokeAll(
       Channel.channel,
       <MethodCall>[
-        cameraInfo._cameraInfo.$CameraInfoDefault(),
+        cameraInfo._cameraInfo.$CameraInfo$Default(),
         $Camera.$getCameraInfo(cameraId, cameraInfo._cameraInfo),
         cameraInfo._cameraInfo.$facing(),
         cameraInfo._cameraInfo.$orientation(),
@@ -141,7 +141,9 @@ class Camera {
 /// Information about a camera.
 ///
 /// Retrieve by calling [Camera.getCameraInfo].
-@Class(AndroidPlatform(AndroidType('android.hardware.Camera', 'CameraInfo')))
+@Class(AndroidPlatform(
+  AndroidType('android.hardware.Camera', <String>['CameraInfo']),
+))
 class CameraInfo implements CameraDescription {
   @Constructor()
   CameraInfo() : _cameraInfo = $CameraInfo(Uuid().v4());

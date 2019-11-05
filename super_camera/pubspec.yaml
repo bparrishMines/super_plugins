@@ -5,7 +5,7 @@ author: Maruice Parrish <bparr2450@gmail.com>
 homepage: https://github.com/bparrishMines/super/tree/master/super_camera
 
 environment:
-  sdk: ">=2.2.0 <3.0.0"
+  sdk: ">=2.3.0 <3.0.0"
 
 dependencies:
   flutter:
