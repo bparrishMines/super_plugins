@@ -7,8 +7,20 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-class $Camera extends $Wrapper {
-  $Camera(String $uniqueId) : super($uniqueId);
+class $Camera extends Wrapper {
+  $Camera(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'Camera';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
 
   static MethodCall $getNumberOfCameras([
     String $newUniqueId,
@@ -44,7 +56,7 @@ class $Camera extends $Wrapper {
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
         'cameraId': cameraId,
-        'cameraInfo': cameraInfo?.$uniqueId,
+        'cameraInfo': cameraInfo?.uniqueId,
       },
     );
   }
@@ -55,7 +67,7 @@ class $Camera extends $Wrapper {
     return MethodCall(
       'Camera#release',
       <String, dynamic>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
       },
     );
@@ -67,7 +79,7 @@ class $Camera extends $Wrapper {
     return MethodCall(
       'Camera#startPreview',
       <String, dynamic>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
       },
     );
@@ -79,7 +91,7 @@ class $Camera extends $Wrapper {
     return MethodCall(
       'Camera#stopPreview',
       <String, dynamic>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
       },
     );
@@ -92,25 +104,34 @@ class $Camera extends $Wrapper {
     return MethodCall(
       'Camera#setPreviewTexture',
       <String, dynamic>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
-        'surfaceTexture': surfaceTexture?.$uniqueId,
+        'surfaceTexture': surfaceTexture?.uniqueId,
       },
     );
   }
-
-  @override
-  String get $platformClassName => 'Camera';
 }
 
-class $CameraInfo extends $Wrapper {
-  $CameraInfo(String $uniqueId) : super($uniqueId);
+class $CameraInfo extends Wrapper {
+  $CameraInfo(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'CameraInfo';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
 
   MethodCall $CameraInfo$Default() {
     return MethodCall(
       'CameraInfo()',
       <String, String>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
       },
     );
   }
@@ -122,7 +143,7 @@ class $CameraInfo extends $Wrapper {
     return MethodCall(
       'CameraInfo.facing',
       <String, dynamic>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         'facing': facing,
       },
@@ -136,19 +157,28 @@ class $CameraInfo extends $Wrapper {
     return MethodCall(
       'CameraInfo.orientation',
       <String, dynamic>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         'orientation': orientation,
       },
     );
   }
-
-  @override
-  String get $platformClassName => 'CameraInfo';
 }
 
-class $SurfaceTextureEntry extends $Wrapper {
-  $SurfaceTextureEntry(String $uniqueId) : super($uniqueId);
+class $SurfaceTextureEntry extends Wrapper {
+  $SurfaceTextureEntry(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'SurfaceTextureEntry';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
 
   MethodCall $id([
     String $newUniqueId,
@@ -156,7 +186,7 @@ class $SurfaceTextureEntry extends $Wrapper {
     return MethodCall(
       'SurfaceTextureEntry#id',
       <String, dynamic>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
       },
     );
@@ -168,7 +198,7 @@ class $SurfaceTextureEntry extends $Wrapper {
     return MethodCall(
       'SurfaceTextureEntry#release',
       <String, dynamic>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
       },
     );
@@ -180,25 +210,43 @@ class $SurfaceTextureEntry extends $Wrapper {
     return MethodCall(
       'SurfaceTextureEntry#surfaceTexture',
       <String, dynamic>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
       },
     );
   }
-
-  @override
-  String get $platformClassName => 'SurfaceTextureEntry';
 }
 
-class $SurfaceTexture extends $Wrapper {
-  $SurfaceTexture(String $uniqueId) : super($uniqueId);
+class $SurfaceTexture extends Wrapper {
+  $SurfaceTexture(
+    String uniqueId,
+  ) : super(uniqueId);
 
   @override
-  String get $platformClassName => 'SurfaceTexture';
+  String get platformClassName => 'SurfaceTexture';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
 }
 
-class $TextureRegistry extends $Wrapper {
-  $TextureRegistry(String $uniqueId) : super($uniqueId);
+class $TextureRegistry extends Wrapper {
+  $TextureRegistry(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'TextureRegistry';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
 
   MethodCall $createSurfaceTexture([
     String $newUniqueId,
@@ -206,46 +254,72 @@ class $TextureRegistry extends $Wrapper {
     return MethodCall(
       'TextureRegistry#createSurfaceTexture',
       <String, dynamic>{
-        r'$uniqueId': $uniqueId,
+        r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
       },
     );
   }
-
-  @override
-  String get $platformClassName => 'TextureRegistry';
 }
 
-abstract class $Wrapper {
-  $Wrapper(this.$uniqueId);
+class CallbackHandler {
+  CallbackHandler() {
+    _methodCallHandler = (MethodCall call) async {
+      final List<MethodCall> result =
+          _wrappers[call.arguments[r'$uniqueId']].onMethodCall(call);
+      if (result == null) return null;
+      return result
+          .map<Map<String, dynamic>>(
+            (MethodCall methodCall) => <String, dynamic>{
+              'method': methodCall.method,
+              'arguments': methodCall.arguments,
+            },
+          )
+          .toList();
+    };
+  }
 
-  final String $uniqueId;
+  final Map<String, Wrapper> _wrappers = <String, Wrapper>{};
+  Future<dynamic> Function(MethodCall call) _methodCallHandler;
 
-  String get $platformClassName;
+  Future<dynamic> Function(MethodCall call) get methodCallHandler =>
+      _methodCallHandler;
 
-  MethodCall $allocate() {
+  void addWrapper(Wrapper wrapper) => _wrappers[wrapper.uniqueId] = wrapper;
+
+  Wrapper removeWrapper(Wrapper wrapper) => _wrappers.remove(wrapper.uniqueId);
+}
+
+abstract class Wrapper {
+  Wrapper(this.uniqueId);
+
+  final String uniqueId;
+
+  String get platformClassName;
+  List<MethodCall> onMethodCall(MethodCall call);
+
+  MethodCall allocate() {
     return MethodCall(
-      '${$platformClassName}#allocate',
-      <String, String>{r'$uniqueId': $uniqueId},
+      '$platformClassName#allocate',
+      <String, String>{r'$uniqueId': uniqueId},
     );
   }
 
-  MethodCall $deallocate() {
+  MethodCall deallocate() {
     return MethodCall(
-      '${$platformClassName}#deallocate',
-      <String, String>{r'$uniqueId': $uniqueId},
+      '$platformClassName#deallocate',
+      <String, String>{r'$uniqueId': uniqueId},
     );
   }
 }
 
-Future<T> $invoke<T>(
+Future<T> invoke<T>(
   MethodChannel channel,
   MethodCall call, [
   Iterable<MethodCall> following = const <MethodCall>[],
 ]) {
   final Completer<T> completer = Completer<T>();
 
-  $invokeAll(
+  invokeAll(
     channel,
     <MethodCall>[call, ...following].where((MethodCall call) => call != null),
   ).then(
@@ -255,14 +329,14 @@ Future<T> $invoke<T>(
   return completer.future;
 }
 
-Future<List<T>> $invokeList<T>(
+Future<List<T>> invokeList<T>(
   MethodChannel channel,
   MethodCall call, [
   Iterable<MethodCall> following = const <MethodCall>[],
 ]) {
   final Completer<List<T>> completer = Completer<List<T>>();
 
-  $invokeAll(
+  invokeAll(
     channel,
     <MethodCall>[call, ...following].where((MethodCall call) => call != null),
   ).then(
@@ -272,14 +346,14 @@ Future<List<T>> $invokeList<T>(
   return completer.future;
 }
 
-Future<Map<S, T>> $invokeMap<S, T>(
+Future<Map<S, T>> invokeMap<S, T>(
   MethodChannel channel,
   MethodCall call, [
   Iterable<MethodCall> following = const <MethodCall>[],
 ]) {
   final Completer<Map<S, T>> completer = Completer<Map<S, T>>();
 
-  $invokeAll(
+  invokeAll(
     channel,
     <MethodCall>[call, ...following].where((MethodCall call) => call != null),
   ).then(
@@ -289,7 +363,7 @@ Future<Map<S, T>> $invokeMap<S, T>(
   return completer.future;
 }
 
-Future<List<dynamic>> $invokeAll(
+Future<List<dynamic>> invokeAll(
   MethodChannel channel,
   Iterable<MethodCall> methodCalls,
 ) {

@@ -34,7 +34,7 @@ class Camera {
   /// camera2 API to see all cameras.
   @Method()
   static Future<int> getNumberOfCameras() =>
-      $invoke(Channel.channel, $Camera.$getNumberOfCameras());
+      invoke(Channel.channel, $Camera.$getNumberOfCameras());
 
   /// Creates a new Camera object to access a particular hardware camera.
   ///
@@ -48,11 +48,11 @@ class Camera {
   @Method()
   static Camera open(int cameraId) {
     final Camera camera = Camera._();
-    $invokeAll(
+    invokeAll(
       Channel.channel,
       <MethodCall>[
-        $Camera.$open(cameraId, camera._camera.$uniqueId),
-        camera._camera.$allocate(),
+        $Camera.$open(cameraId, camera._camera.uniqueId),
+        camera._camera.allocate(),
       ],
     );
     return camera;
@@ -63,7 +63,7 @@ class Camera {
   /// If [Camera.getNumberOfCameras] returns N, the valid id is 0 to N-1.
   @Method()
   static Future<void> getCameraInfo(int cameraId, CameraInfo cameraInfo) async {
-    final List<dynamic> result = await $invokeAll(
+    final List<dynamic> result = await invokeAll(
       Channel.channel,
       <MethodCall>[
         cameraInfo._cameraInfo.$CameraInfo$Default(),
@@ -88,9 +88,9 @@ class Camera {
 
     final Completer<void> completer = Completer<void>();
 
-    $invokeAll(
+    invokeAll(
       Channel.channel,
-      <MethodCall>[_camera.$release(), _camera.$deallocate()],
+      <MethodCall>[_camera.$release(), _camera.deallocate()],
     ).then((_) => completer.complete());
 
     return completer.future;
@@ -103,7 +103,7 @@ class Camera {
   @Method()
   Future<void> startPreview() {
     assert(!_isReleased, Channel.deallocatedMsg(this));
-    return $invoke(Channel.channel, _camera.$startPreview());
+    return invoke(Channel.channel, _camera.$startPreview());
   }
 
   /// Stops capturing and drawing preview frames to the surface.
@@ -112,7 +112,7 @@ class Camera {
   @Method()
   Future<void> stopPreview() {
     assert(!_isReleased, Channel.deallocatedMsg(this));
-    return $invoke(Channel.channel, _camera.$stopPreview());
+    return invoke(Channel.channel, _camera.$stopPreview());
   }
 
   /// Sets the SurfaceTexture to be used for live preview.
@@ -131,7 +131,7 @@ class Camera {
   @Method()
   Future<void> setPreviewTexture(SurfaceTexture surfaceTexture) {
     assert(!_isReleased, Channel.deallocatedMsg(this));
-    return $invoke(
+    return invoke(
       Channel.channel,
       _camera.$setPreviewTexture(surfaceTexture.surfaceTexture),
     );

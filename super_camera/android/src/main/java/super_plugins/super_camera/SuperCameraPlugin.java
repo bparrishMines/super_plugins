@@ -21,7 +21,7 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
     final MethodChannel channel = new MethodChannel(registrar.messenger(), CHANNEL_NAME);
-    final ChannelGenerated channelGenerated = new ChannelGenerated();
+    final ChannelGenerated channelGenerated = new ChannelGenerated(channel);
     channel.setMethodCallHandler(channelGenerated);
 
     final ChannelGenerated.TextureRegistryWrapper activityWrapper = new ChannelGenerated.TextureRegistryWrapper(
@@ -45,7 +45,7 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   public void onAttachedToActivity(ActivityPluginBinding binding) {
     activityBinding = binding;
     final MethodChannel channel = new MethodChannel(flutterBinding.getBinaryMessenger(), CHANNEL_NAME);
-    final ChannelGenerated channelGenerated = new ChannelGenerated();
+    final ChannelGenerated channelGenerated = new ChannelGenerated(channel);
     channel.setMethodCallHandler(channelGenerated);
 
     final ChannelGenerated.TextureRegistryWrapper activityWrapper = new ChannelGenerated.TextureRegistryWrapper(

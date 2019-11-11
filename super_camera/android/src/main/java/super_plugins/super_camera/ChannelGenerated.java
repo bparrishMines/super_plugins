@@ -13,7 +13,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.UUID;
 import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.StandardMessageCodec;
@@ -96,6 +98,15 @@ public class ChannelGenerated implements MethodCallHandler {
   private final HashMap<String, FlutterWrapper> allocatedWrappers = new HashMap<>();
   private final HashMap<String, FlutterWrapper> tempWrappers = new HashMap<>();
   private final $ViewFactoryGenerated viewFactory = new $ViewFactoryGenerated();
+  private final MethodChannel callbackChannel;
+  
+  public ChannelGenerated() {
+    this.callbackChannel = null;
+  }
+  
+  public ChannelGenerated(MethodChannel callbackChannel) {
+    this.callbackChannel = callbackChannel;
+  }
   
   public PlatformViewFactory getPlatformViewFactory() {
     return viewFactory;
@@ -377,7 +388,9 @@ public class ChannelGenerated implements MethodCallHandler {
         case "CameraInfo()":
           this.$value = new CameraInfo(
           
-          );
+          ) {
+            
+          };
           break; 
         
         default:

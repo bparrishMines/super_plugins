@@ -36,10 +36,10 @@ class SurfaceTextureEntry {
   Future<void> release() {
     assert(!_isReleased, Channel.deallocatedMsg(this));
     _isReleased = true;
-    return $invokeAll(Channel.channel, <MethodCall>[
+    return invokeAll(Channel.channel, <MethodCall>[
       _surfaceTextureEntry.$release(),
-      _surfaceTextureEntry.$deallocate(),
-      _surfaceTexture.surfaceTexture.$deallocate(),
+      _surfaceTextureEntry.deallocate(),
+      _surfaceTexture.surfaceTexture.deallocate(),
     ]);
   }
 
@@ -83,15 +83,15 @@ class TextureRegistry {
     final $SurfaceTextureEntry entry = $SurfaceTextureEntry(Uuid().v4());
     final SurfaceTexture surfaceTexture = SurfaceTexture._();
 
-    $invokeAll(
+    invokeAll(
       Channel.channel,
       <MethodCall>[
         _$registry.$createSurfaceTexture(
-          entry.$uniqueId,
+          entry.uniqueId,
         ),
-        entry.$allocate(),
-        entry.$surfaceTexture(surfaceTexture._surfaceTexture.$uniqueId),
-        surfaceTexture.surfaceTexture.$allocate(),
+        entry.allocate(),
+        entry.$surfaceTexture(surfaceTexture._surfaceTexture.uniqueId),
+        surfaceTexture.surfaceTexture.allocate(),
         entry.$id(),
       ],
     ).then(
