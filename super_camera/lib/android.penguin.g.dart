@@ -165,6 +165,22 @@ class $CameraInfo extends Wrapper {
   }
 }
 
+class $Activity extends Wrapper {
+  $Activity(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'Activity';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
+}
+
 class $SurfaceTextureEntry extends Wrapper {
   $SurfaceTextureEntry(
     String uniqueId,
@@ -256,6 +272,267 @@ class $TextureRegistry extends Wrapper {
       <String, dynamic>{
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+}
+
+class $CameraX extends Wrapper {
+  $CameraX(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'CameraX';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
+
+  static MethodCall $bindToLifecycle(
+    $LifecycleOwner owner,
+    $Preview preview, [
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'CameraX#bindToLifecycle',
+      <String, dynamic>{
+        r'$newUniqueId': $newUniqueId,
+        'owner': owner?.uniqueId,
+        'preview': preview?.uniqueId,
+      },
+    );
+  }
+}
+
+class $LifecycleOwner extends Wrapper {
+  $LifecycleOwner(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'LifecycleOwner';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
+}
+
+class $Preview extends Wrapper {
+  $Preview(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'Preview';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
+
+  MethodCall $Preview$Default(
+    $PreviewConfig previewConfig,
+  ) {
+    return MethodCall(
+      'Preview()',
+      <String, String>{
+        r'$uniqueId': uniqueId,
+        'previewConfig': previewConfig?.uniqueId,
+      },
+    );
+  }
+
+  MethodCall $setOnPreviewOutputUpdateListener(
+    $OnPreviewOutputUpdateListener listener, [
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'Preview#setOnPreviewOutputUpdateListener',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        'listener': listener?.uniqueId,
+      },
+    );
+  }
+}
+
+class $OnPreviewOutputUpdateListener extends Wrapper {
+  $OnPreviewOutputUpdateListener(
+    String uniqueId, {
+    this.$onUpdated$Callback,
+  }) : super(uniqueId);
+
+  final List<MethodCall> Function(
+    $PreviewOutput previewOutput,
+  ) $onUpdated$Callback;
+
+  @override
+  String get platformClassName => 'OnPreviewOutputUpdateListener';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+      case 'OnPreviewOutputUpdateListener#onUpdated':
+        return $onUpdated$Callback(
+          $PreviewOutput(call.arguments['previewOutput']),
+        );
+        break;
+    }
+    return null;
+  }
+
+  MethodCall $OnPreviewOutputUpdateListener$Default() {
+    return MethodCall(
+      'OnPreviewOutputUpdateListener()',
+      <String, String>{
+        r'$uniqueId': uniqueId,
+      },
+    );
+  }
+
+  MethodCall $onUpdated(
+    $PreviewOutput previewOutput, [
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'OnPreviewOutputUpdateListener#onUpdated',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        'previewOutput': previewOutput?.uniqueId,
+      },
+    );
+  }
+}
+
+class $PreviewOutput extends Wrapper {
+  $PreviewOutput(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'PreviewOutput';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
+
+  MethodCall $getSurfaceTexture([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'PreviewOutput#getSurfaceTexture',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+}
+
+class $PreviewConfig extends Wrapper {
+  $PreviewConfig(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'PreviewConfig';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
+}
+
+class $PreviewConfigBuilder extends Wrapper {
+  $PreviewConfigBuilder(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'PreviewConfigBuilder';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
+
+  MethodCall $PreviewConfigBuilder$Default() {
+    return MethodCall(
+      'PreviewConfigBuilder()',
+      <String, String>{
+        r'$uniqueId': uniqueId,
+      },
+    );
+  }
+
+  MethodCall $build([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'PreviewConfigBuilder#build',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+}
+
+class $_TextureViewState extends Wrapper {
+  $_TextureViewState(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'TextureView';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    return null;
+  }
+
+  MethodCall $_TextureViewState$Default(
+    $Activity activity,
+  ) {
+    return MethodCall(
+      'TextureView()',
+      <String, String>{
+        r'$uniqueId': uniqueId,
+        'activity': activity?.uniqueId,
+      },
+    );
+  }
+
+  MethodCall $setSurfaceTexture(
+    $SurfaceTexture surfaceTexture, [
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'TextureView#setSurfaceTexture',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        'surfaceTexture': surfaceTexture?.uniqueId,
       },
     );
   }

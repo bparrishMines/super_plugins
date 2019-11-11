@@ -14,6 +14,7 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   private static final String CHANNEL_NAME = "super_plugins/super_camera";
   private static final String PLATFORM_VIEW_FACTORY_NAME = CHANNEL_NAME + "/views";
   private static final String TEXTURE_REGISTRY_ID = "texture_registry";
+  private static final String LIFECYCLE_OWNER_ID = "lifecycle_owner";
 
   private ActivityPluginBinding activityBinding;
   private FlutterPluginBinding flutterBinding;
@@ -44,6 +45,7 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   @Override
   public void onAttachedToActivity(ActivityPluginBinding binding) {
     activityBinding = binding;
+
     final MethodChannel channel = new MethodChannel(flutterBinding.getBinaryMessenger(), CHANNEL_NAME);
     final ChannelGenerated channelGenerated = new ChannelGenerated(channel);
     channel.setMethodCallHandler(channelGenerated);
@@ -52,7 +54,12 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
         channelGenerated,
         TEXTURE_REGISTRY_ID,
         flutterBinding.getTextureRegistry());
+    final ChannelGenerated.LifecycleOwnerWrapper lifecycleOwnerWrapper =
+        new ChannelGenerated.LifecycleOwnerWrapper(channelGenerated, LIFECYCLE_OWNER_ID, this);
+
     channelGenerated.addAllocatedWrapper(TEXTURE_REGISTRY_ID, activityWrapper);
+    channelGenerated.addAllocatedWrapper(LIFECYCLE_OWNER_ID, lifecycleOwnerWrapper);
+
     flutterBinding.getPlatformViewRegistry().registerViewFactory(
         PLATFORM_VIEW_FACTORY_NAME,
         channelGenerated.getPlatformViewFactory());

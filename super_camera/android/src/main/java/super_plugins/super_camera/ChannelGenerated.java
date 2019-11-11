@@ -6,6 +6,7 @@
 package super_plugins.super_camera;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.View;
 import androidx.annotation.RequiresApi;
 import java.lang.reflect.Constructor;
@@ -26,11 +27,27 @@ import android.hardware.Camera;
 
 import android.hardware.Camera.CameraInfo;
 
+import android.app.Activity;
+
 import io.flutter.view.TextureRegistry.SurfaceTextureEntry;
 
 import android.graphics.SurfaceTexture;
 
 import io.flutter.view.TextureRegistry;
+
+import androidx.camera.core.CameraX;
+
+import androidx.lifecycle.LifecycleOwner;
+
+import androidx.camera.core.Preview;
+
+import androidx.camera.core.Preview.OnPreviewOutputUpdateListener;
+
+import androidx.camera.core.Preview.PreviewOutput;
+
+import androidx.camera.core.PreviewConfig;
+
+import 	android.view.TextureView;
 
 
 public class ChannelGenerated implements MethodCallHandler {
@@ -167,7 +184,43 @@ public class ChannelGenerated implements MethodCallHandler {
         return resultData;
       
       case "CameraInfo()": {
-          return CameraInfoWrapper.onStaticMethodCall(this, call);
+          if (Build.VERSION.SDK_INT >= 16) {
+            return CameraInfoWrapper.onStaticMethodCall(this, call);
+          } else {
+            throw new UnsupportedOperationException("This operation requires api 16 and above");
+          }
+        }
+      
+      case "Preview()": {
+          if (Build.VERSION.SDK_INT >= 21) {
+            return PreviewWrapper.onStaticMethodCall(this, call);
+          } else {
+            throw new UnsupportedOperationException("This operation requires api 21 and above");
+          }
+        }
+      
+      case "OnPreviewOutputUpdateListener()": {
+          if (Build.VERSION.SDK_INT >= 21) {
+            return OnPreviewOutputUpdateListenerWrapper.onStaticMethodCall(this, call);
+          } else {
+            throw new UnsupportedOperationException("This operation requires api 21 and above");
+          }
+        }
+      
+      case "PreviewConfigBuilder()": {
+          if (Build.VERSION.SDK_INT >= 21) {
+            return PreviewConfigBuilderWrapper.onStaticMethodCall(this, call);
+          } else {
+            throw new UnsupportedOperationException("This operation requires api 21 and above");
+          }
+        }
+      
+      case "TextureView()": {
+          if (Build.VERSION.SDK_INT >= 16) {
+            return TextureViewWrapper.onStaticMethodCall(this, call);
+          } else {
+            throw new UnsupportedOperationException("This operation requires api 16 and above");
+          }
         }
       
       case "Camera#getNumberOfCameras": {
@@ -180,6 +233,10 @@ public class ChannelGenerated implements MethodCallHandler {
       
       case "Camera#getCameraInfo": {
           return CameraWrapper.onStaticMethodCall(this, call);
+        }
+      
+      case "CameraX#bindToLifecycle": {
+          return CameraXWrapper.onStaticMethodCall(this, call);
         }
       
       default:
@@ -388,9 +445,7 @@ public class ChannelGenerated implements MethodCallHandler {
         case "CameraInfo()":
           this.$value = new CameraInfo(
           
-          ) {
-            
-          };
+          ) ;
           break; 
         
         default:
@@ -474,6 +529,59 @@ public class ChannelGenerated implements MethodCallHandler {
       ;
       
     }
+    
+
+    
+  }
+  
+  
+  public static class ActivityWrapper extends FlutterWrapper {
+    private final Activity $value;
+
+    public ActivityWrapper(ChannelGenerated $channelGenerated, String $uniqueId, Activity $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private ActivityWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "Activity#allocate":
+          allocate();
+          return null;
+        case "Activity#deallocate":
+          deallocate();
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
     
 
     
@@ -698,6 +806,626 @@ public class ChannelGenerated implements MethodCallHandler {
       )
       
       );
+      return null;
+      
+    }
+    
+  }
+  
+  @RequiresApi(api = 21)
+  public static class CameraXWrapper extends FlutterWrapper {
+    private final CameraX $value;
+
+    public CameraXWrapper(ChannelGenerated $channelGenerated, String $uniqueId, CameraX $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private CameraXWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        case "CameraX#bindToLifecycle": {
+            return CameraXWrapper.bindToLifecycle($channelGenerated, call);
+          }
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "CameraX#allocate":
+          allocate();
+          return null;
+        case "CameraX#deallocate":
+          deallocate();
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+    static Object bindToLifecycle(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      
+      
+      
+      CameraX.bindToLifecycle(
+      
+          call.argument("owner") != null ? ((LifecycleOwnerWrapper) $channelGenerated.getWrapper((String) call.argument("owner"))).$value : null
+          ,
+          call.argument("preview") != null ? ((PreviewWrapper) $channelGenerated.getWrapper((String) call.argument("preview"))).$value : null
+          
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+  }
+  
+  
+  public static class LifecycleOwnerWrapper extends FlutterWrapper {
+    private final LifecycleOwner $value;
+
+    public LifecycleOwnerWrapper(ChannelGenerated $channelGenerated, String $uniqueId, LifecycleOwner $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private LifecycleOwnerWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "LifecycleOwner#allocate":
+          allocate();
+          return null;
+        case "LifecycleOwner#deallocate":
+          deallocate();
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+  }
+  
+  @RequiresApi(api = 21)
+  public static class PreviewWrapper extends FlutterWrapper {
+    private final Preview $value;
+
+    public PreviewWrapper(ChannelGenerated $channelGenerated, String $uniqueId, Preview $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private PreviewWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        case "Preview()":
+          this.$value = new Preview(
+          
+          call.argument("previewConfig") != null ? ((PreviewConfigWrapper) $channelGenerated.getWrapper((String) call.argument("previewConfig"))).$value : null
+          
+          ) ;
+          break; 
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        case "Preview()": {
+            new PreviewWrapper($channelGenerated, (String) call.argument("$uniqueId"), call);
+            return null;
+          }
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "Preview#allocate":
+          allocate();
+          return null;
+        case "Preview#deallocate":
+          deallocate();
+          return null;
+        
+        case "Preview#setOnPreviewOutputUpdateListener":
+          return setOnPreviewOutputUpdateListener(call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+     Object setOnPreviewOutputUpdateListener( MethodCall call) throws Exception {
+      
+      
+      
+      $value.setOnPreviewOutputUpdateListener(
+      
+          call.argument("listener") != null ? ((OnPreviewOutputUpdateListenerWrapper) $channelGenerated.getWrapper((String) call.argument("listener"))).$value : null
+          
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+  }
+  
+  @RequiresApi(api = 21)
+  public static class OnPreviewOutputUpdateListenerWrapper extends FlutterWrapper {
+    private final OnPreviewOutputUpdateListener $value;
+
+    public OnPreviewOutputUpdateListenerWrapper(ChannelGenerated $channelGenerated, String $uniqueId, OnPreviewOutputUpdateListener $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private OnPreviewOutputUpdateListenerWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        case "OnPreviewOutputUpdateListener()":
+          this.$value = new OnPreviewOutputUpdateListener(
+          
+          ) {
+            
+            @Override
+            public void onUpdated(
+            
+            PreviewOutput previewOutput
+            
+            ) {
+              final HashMap<String, Object> $arguments = new HashMap<>();
+              $arguments.put("$uniqueId", $uniqueId);
+
+              
+              final String $previewOutputId = UUID.randomUUID().toString();
+              $channelGenerated.addAllocatedWrapper($previewOutputId, new PreviewOutputWrapper($channelGenerated, $previewOutputId, previewOutput));
+              $arguments.put("previewOutput", $previewOutputId);
+              
+              
+              $channelGenerated.callbackChannel.invokeMethod("OnPreviewOutputUpdateListener#callbackMethod", $arguments, new Result() {
+                @Override
+                public void success(Object result) {
+                  try {
+                    $channelGenerated.onMethodCall(new MethodCall("MultiInvoke", result));
+                  } catch (Exception e) {
+                    e.printStackTrace();
+                  }
+                }
+
+                @Override
+                public void error(String errorCode, String errorMessage, Object errorDetails) {
+                  throw new RuntimeException();
+                }
+
+                @Override
+                public void notImplemented() {
+                  throw new RuntimeException();
+                }
+              });  
+            }
+            
+          };
+          break; 
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        case "OnPreviewOutputUpdateListener()": {
+            new OnPreviewOutputUpdateListenerWrapper($channelGenerated, (String) call.argument("$uniqueId"), call);
+            return null;
+          }
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "OnPreviewOutputUpdateListener#allocate":
+          allocate();
+          return null;
+        case "OnPreviewOutputUpdateListener#deallocate":
+          deallocate();
+          return null;
+        
+        case "OnPreviewOutputUpdateListener#onUpdated":
+          return onUpdated(call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+     Object onUpdated( MethodCall call) throws Exception {
+      
+      
+      
+      $value.onUpdated(
+      
+          call.argument("previewOutput") != null ? ((PreviewOutputWrapper) $channelGenerated.getWrapper((String) call.argument("previewOutput"))).$value : null
+          
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+  }
+  
+  @RequiresApi(api = 21)
+  public static class PreviewOutputWrapper extends FlutterWrapper {
+    private final PreviewOutput $value;
+
+    public PreviewOutputWrapper(ChannelGenerated $channelGenerated, String $uniqueId, PreviewOutput $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private PreviewOutputWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "PreviewOutput#allocate":
+          allocate();
+          return null;
+        case "PreviewOutput#deallocate":
+          deallocate();
+          return null;
+        
+        case "PreviewOutput#getSurfaceTexture":
+          return getSurfaceTexture(call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+     Object getSurfaceTexture( MethodCall call) throws Exception {
+      
+      new SurfaceTextureWrapper($channelGenerated, (String) call.argument("$newUniqueId"),
+      
+      
+      $value.getSurfaceTexture(
+      
+      )
+      
+      );
+      return null;
+      
+    }
+    
+  }
+  
+  @RequiresApi(api = 21)
+  public static class PreviewConfigWrapper extends FlutterWrapper {
+    private final PreviewConfig $value;
+
+    public PreviewConfigWrapper(ChannelGenerated $channelGenerated, String $uniqueId, PreviewConfig $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private PreviewConfigWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "PreviewConfig#allocate":
+          allocate();
+          return null;
+        case "PreviewConfig#deallocate":
+          deallocate();
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+  }
+  
+  @RequiresApi(api = 21)
+  public static class PreviewConfigBuilderWrapper extends FlutterWrapper {
+    private final PreviewConfig.Builder $value;
+
+    public PreviewConfigBuilderWrapper(ChannelGenerated $channelGenerated, String $uniqueId, PreviewConfig.Builder $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private PreviewConfigBuilderWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        case "PreviewConfigBuilder()":
+          this.$value = new PreviewConfig.Builder(
+          
+          ) ;
+          break; 
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        case "PreviewConfigBuilder()": {
+            new PreviewConfigBuilderWrapper($channelGenerated, (String) call.argument("$uniqueId"), call);
+            return null;
+          }
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "PreviewConfig.Builder#allocate":
+          allocate();
+          return null;
+        case "PreviewConfig.Builder#deallocate":
+          deallocate();
+          return null;
+        
+        case "PreviewConfigBuilder#build":
+          return build(call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+     Object build( MethodCall call) throws Exception {
+      
+      new PreviewConfigWrapper($channelGenerated, (String) call.argument("$newUniqueId"),
+      
+      
+      $value.build(
+      
+      )
+      
+      );
+      return null;
+      
+    }
+    
+  }
+  
+  
+  public static class TextureViewWrapper extends FlutterWrapper {
+    private final TextureView $value;
+
+    public TextureViewWrapper(ChannelGenerated $channelGenerated, String $uniqueId, TextureView $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private TextureViewWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        case "TextureView()":
+          this.$value = new TextureView(
+          
+          call.argument("activity") != null ? ((ActivityWrapper) $channelGenerated.getWrapper((String) call.argument("activity"))).$value : null
+          
+          ) ;
+          break; 
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        case "TextureView()": {
+            new TextureViewWrapper($channelGenerated, (String) call.argument("$uniqueId"), call);
+            return null;
+          }
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "TextureView#allocate":
+          allocate();
+          return null;
+        case "TextureView#deallocate":
+          deallocate();
+          return null;
+        
+        case "TextureView#setSurfaceTexture":
+          return setSurfaceTexture(call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+     Object setSurfaceTexture( MethodCall call) throws Exception {
+      
+      
+      
+      $value.setSurfaceTexture(
+      
+          call.argument("surfaceTexture") != null ? ((SurfaceTextureWrapper) $channelGenerated.getWrapper((String) call.argument("surfaceTexture"))).$value : null
+          
+      )
+      
+      ;
       return null;
       
     }
