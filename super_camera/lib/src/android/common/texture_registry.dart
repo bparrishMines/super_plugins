@@ -49,18 +49,16 @@ class SurfaceTextureEntry {
 }
 
 /// Captures frames from an image stream as an OpenGL ES texture.
+///
+/// You can retrieve an instance through [TextureRegistry] or [PreviewOutput].
 @Class(AndroidPlatform(
   AndroidType('android.graphics', <String>['SurfaceTexture']),
 ))
 class SurfaceTexture {
-  SurfaceTexture._() : _surfaceTexture = $SurfaceTexture(Uuid().v4());
+  /// Constructor for internal use only.
+  SurfaceTexture.internal(this.surfaceTexture);
 
-  final $SurfaceTexture _surfaceTexture;
-
-  /// INTERNAL USE ONLY.
-  ///
-  /// Used to identify the surface texture on the Android platform side.
-  $SurfaceTexture get surfaceTexture => _surfaceTexture;
+  final $SurfaceTexture surfaceTexture;
 }
 
 /// Gives access to surfaces to draw frames to.
@@ -81,7 +79,9 @@ class TextureRegistry {
         Completer<SurfaceTextureEntry>();
 
     final $SurfaceTextureEntry entry = $SurfaceTextureEntry(Uuid().v4());
-    final SurfaceTexture surfaceTexture = SurfaceTexture._();
+    final SurfaceTexture surfaceTexture = SurfaceTexture.internal(
+      $SurfaceTexture(Uuid().v4()),
+    );
 
     invokeAll(
       Channel.channel,
@@ -90,7 +90,7 @@ class TextureRegistry {
           entry.uniqueId,
         ),
         entry.allocate(),
-        entry.$surfaceTexture(surfaceTexture._surfaceTexture.uniqueId),
+        entry.$surfaceTexture(surfaceTexture.surfaceTexture.uniqueId),
         surfaceTexture.surfaceTexture.allocate(),
         entry.$id(),
       ],

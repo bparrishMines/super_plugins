@@ -17,6 +17,14 @@ import '../../../android.penguin.g.dart';
 class CameraX {
   @Method()
   static void bindToLifecycle(LifecycleOwner owner, Preview preview) {
+    if (PreviewOutput._allocatedPreviewOutput != null) {
+      invoke(
+        Channel.channel,
+        PreviewOutput._allocatedPreviewOutput._previewOutput.deallocate(),
+      );
+      PreviewOutput._allocatedPreviewOutput = null;
+    }
+
     final $PreviewConfigBuilder previewConfigBuilder =
         preview.previewConfig.previewConfigBuilder._previewConfigBuilder;
     final $PreviewConfig previewConfig = preview.previewConfig._previewConfig;
@@ -107,13 +115,28 @@ abstract class OnPreviewOutputUpdateListener {
   androidApi: AndroidApi(21),
 )
 class PreviewOutput {
-  PreviewOutput._(this._previewOutput);
+  PreviewOutput._(this._previewOutput) {
+    invokeAll(Channel.channel, <MethodCall>[
+      if (_allocatedPreviewOutput != null)
+        _allocatedPreviewOutput._previewOutput.deallocate(),
+      _previewOutput.$getSurfaceTexture(_surfaceTexture.uniqueId),
+      _surfaceTexture.allocate(),
+    ]);
+    _allocatedPreviewOutput = this;
+  }
+
+  static PreviewOutput _allocatedPreviewOutput;
 
   final $PreviewOutput _previewOutput;
+  final $SurfaceTexture _surfaceTexture = $SurfaceTexture(Uuid().v4());
 
   @Method()
   SurfaceTexture getSurfaceTexture() {
-
+    assert(
+      _allocatedPreviewOutput == this,
+      '${Channel.deallocatedMsg(this)}. Another $PreviewOutput has been allocated.',
+    );
+    return SurfaceTexture.internal(_surfaceTexture);
   }
 }
 
