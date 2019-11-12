@@ -15,9 +15,12 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   private static final String PLATFORM_VIEW_FACTORY_NAME = CHANNEL_NAME + "/views";
   private static final String TEXTURE_REGISTRY_ID = "texture_registry";
   private static final String LIFECYCLE_OWNER_ID = "lifecycle_owner";
+  private static final String ACTIVITY_ID = "activity";
 
   private ActivityPluginBinding activityBinding;
   private FlutterPluginBinding flutterBinding;
+  private ChannelGenerated channelGenerated;
+  private ChannelGenerated.ActivityWrapper activityWrapper;
 
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
@@ -25,11 +28,11 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
     final ChannelGenerated channelGenerated = new ChannelGenerated(channel);
     channel.setMethodCallHandler(channelGenerated);
 
-    final ChannelGenerated.TextureRegistryWrapper activityWrapper = new ChannelGenerated.TextureRegistryWrapper(
+    final ChannelGenerated.TextureRegistryWrapper textureRegistryWrapper = new ChannelGenerated.TextureRegistryWrapper(
         channelGenerated,
         TEXTURE_REGISTRY_ID,
         registrar.textures());
-    channelGenerated.addAllocatedWrapper(TEXTURE_REGISTRY_ID, activityWrapper);
+    channelGenerated.addAllocatedWrapper(TEXTURE_REGISTRY_ID, textureRegistryWrapper);
     registrar
         .platformViewRegistry()
         .registerViewFactory(
@@ -38,27 +41,29 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   }
 
   @Override
-  public void onAttachedToEngine(FlutterPluginBinding binding) {
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
     flutterBinding = binding;
   }
 
   @Override
-  public void onAttachedToActivity(ActivityPluginBinding binding) {
+  public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     activityBinding = binding;
 
     final MethodChannel channel = new MethodChannel(flutterBinding.getBinaryMessenger(), CHANNEL_NAME);
-    final ChannelGenerated channelGenerated = new ChannelGenerated(channel);
+    channelGenerated = new ChannelGenerated(channel);
     channel.setMethodCallHandler(channelGenerated);
 
-    final ChannelGenerated.TextureRegistryWrapper activityWrapper = new ChannelGenerated.TextureRegistryWrapper(
+    final ChannelGenerated.TextureRegistryWrapper textureRegistryWrapper = new ChannelGenerated.TextureRegistryWrapper(
         channelGenerated,
         TEXTURE_REGISTRY_ID,
         flutterBinding.getTextureRegistry());
     final ChannelGenerated.LifecycleOwnerWrapper lifecycleOwnerWrapper =
         new ChannelGenerated.LifecycleOwnerWrapper(channelGenerated, LIFECYCLE_OWNER_ID, this);
+    activityWrapper = new ChannelGenerated.ActivityWrapper(channelGenerated, ACTIVITY_ID, activityBinding.getActivity());
 
-    channelGenerated.addAllocatedWrapper(TEXTURE_REGISTRY_ID, activityWrapper);
+    channelGenerated.addAllocatedWrapper(TEXTURE_REGISTRY_ID, textureRegistryWrapper);
     channelGenerated.addAllocatedWrapper(LIFECYCLE_OWNER_ID, lifecycleOwnerWrapper);
+    channelGenerated.addAllocatedWrapper(ACTIVITY_ID, activityWrapper);
 
     flutterBinding.getPlatformViewRegistry().registerViewFactory(
         PLATFORM_VIEW_FACTORY_NAME,
@@ -68,20 +73,26 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   @Override
   public void onDetachedFromActivityForConfigChanges() {
     activityBinding = null;
+    activityWrapper = null;
+    channelGenerated.removeAllocatedWrapper(ACTIVITY_ID);
   }
 
   @Override
-  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+  public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
     activityBinding = binding;
+    activityWrapper = new ChannelGenerated.ActivityWrapper(channelGenerated, ACTIVITY_ID, activityBinding.getActivity());
+    channelGenerated.addAllocatedWrapper(ACTIVITY_ID, activityWrapper);
   }
 
   @Override
   public void onDetachedFromActivity() {
     activityBinding = null;
+    activityWrapper = null;
+    channelGenerated.removeAllocatedWrapper(ACTIVITY_ID);
   }
 
   @Override
-  public void onDetachedFromEngine(FlutterPluginBinding binding) {
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
     flutterBinding = null;
   }
 
