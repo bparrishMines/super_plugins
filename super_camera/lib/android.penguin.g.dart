@@ -19,7 +19,7 @@ class $Camera extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   static MethodCall $getNumberOfCameras([
@@ -124,7 +124,7 @@ class $CameraInfo extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   MethodCall $CameraInfo$Default() {
@@ -177,7 +177,7 @@ class $Activity extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 }
 
@@ -193,7 +193,7 @@ class $SurfaceTextureEntry extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   MethodCall $id([
@@ -245,7 +245,7 @@ class $SurfaceTexture extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 }
 
@@ -261,7 +261,7 @@ class $TextureRegistry extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   MethodCall $createSurfaceTexture([
@@ -289,7 +289,7 @@ class $CameraX extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   static MethodCall $bindToLifecycle(
@@ -320,7 +320,7 @@ class $LifecycleOwner extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 }
 
@@ -336,7 +336,7 @@ class $Preview extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   MethodCall $Preview$Default(
@@ -388,7 +388,7 @@ class $OnPreviewOutputUpdateListener extends Wrapper {
         );
         break;
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   MethodCall $OnPreviewOutputUpdateListener$Default() {
@@ -427,7 +427,7 @@ class $PreviewOutput extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   MethodCall $getSurfaceTexture([
@@ -455,7 +455,7 @@ class $PreviewConfig extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 }
 
@@ -471,7 +471,7 @@ class $PreviewConfigBuilder extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   MethodCall $PreviewConfigBuilder$Default() {
@@ -508,7 +508,7 @@ class $_TextureViewState extends Wrapper {
   List<MethodCall> onMethodCall(MethodCall call) {
     switch (call.method) {
     }
-    return null;
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   MethodCall $_TextureViewState$Default(

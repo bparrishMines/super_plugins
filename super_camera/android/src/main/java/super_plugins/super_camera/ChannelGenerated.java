@@ -164,7 +164,8 @@ public class ChannelGenerated implements MethodCallHandler {
       final Object value = onMethodCall(call);
       result.success(value);
     } catch (Exception exception) {
-      result.error(exception.getClass().getSimpleName(), exception.getMessage(), null);
+      result.error(exception.getClass().getSimpleName(), exception.getMessage(), Thread.currentThread().getStackTrace());
+      exception.printStackTrace();
     } finally {
       tempWrappers.clear();
     }
@@ -1057,19 +1058,19 @@ public class ChannelGenerated implements MethodCallHandler {
               $arguments.put("previewOutput", $previewOutputId);
               
               
-              $channelGenerated.callbackChannel.invokeMethod("OnPreviewOutputUpdateListener#callbackMethod", $arguments, new Result() {
+              $channelGenerated.callbackChannel.invokeMethod("OnPreviewOutputUpdateListener#onUpdated", $arguments, new Result() {
                 @Override
                 public void success(Object result) {
                   try {
                     $channelGenerated.onMethodCall(new MethodCall("MultiInvoke", result));
-                  } catch (Exception e) {
-                    e.printStackTrace();
+                  } catch (Exception exception) {
+                    exception.printStackTrace();
                   }
                 }
 
                 @Override
                 public void error(String errorCode, String errorMessage, Object errorDetails) {
-                  throw new RuntimeException();
+                  throw new RuntimeException(errorMessage);
                 }
 
                 @Override

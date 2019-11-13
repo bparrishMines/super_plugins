@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:super_camera/super_camera.dart';
+import 'package:super_camera/android_camera.dart';
 
 void main() {
   runApp(MaterialApp(home: MyApp()));
@@ -60,7 +61,7 @@ class _MyAppState extends State<MyApp> {
     );
 
     setState(() {
-      _controller = CameraController(description: camera);
+      _controller = CameraController.customConfigurator(AndroidCameraXConfigurator());
     });
   }
 

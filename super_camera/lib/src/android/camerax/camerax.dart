@@ -16,7 +16,7 @@ import '../../../android.penguin.g.dart';
 )
 class CameraX {
   @Method()
-  static void bindToLifecycle(LifecycleOwner owner, Preview preview) {
+  static Future<void> bindToLifecycle(LifecycleOwner owner, Preview preview) {
     if (PreviewOutput._allocatedPreviewOutput != null) {
       invoke(
         Channel.channel,
@@ -27,6 +27,8 @@ class CameraX {
 
     final $PreviewConfigBuilder previewConfigBuilder =
         preview.previewConfig.previewConfigBuilder._previewConfigBuilder;
+    final $OnPreviewOutputUpdateListener onPreviewOutputUpdateListener =
+        preview._listener._onPreviewOutputUpdateListener;
     final $PreviewConfig previewConfig = preview.previewConfig._previewConfig;
     final $Preview $preview = preview._preview;
 
@@ -34,16 +36,22 @@ class CameraX {
     handler.addWrapper(preview._listener._onPreviewOutputUpdateListener);
     Channel.callbackHandler = handler;
 
-    invokeAll(Channel.channel, <MethodCall>[
+    return invoke<void>(
+      Channel.channel,
       previewConfigBuilder.$PreviewConfigBuilder$Default(),
-      previewConfigBuilder.$build(previewConfig.uniqueId),
-      $preview.$Preview$Default(previewConfig),
-      if (preview._listener != null)
-        $preview.$setOnPreviewOutputUpdateListener(
-          preview._listener._onPreviewOutputUpdateListener,
-        ),
-      $CameraX.$bindToLifecycle(owner._lifecycleOwner, $preview),
-    ]);
+      <MethodCall>[
+        previewConfigBuilder.$build(previewConfig.uniqueId),
+        $preview.$Preview$Default(previewConfig),
+        if (preview._listener != null) ...[
+          onPreviewOutputUpdateListener
+              .$OnPreviewOutputUpdateListener$Default(),
+          $preview.$setOnPreviewOutputUpdateListener(
+            onPreviewOutputUpdateListener,
+          )
+        ],
+        $CameraX.$bindToLifecycle(owner._lifecycleOwner, $preview),
+      ],
+    );
   }
 }
 
@@ -102,7 +110,7 @@ abstract class OnPreviewOutputUpdateListener {
   $OnPreviewOutputUpdateListener _onPreviewOutputUpdateListener;
 
   @Method(callback: true)
-  Future<void> onUpdated(PreviewOutput previewOutput);
+  void onUpdated(PreviewOutput previewOutput);
 }
 
 @Class(
@@ -198,7 +206,7 @@ class _TextureViewState extends State<TextureView> {
   @override
   void initState() {
     super.initState();
-    textureView = $_TextureViewState(widget.key.toString());
+    textureView = $_TextureViewState(Uuid().v4());
     invokeAll(Channel.channel, [
       textureView.$_TextureViewState$Default(activity.activity),
       textureView.allocate(),
@@ -214,7 +222,10 @@ class _TextureViewState extends State<TextureView> {
   @override
   Widget build(BuildContext context) {
     if (widget.surfaceTexture != null) {
-      textureView.$setSurfaceTexture(widget.surfaceTexture.surfaceTexture);
+      invoke(
+        Channel.channel,
+        textureView.$setSurfaceTexture(widget.surfaceTexture.surfaceTexture),
+      );
     }
     return AndroidView(
       viewType: '${Channel.channel.name}/views',

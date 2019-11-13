@@ -3,6 +3,7 @@ package super_plugins.super_camera;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LifecycleRegistry;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
@@ -17,6 +18,7 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   private static final String LIFECYCLE_OWNER_ID = "lifecycle_owner";
   private static final String ACTIVITY_ID = "activity";
 
+  private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
   private ActivityPluginBinding activityBinding;
   private FlutterPluginBinding flutterBinding;
   private ChannelGenerated channelGenerated;
@@ -43,6 +45,7 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
     flutterBinding = binding;
+    lifecycleRegistry.markState(Lifecycle.State.INITIALIZED);
   }
 
   @Override
@@ -68,10 +71,14 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
     flutterBinding.getPlatformViewRegistry().registerViewFactory(
         PLATFORM_VIEW_FACTORY_NAME,
         channelGenerated.getPlatformViewFactory());
+
+    lifecycleRegistry.markState(Lifecycle.State.RESUMED);
   }
 
   @Override
   public void onDetachedFromActivityForConfigChanges() {
+    lifecycleRegistry.markState(Lifecycle.State.STARTED);
+
     activityBinding = null;
     activityWrapper = null;
     channelGenerated.removeAllocatedWrapper(ACTIVITY_ID);
@@ -82,13 +89,17 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
     activityBinding = binding;
     activityWrapper = new ChannelGenerated.ActivityWrapper(channelGenerated, ACTIVITY_ID, activityBinding.getActivity());
     channelGenerated.addAllocatedWrapper(ACTIVITY_ID, activityWrapper);
+
+    lifecycleRegistry.markState(Lifecycle.State.RESUMED);
   }
 
   @Override
   public void onDetachedFromActivity() {
+    lifecycleRegistry.markState(Lifecycle.State.DESTROYED);
+
     activityBinding = null;
     activityWrapper = null;
-    channelGenerated.removeAllocatedWrapper(ACTIVITY_ID);
+    channelGenerated = null;
   }
 
   @Override
@@ -99,6 +110,6 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   @NonNull
   @Override
   public Lifecycle getLifecycle() {
-    return (Lifecycle) activityBinding.getLifecycle();
+    return lifecycleRegistry;
   }
 }
