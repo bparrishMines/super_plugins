@@ -142,7 +142,7 @@ class Camera {
 ///
 /// Retrieve by calling [Camera.getCameraInfo].
 @Class(AndroidPlatform(
-  AndroidType('android.hardware.Camera', <String>['CameraInfo']),
+  AndroidType('android.hardware', <String>['Camera', 'CameraInfo']),
 ))
 class CameraInfo implements CameraDescription {
   @Constructor()

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:super_camera/src/android/camera/android_camera_configurator.dart';
 
-import '../android/camera/camera.dart';
+import '../../android_camera.dart';
 import 'camera_interface.dart';
 
 /// Controls a device camera.
@@ -65,13 +65,17 @@ class CameraController {
   static Future<List<CameraDescription>> availableCameras() async {
     final List<CameraDescription> descriptions = <CameraDescription>[];
 
-    if (Platform.isAndroid) {
+    // TODO remove false
+    if (Platform.isAndroid && false) {
       final int cameraCount = await Camera.getNumberOfCameras();
       for (int i = 0; i < cameraCount; i++) {
         final CameraInfo info = CameraInfo();
         await Camera.getCameraInfo(i, info);
         descriptions.add(info);
       }
+    } else if (Platform.isAndroid) {
+      descriptions.add(await CameraX.getCameraInfo(LensFacing.FRONT));
+      descriptions.add(await CameraX.getCameraInfo(LensFacing.BACK));
     } else {
       throw UnsupportedError('${Platform.operatingSystem} is not supported.');
     }
@@ -130,6 +134,8 @@ class CameraController {
   ) {
     if (Platform.isAndroid && description is CameraInfo) {
       return AndroidCameraConfigurator(description);
+    } else if (Platform.isAndroid && description is CameraInfoX) {
+      return AndroidCameraXConfigurator(description);
     }
 
     throw UnsupportedError(

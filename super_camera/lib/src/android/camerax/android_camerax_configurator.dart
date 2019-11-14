@@ -6,9 +6,9 @@ import 'package:super_camera/src/interface/camera_interface.dart';
 import 'camerax.dart';
 
 class AndroidCameraXConfigurator extends CameraConfigurator {
-  AndroidCameraXConfigurator() : super(_CameraDescriptionImpl());
+  AndroidCameraXConfigurator(CameraInfoX infoX) : super(infoX);
 
-  final Completer<void> _initializeCompleter = Completer<void>();
+  Completer<void> _initializeCompleter = Completer<void>();
 
   TextureView _textureView;
 
@@ -20,7 +20,10 @@ class AndroidCameraXConfigurator extends CameraConfigurator {
 
   @override
   Future<void> initialize() {
-    final Preview preview = Preview(PreviewConfigBuilder().build())
+    final PreviewConfigBuilder builder = PreviewConfigBuilder()
+      ..setLensFacing((cameraDescription as CameraInfoX).getLensFacing());
+
+    final Preview preview = Preview(builder.build())
       ..setOnPreviewOutputUpdateListener(
         _OnPreviewOutputUpdateListenerImpl(
           (PreviewOutput previewOutput) {
@@ -42,15 +45,7 @@ class AndroidCameraXConfigurator extends CameraConfigurator {
   Future<void> stop() => Future<void>.value();
 
   @override
-  Future<void> dispose() => Future<void>.value();
-}
-
-class _CameraDescriptionImpl extends CameraDescription {
-  @override
-  LensDirection get direction => LensDirection.front;
-
-  @override
-  String get name => '23';
+  Future<void> dispose() => CameraX.unbindAll();
 }
 
 class _OnPreviewOutputUpdateListenerImpl extends OnPreviewOutputUpdateListener {

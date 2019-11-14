@@ -25,8 +25,6 @@ import io.flutter.plugin.platform.PlatformViewFactory;
 
 import android.hardware.Camera;
 
-import android.hardware.Camera.CameraInfo;
-
 import android.app.Activity;
 
 import io.flutter.view.TextureRegistry.SurfaceTextureEntry;
@@ -34,6 +32,10 @@ import io.flutter.view.TextureRegistry.SurfaceTextureEntry;
 import android.graphics.SurfaceTexture;
 
 import io.flutter.view.TextureRegistry;
+
+import androidx.camera.core.CameraX.LensFacing;
+
+import androidx.camera.core.CameraInfo;
 
 import androidx.camera.core.CameraX;
 
@@ -164,7 +166,7 @@ public class ChannelGenerated implements MethodCallHandler {
       final Object value = onMethodCall(call);
       result.success(value);
     } catch (Exception exception) {
-      result.error(exception.getClass().getSimpleName(), exception.getMessage(), Thread.currentThread().getStackTrace());
+      result.error(exception.getClass().getSimpleName(), exception.getMessage(), android.util.Log.getStackTraceString(exception));
       exception.printStackTrace();
     } finally {
       tempWrappers.clear();
@@ -184,9 +186,9 @@ public class ChannelGenerated implements MethodCallHandler {
         }
         return resultData;
       
-      case "CameraInfo()": {
+      case "CameraCameraInfo()": {
           if (Build.VERSION.SDK_INT >= 16) {
-            return CameraInfoWrapper.onStaticMethodCall(this, call);
+            return CameraCameraInfoWrapper.onStaticMethodCall(this, call);
           } else {
             throw new UnsupportedOperationException("This operation requires api 16 and above");
           }
@@ -238,6 +240,22 @@ public class ChannelGenerated implements MethodCallHandler {
       
       case "CameraX#bindToLifecycle": {
           return CameraXWrapper.onStaticMethodCall(this, call);
+        }
+      
+      case "CameraX#getCameraInfo": {
+          return CameraXWrapper.onStaticMethodCall(this, call);
+        }
+      
+      case "CameraX#unbindAll": {
+          return CameraXWrapper.onStaticMethodCall(this, call);
+        }
+      
+      case "LensFacing.BACK": {
+          return LensFacingWrapper.onStaticMethodCall(this, call);
+        }
+      
+      case "LensFacing.FRONT": {
+          return LensFacingWrapper.onStaticMethodCall(this, call);
         }
       
       default:
@@ -364,7 +382,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
           call.argument("cameraId") != null ? (Integer) call.argument("cameraId") : null
           ,
-          call.argument("cameraInfo") != null ? ((CameraInfoWrapper) $channelGenerated.getWrapper((String) call.argument("cameraInfo"))).$value : null
+          call.argument("cameraInfo") != null ? ((CameraCameraInfoWrapper) $channelGenerated.getWrapper((String) call.argument("cameraInfo"))).$value : null
           
       )
       
@@ -430,21 +448,21 @@ public class ChannelGenerated implements MethodCallHandler {
   }
   
   
-  public static class CameraInfoWrapper extends FlutterWrapper {
-    private final CameraInfo $value;
+  public static class CameraCameraInfoWrapper extends FlutterWrapper {
+    private final Camera.CameraInfo $value;
 
-    public CameraInfoWrapper(ChannelGenerated $channelGenerated, String $uniqueId, CameraInfo $value) {
+    public CameraCameraInfoWrapper(ChannelGenerated $channelGenerated, String $uniqueId, Camera.CameraInfo $value) {
       super($channelGenerated, $uniqueId);
       this.$value = $value;
       $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
     }
 
-    private CameraInfoWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+    private CameraCameraInfoWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
       super($channelGenerated, $uniqueId);
       switch(call.method) {
         
-        case "CameraInfo()":
-          this.$value = new CameraInfo(
+        case "CameraCameraInfo()":
+          this.$value = new Camera.CameraInfo(
           
           ) ;
           break; 
@@ -458,8 +476,8 @@ public class ChannelGenerated implements MethodCallHandler {
     static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
       switch(call.method) {
         
-        case "CameraInfo()": {
-            new CameraInfoWrapper($channelGenerated, (String) call.argument("$uniqueId"), call);
+        case "CameraCameraInfo()": {
+            new CameraCameraInfoWrapper($channelGenerated, (String) call.argument("$uniqueId"), call);
             return null;
           }
         
@@ -471,17 +489,17 @@ public class ChannelGenerated implements MethodCallHandler {
     @Override
     public Object onMethodCall(MethodCall call) throws Exception {
       switch(call.method) {
-        case "CameraInfo#allocate":
+        case "Camera.CameraInfo#allocate":
           allocate();
           return null;
-        case "CameraInfo#deallocate":
+        case "Camera.CameraInfo#deallocate":
           deallocate();
           return null;
         
-        case "CameraInfo.facing":
+        case "CameraCameraInfo.facing":
           return facing(call);
         
-        case "CameraInfo.orientation":
+        case "CameraCameraInfo.orientation":
           return orientation(call);
         
         default:
@@ -814,6 +832,164 @@ public class ChannelGenerated implements MethodCallHandler {
   }
   
   @RequiresApi(api = 21)
+  public static class LensFacingWrapper extends FlutterWrapper {
+    private final LensFacing $value;
+
+    public LensFacingWrapper(ChannelGenerated $channelGenerated, String $uniqueId, LensFacing $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private LensFacingWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        case "LensFacing.BACK": {
+            return LensFacingWrapper.BACK($channelGenerated, call);
+          }
+        
+        case "LensFacing.FRONT": {
+            return LensFacingWrapper.FRONT($channelGenerated, call);
+          }
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "LensFacing#allocate":
+          allocate();
+          return null;
+        case "LensFacing#deallocate":
+          deallocate();
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+    static private Object BACK(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+       
+      
+      
+      new LensFacingWrapper($channelGenerated, (String) call.argument("$newUniqueId"), 
+      
+      LensFacing.BACK
+      
+      
+      );
+      return null;
+      
+    }
+    
+    static private Object FRONT(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+       
+      
+      
+      new LensFacingWrapper($channelGenerated, (String) call.argument("$newUniqueId"), 
+      
+      LensFacing.FRONT
+      
+      
+      );
+      return null;
+      
+    }
+    
+
+    
+  }
+  
+  @RequiresApi(api = 21)
+  public static class CameraInfoWrapper extends FlutterWrapper {
+    private final CameraInfo $value;
+
+    public CameraInfoWrapper(ChannelGenerated $channelGenerated, String $uniqueId, CameraInfo $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private CameraInfoWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "CameraInfo#allocate":
+          allocate();
+          return null;
+        case "CameraInfo#deallocate":
+          deallocate();
+          return null;
+        
+        case "CameraInfo#getSensorRotationDegrees":
+          return getSensorRotationDegrees(call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+     Object getSensorRotationDegrees( MethodCall call) throws Exception {
+      
+      return
+      
+      
+      $value.getSensorRotationDegrees(
+      
+      )
+      
+      ;
+      
+    }
+    
+  }
+  
+  @RequiresApi(api = 21)
   public static class CameraXWrapper extends FlutterWrapper {
     private final CameraX $value;
 
@@ -838,6 +1014,14 @@ public class ChannelGenerated implements MethodCallHandler {
         
         case "CameraX#bindToLifecycle": {
             return CameraXWrapper.bindToLifecycle($channelGenerated, call);
+          }
+        
+        case "CameraX#getCameraInfo": {
+            return CameraXWrapper.getCameraInfo($channelGenerated, call);
+          }
+        
+        case "CameraX#unbindAll": {
+            return CameraXWrapper.unbindAll($channelGenerated, call);
           }
         
         default:
@@ -878,6 +1062,35 @@ public class ChannelGenerated implements MethodCallHandler {
           ,
           call.argument("preview") != null ? ((PreviewWrapper) $channelGenerated.getWrapper((String) call.argument("preview"))).$value : null
           
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+    static Object getCameraInfo(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      
+      new CameraInfoWrapper($channelGenerated, (String) call.argument("$newUniqueId"),
+      
+      
+      CameraX.getCameraInfo(
+      
+          call.argument("lensFacing") != null ? ((LensFacingWrapper) $channelGenerated.getWrapper((String) call.argument("lensFacing"))).$value : null
+          
+      )
+      
+      );
+      return null;
+      
+    }
+    
+    static Object unbindAll(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      
+      
+      
+      CameraX.unbindAll(
+      
       )
       
       ;
@@ -1317,6 +1530,9 @@ public class ChannelGenerated implements MethodCallHandler {
           deallocate();
           return null;
         
+        case "PreviewConfigBuilder#setLensFacing":
+          return setLensFacing(call);
+        
         case "PreviewConfigBuilder#build":
           return build(call);
         
@@ -1332,6 +1548,21 @@ public class ChannelGenerated implements MethodCallHandler {
     
     
 
+    
+     Object setLensFacing( MethodCall call) throws Exception {
+      
+      
+      
+      $value.setLensFacing(
+      
+          call.argument("lensFacing") != null ? ((LensFacingWrapper) $channelGenerated.getWrapper((String) call.argument("lensFacing"))).$value : null
+          
+      )
+      
+      ;
+      return null;
+      
+    }
     
      Object build( MethodCall call) throws Exception {
       

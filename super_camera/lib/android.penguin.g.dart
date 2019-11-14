@@ -118,7 +118,7 @@ class $CameraInfo extends Wrapper {
   ) : super(uniqueId);
 
   @override
-  String get platformClassName => 'CameraInfo';
+  String get platformClassName => 'CameraCameraInfo';
 
   @override
   List<MethodCall> onMethodCall(MethodCall call) {
@@ -129,7 +129,7 @@ class $CameraInfo extends Wrapper {
 
   MethodCall $CameraInfo$Default() {
     return MethodCall(
-      'CameraInfo()',
+      'CameraCameraInfo()',
       <String, String>{
         r'$uniqueId': uniqueId,
       },
@@ -141,7 +141,7 @@ class $CameraInfo extends Wrapper {
     String $newUniqueId,
   }) {
     return MethodCall(
-      'CameraInfo.facing',
+      'CameraCameraInfo.facing',
       <String, dynamic>{
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
@@ -155,7 +155,7 @@ class $CameraInfo extends Wrapper {
     String $newUniqueId,
   }) {
     return MethodCall(
-      'CameraInfo.orientation',
+      'CameraCameraInfo.orientation',
       <String, dynamic>{
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
@@ -277,6 +277,76 @@ class $TextureRegistry extends Wrapper {
   }
 }
 
+class $LensFacing extends Wrapper {
+  $LensFacing(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'LensFacing';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+
+  static MethodCall $BACK({
+    $LensFacing BACK,
+    String $newUniqueId,
+  }) {
+    return MethodCall(
+      'LensFacing.BACK',
+      <String, dynamic>{
+        r'$newUniqueId': $newUniqueId,
+        'BACK': BACK?.uniqueId,
+      },
+    );
+  }
+
+  static MethodCall $FRONT({
+    $LensFacing FRONT,
+    String $newUniqueId,
+  }) {
+    return MethodCall(
+      'LensFacing.FRONT',
+      <String, dynamic>{
+        r'$newUniqueId': $newUniqueId,
+        'FRONT': FRONT?.uniqueId,
+      },
+    );
+  }
+}
+
+class $CameraInfoX extends Wrapper {
+  $CameraInfoX(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'CameraInfo';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+
+  MethodCall $getSensorRotationDegrees([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'CameraInfo#getSensorRotationDegrees',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+}
+
 class $CameraX extends Wrapper {
   $CameraX(
     String uniqueId,
@@ -303,6 +373,30 @@ class $CameraX extends Wrapper {
         r'$newUniqueId': $newUniqueId,
         'owner': owner?.uniqueId,
         'preview': preview?.uniqueId,
+      },
+    );
+  }
+
+  static MethodCall $getCameraInfo(
+    $LensFacing lensFacing, [
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'CameraX#getCameraInfo',
+      <String, dynamic>{
+        r'$newUniqueId': $newUniqueId,
+        'lensFacing': lensFacing?.uniqueId,
+      },
+    );
+  }
+
+  static MethodCall $unbindAll([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'CameraX#unbindAll',
+      <String, dynamic>{
+        r'$newUniqueId': $newUniqueId,
       },
     );
   }
@@ -479,6 +573,20 @@ class $PreviewConfigBuilder extends Wrapper {
       'PreviewConfigBuilder()',
       <String, String>{
         r'$uniqueId': uniqueId,
+      },
+    );
+  }
+
+  MethodCall $setLensFacing(
+    $LensFacing lensFacing, [
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'PreviewConfigBuilder#setLensFacing',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        'lensFacing': lensFacing?.uniqueId,
       },
     );
   }
