@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:super_camera/src/android/camera/android_camera_configurator.dart';
 
@@ -65,15 +66,21 @@ class CameraController {
   static Future<List<CameraDescription>> availableCameras() async {
     final List<CameraDescription> descriptions = <CameraDescription>[];
 
-    // TODO remove false
-    if (Platform.isAndroid && false) {
+    final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    AndroidDeviceInfo androidInfo;
+    if (Platform.isAndroid) {
+      androidInfo = await deviceInfo.androidInfo;
+    }
+
+    if (Platform.isAndroid && androidInfo.version.sdkInt < 21) {
       final int cameraCount = await Camera.getNumberOfCameras();
       for (int i = 0; i < cameraCount; i++) {
         final CameraInfo info = CameraInfo();
         await Camera.getCameraInfo(i, info);
         descriptions.add(info);
       }
-    } else if (Platform.isAndroid) {
+    } else if (Platform.isAndroid && androidInfo.version.sdkInt >= 21) {
       descriptions.add(await CameraX.getCameraInfo(LensFacing.FRONT));
       descriptions.add(await CameraX.getCameraInfo(LensFacing.BACK));
     } else {

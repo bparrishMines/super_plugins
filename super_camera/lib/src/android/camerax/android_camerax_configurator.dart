@@ -33,7 +33,7 @@ class AndroidCameraXConfigurator extends CameraConfigurator {
         ),
       );
 
-    CameraX.bindToLifecycle(LifecycleOwner(), preview);
+    CameraX.bindToLifecycle(LifecycleOwner.instance, preview);
 
     return _initializeCompleter.future;
   }

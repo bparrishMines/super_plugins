@@ -159,6 +159,10 @@ class CameraX {
   AndroidType('androidx.lifecycle', <String>['LifecycleOwner']),
 ))
 class LifecycleOwner {
+  LifecycleOwner._();
+
+  static final LifecycleOwner instance = LifecycleOwner._();
+
   final $LifecycleOwner _lifecycleOwner = $LifecycleOwner("lifecycle_owner");
 }
 
