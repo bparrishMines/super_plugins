@@ -81,6 +81,7 @@ class CameraController {
         descriptions.add(info);
       }
     } else if (Platform.isAndroid && androidInfo.version.sdkInt >= 21) {
+      // TODO(bparrishMines): Check if there exists a front/back camera.
       descriptions.add(await CameraX.getCameraInfo(LensFacing.FRONT));
       descriptions.add(await CameraX.getCameraInfo(LensFacing.BACK));
     } else {

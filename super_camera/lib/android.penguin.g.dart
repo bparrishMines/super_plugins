@@ -8,7 +8,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class $Camera extends Wrapper {
-  $Camera(
+  const $Camera(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -113,7 +113,7 @@ class $Camera extends Wrapper {
 }
 
 class $CameraInfo extends Wrapper {
-  $CameraInfo(
+  const $CameraInfo(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -166,7 +166,7 @@ class $CameraInfo extends Wrapper {
 }
 
 class $Activity extends Wrapper {
-  $Activity(
+  const $Activity(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -182,7 +182,7 @@ class $Activity extends Wrapper {
 }
 
 class $SurfaceTextureEntry extends Wrapper {
-  $SurfaceTextureEntry(
+  const $SurfaceTextureEntry(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -234,7 +234,7 @@ class $SurfaceTextureEntry extends Wrapper {
 }
 
 class $SurfaceTexture extends Wrapper {
-  $SurfaceTexture(
+  const $SurfaceTexture(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -250,7 +250,7 @@ class $SurfaceTexture extends Wrapper {
 }
 
 class $TextureRegistry extends Wrapper {
-  $TextureRegistry(
+  const $TextureRegistry(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -277,8 +277,24 @@ class $TextureRegistry extends Wrapper {
   }
 }
 
+class $UseCase extends Wrapper {
+  const $UseCase(
+    String uniqueId,
+  ) : super(uniqueId);
+
+  @override
+  String get platformClassName => 'UseCase';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+}
+
 class $LensFacing extends Wrapper {
-  $LensFacing(
+  const $LensFacing(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -320,7 +336,7 @@ class $LensFacing extends Wrapper {
 }
 
 class $CameraInfoX extends Wrapper {
-  $CameraInfoX(
+  const $CameraInfoX(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -348,7 +364,7 @@ class $CameraInfoX extends Wrapper {
 }
 
 class $CameraX extends Wrapper {
-  $CameraX(
+  const $CameraX(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -364,7 +380,7 @@ class $CameraX extends Wrapper {
 
   static MethodCall $bindToLifecycle(
     $LifecycleOwner owner,
-    $Preview preview, [
+    $UseCase useCase, [
     String $newUniqueId,
   ]) {
     return MethodCall(
@@ -372,7 +388,7 @@ class $CameraX extends Wrapper {
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
         'owner': owner?.uniqueId,
-        'preview': preview?.uniqueId,
+        'useCase': useCase?.uniqueId,
       },
     );
   }
@@ -403,7 +419,7 @@ class $CameraX extends Wrapper {
 }
 
 class $LifecycleOwner extends Wrapper {
-  $LifecycleOwner(
+  const $LifecycleOwner(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -419,7 +435,7 @@ class $LifecycleOwner extends Wrapper {
 }
 
 class $Preview extends Wrapper {
-  $Preview(
+  const $Preview(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -461,7 +477,7 @@ class $Preview extends Wrapper {
 }
 
 class $OnPreviewOutputUpdateListener extends Wrapper {
-  $OnPreviewOutputUpdateListener(
+  const $OnPreviewOutputUpdateListener(
     String uniqueId, {
     this.$onUpdated$Callback,
   }) : super(uniqueId);
@@ -510,7 +526,7 @@ class $OnPreviewOutputUpdateListener extends Wrapper {
 }
 
 class $PreviewOutput extends Wrapper {
-  $PreviewOutput(
+  const $PreviewOutput(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -538,7 +554,7 @@ class $PreviewOutput extends Wrapper {
 }
 
 class $PreviewConfig extends Wrapper {
-  $PreviewConfig(
+  const $PreviewConfig(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -554,7 +570,7 @@ class $PreviewConfig extends Wrapper {
 }
 
 class $PreviewConfigBuilder extends Wrapper {
-  $PreviewConfigBuilder(
+  const $PreviewConfigBuilder(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -605,7 +621,7 @@ class $PreviewConfigBuilder extends Wrapper {
 }
 
 class $_TextureViewState extends Wrapper {
-  $_TextureViewState(
+  const $_TextureViewState(
     String uniqueId,
   ) : super(uniqueId);
 
@@ -672,10 +688,12 @@ class CallbackHandler {
   void addWrapper(Wrapper wrapper) => _wrappers[wrapper.uniqueId] = wrapper;
 
   Wrapper removeWrapper(Wrapper wrapper) => _wrappers.remove(wrapper.uniqueId);
+
+  void clearAll() => _wrappers.clear();
 }
 
 abstract class Wrapper {
-  Wrapper(this.uniqueId);
+  const Wrapper(this.uniqueId);
 
   final String uniqueId;
 

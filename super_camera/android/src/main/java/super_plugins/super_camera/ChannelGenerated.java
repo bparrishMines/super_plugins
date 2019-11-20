@@ -33,6 +33,8 @@ import android.graphics.SurfaceTexture;
 
 import io.flutter.view.TextureRegistry;
 
+import androidx.camera.core.UseCase;
+
 import androidx.camera.core.CameraX.LensFacing;
 
 import androidx.camera.core.CameraInfo;
@@ -382,7 +384,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
           call.argument("cameraId") != null ? (Integer) call.argument("cameraId") : null
           ,
-          call.argument("cameraInfo") != null ? ((CameraCameraInfoWrapper) $channelGenerated.getWrapper((String) call.argument("cameraInfo"))).$value : null
+          call.argument("cameraInfo") != null ? (Camera.CameraInfo) $channelGenerated.getWrapper((String) call.argument("cameraInfo")).$getValue() : null
           
       )
       
@@ -436,7 +438,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
       $value.setPreviewTexture(
       
-          call.argument("surfaceTexture") != null ? ((SurfaceTextureWrapper) $channelGenerated.getWrapper((String) call.argument("surfaceTexture"))).$value : null
+          call.argument("surfaceTexture") != null ? (SurfaceTexture) $channelGenerated.getWrapper((String) call.argument("surfaceTexture")).$getValue() : null
           
       )
       
@@ -832,6 +834,59 @@ public class ChannelGenerated implements MethodCallHandler {
   }
   
   @RequiresApi(api = 21)
+  public static class UseCaseWrapper extends FlutterWrapper {
+    private final UseCase $value;
+
+    public UseCaseWrapper(ChannelGenerated $channelGenerated, String $uniqueId, UseCase $value) {
+      super($channelGenerated, $uniqueId);
+      this.$value = $value;
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+
+    private UseCaseWrapper(final ChannelGenerated $channelGenerated, final String $uniqueId, final MethodCall call) {
+      super($channelGenerated, $uniqueId);
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      $channelGenerated.addWrapper($uniqueId, this, $channelGenerated.tempWrappers);
+    }
+    
+    static Object onStaticMethodCall(ChannelGenerated $channelGenerated, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(MethodCall call) throws Exception {
+      switch(call.method) {
+        case "UseCase#allocate":
+          allocate();
+          return null;
+        case "UseCase#deallocate":
+          deallocate();
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+  }
+  
+  @RequiresApi(api = 21)
   public static class LensFacingWrapper extends FlutterWrapper {
     private final LensFacing $value;
 
@@ -1058,9 +1113,9 @@ public class ChannelGenerated implements MethodCallHandler {
       
       CameraX.bindToLifecycle(
       
-          call.argument("owner") != null ? ((LifecycleOwnerWrapper) $channelGenerated.getWrapper((String) call.argument("owner"))).$value : null
+          call.argument("owner") != null ? (LifecycleOwner) $channelGenerated.getWrapper((String) call.argument("owner")).$getValue() : null
           ,
-          call.argument("preview") != null ? ((PreviewWrapper) $channelGenerated.getWrapper((String) call.argument("preview"))).$value : null
+          call.argument("useCase") != null ? (UseCase) $channelGenerated.getWrapper((String) call.argument("useCase")).$getValue() : null
           
       )
       
@@ -1076,7 +1131,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
       CameraX.getCameraInfo(
       
-          call.argument("lensFacing") != null ? ((LensFacingWrapper) $channelGenerated.getWrapper((String) call.argument("lensFacing"))).$value : null
+          call.argument("lensFacing") != null ? (LensFacing) $channelGenerated.getWrapper((String) call.argument("lensFacing")).$getValue() : null
           
       )
       
@@ -1170,7 +1225,7 @@ public class ChannelGenerated implements MethodCallHandler {
         case "Preview()":
           this.$value = new Preview(
           
-          call.argument("previewConfig") != null ? ((PreviewConfigWrapper) $channelGenerated.getWrapper((String) call.argument("previewConfig"))).$value : null
+          call.argument("previewConfig") != null ? (PreviewConfig) $channelGenerated.getWrapper((String) call.argument("previewConfig")).$getValue() : null
           
           ) ;
           break; 
@@ -1226,7 +1281,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
       $value.setOnPreviewOutputUpdateListener(
       
-          call.argument("listener") != null ? ((OnPreviewOutputUpdateListenerWrapper) $channelGenerated.getWrapper((String) call.argument("listener"))).$value : null
+          call.argument("listener") != null ? (OnPreviewOutputUpdateListener) $channelGenerated.getWrapper((String) call.argument("listener")).$getValue() : null
           
       )
       
@@ -1347,7 +1402,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
       $value.onUpdated(
       
-          call.argument("previewOutput") != null ? ((PreviewOutputWrapper) $channelGenerated.getWrapper((String) call.argument("previewOutput"))).$value : null
+          call.argument("previewOutput") != null ? (PreviewOutput) $channelGenerated.getWrapper((String) call.argument("previewOutput")).$getValue() : null
           
       )
       
@@ -1555,7 +1610,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
       $value.setLensFacing(
       
-          call.argument("lensFacing") != null ? ((LensFacingWrapper) $channelGenerated.getWrapper((String) call.argument("lensFacing"))).$value : null
+          call.argument("lensFacing") != null ? (LensFacing) $channelGenerated.getWrapper((String) call.argument("lensFacing")).$getValue() : null
           
       )
       
@@ -1597,7 +1652,7 @@ public class ChannelGenerated implements MethodCallHandler {
         case "TextureView()":
           this.$value = new TextureView(
           
-          call.argument("activity") != null ? ((ActivityWrapper) $channelGenerated.getWrapper((String) call.argument("activity"))).$value : null
+          call.argument("activity") != null ? (Activity) $channelGenerated.getWrapper((String) call.argument("activity")).$getValue() : null
           
           ) ;
           break; 
@@ -1653,7 +1708,7 @@ public class ChannelGenerated implements MethodCallHandler {
       
       $value.setSurfaceTexture(
       
-          call.argument("surfaceTexture") != null ? ((SurfaceTextureWrapper) $channelGenerated.getWrapper((String) call.argument("surfaceTexture"))).$value : null
+          call.argument("surfaceTexture") != null ? (SurfaceTexture) $channelGenerated.getWrapper((String) call.argument("surfaceTexture")).$getValue() : null
           
       )
       
