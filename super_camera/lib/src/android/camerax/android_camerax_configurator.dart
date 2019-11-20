@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:super_camera/src/interface/camera_interface.dart';
 
+import '../../interface/camera_interface.dart';
 import 'camerax.dart';
-import '../../common/channel.dart';
 
 /// Default [CameraConfigurator] for Android versions >= 21.
 ///
@@ -15,21 +14,18 @@ class AndroidCameraXConfigurator extends CameraConfigurator {
   AndroidCameraXConfigurator(CameraInfoX infoX) : super(infoX);
 
   Completer<void> _initializeCompleter = Completer<void>();
-
   TextureView _textureView;
-  bool _isReleased = false;
 
   @override
   Future<Widget> getPreviewWidget() async {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
-
+    super.getPreviewWidget();
     await _initializeCompleter.future;
     return _textureView;
   }
 
   @override
   Future<void> initialize() {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
+    super.initialize();
 
     final PreviewConfigBuilder builder = PreviewConfigBuilder()
       ..setLensFacing((cameraDescription as CameraInfoX).getLensFacing());
@@ -51,24 +47,20 @@ class AndroidCameraXConfigurator extends CameraConfigurator {
 
   @override
   Future<void> start() {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
+    super.start();
     return _initializeCompleter.future;
   }
 
-  // TODO(bparrishMines): Just unbind UseCases here.
+  // TODO(bparrishMines): Just unbind individual UseCases here.
   /// This is a no-op for [AndroidCameraXConfigurator].
   @override
-  Future<void> stop() {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
-    return Future<void>.value();
-  }
+  Future<void> stop() => super.stop();
 
   @override
   Future<void> dispose() {
-    if (_isReleased) return Future<void>.value();
-    _isReleased = true;
-    _textureView = null;
+    super.dispose();
 
+    _textureView = null;
     return CameraX.unbindAll();
   }
 }

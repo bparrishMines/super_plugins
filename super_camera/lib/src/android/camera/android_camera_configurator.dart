@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:super_camera/src/android/common/texture_registry.dart';
 
-import '../../common/channel.dart';
 import '../../interface/camera_interface.dart';
 import 'camera.dart';
 
@@ -15,24 +14,20 @@ class AndroidCameraConfigurator extends CameraConfigurator {
   /// Creates a [CameraConfigurator] using the camera specified by [info].
   AndroidCameraConfigurator(CameraInfo info) : super(info);
 
-  bool _isReleased = false;
   Camera _camera;
   Texture _texture;
 
-  static const String _callInitializeMsg = 'Please call initialize() first.';
-
   @override
   Future<void> dispose() {
-    if (_isReleased) return Future<void>.value();
-    _isReleased = true;
-    _texture = null;
+    super.dispose();
 
+    _texture = null;
     return _camera.release();
   }
 
   @override
   Future<void> initialize() {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
+    super.initialize();
 
     if (_camera != null) return Future<void>.value();
 
@@ -42,24 +37,20 @@ class AndroidCameraConfigurator extends CameraConfigurator {
 
   @override
   Future<void> start() {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
-    assert(_camera != null, _callInitializeMsg);
+    super.start();
     return _camera.startPreview();
   }
 
   @override
   Future<void> stop() {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
-    assert(_camera != null, _callInitializeMsg);
-
+    super.stop();
     return _camera.stopPreview();
   }
 
   /// Returns a [Texture] widget displaying frames from the camera.
   @override
   Future<Widget> getPreviewWidget() {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
-    assert(_camera != null, _callInitializeMsg);
+    super.getPreviewWidget();
     if (_texture != null) return Future<Widget>.value(_texture);
 
     final Completer<Widget> completer = Completer<Widget>();
