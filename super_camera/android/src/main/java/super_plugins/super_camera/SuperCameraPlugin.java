@@ -1,9 +1,13 @@
 package super_plugins.super_camera;
 
+import android.os.Build;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LifecycleRegistry;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import io.flutter.Log;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
@@ -18,11 +22,9 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   private static final String LIFECYCLE_OWNER_ID = "lifecycle_owner";
   private static final String ACTIVITY_ID = "activity";
 
-  private final LifecycleRegistry lifecycleRegistry = new LifecycleRegistry(this);
   private ActivityPluginBinding activityBinding;
   private FlutterPluginBinding flutterBinding;
   private ChannelGenerated channelGenerated;
-  private ChannelGenerated.ActivityWrapper activityWrapper;
 
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
@@ -45,7 +47,6 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
     flutterBinding = binding;
-    lifecycleRegistry.markState(Lifecycle.State.INITIALIZED);
   }
 
   @Override
@@ -62,7 +63,7 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
         flutterBinding.getTextureRegistry());
     final ChannelGenerated.LifecycleOwnerWrapper lifecycleOwnerWrapper =
         new ChannelGenerated.LifecycleOwnerWrapper(channelGenerated, LIFECYCLE_OWNER_ID, this);
-    activityWrapper = new ChannelGenerated.ActivityWrapper(channelGenerated, ACTIVITY_ID, activityBinding.getActivity());
+    final ChannelGenerated.ActivityWrapper activityWrapper = new ChannelGenerated.ActivityWrapper(channelGenerated, ACTIVITY_ID, binding.getActivity());
 
     channelGenerated.addAllocatedWrapper(TEXTURE_REGISTRY_ID, textureRegistryWrapper);
     channelGenerated.addAllocatedWrapper(LIFECYCLE_OWNER_ID, lifecycleOwnerWrapper);
@@ -71,34 +72,24 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
     flutterBinding.getPlatformViewRegistry().registerViewFactory(
         PLATFORM_VIEW_FACTORY_NAME,
         channelGenerated.getPlatformViewFactory());
-
-    lifecycleRegistry.markState(Lifecycle.State.RESUMED);
   }
 
   @Override
   public void onDetachedFromActivityForConfigChanges() {
-    lifecycleRegistry.markState(Lifecycle.State.STARTED);
-
     activityBinding = null;
-    activityWrapper = null;
     channelGenerated.removeAllocatedWrapper(ACTIVITY_ID);
   }
 
   @Override
   public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
     activityBinding = binding;
-    activityWrapper = new ChannelGenerated.ActivityWrapper(channelGenerated, ACTIVITY_ID, activityBinding.getActivity());
+    final ChannelGenerated.ActivityWrapper activityWrapper = new ChannelGenerated.ActivityWrapper(channelGenerated, ACTIVITY_ID, binding.getActivity());
     channelGenerated.addAllocatedWrapper(ACTIVITY_ID, activityWrapper);
-
-    lifecycleRegistry.markState(Lifecycle.State.RESUMED);
   }
 
   @Override
   public void onDetachedFromActivity() {
-    lifecycleRegistry.markState(Lifecycle.State.DESTROYED);
-
     activityBinding = null;
-    activityWrapper = null;
     channelGenerated = null;
   }
 
@@ -107,9 +98,31 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
     flutterBinding = null;
   }
 
-  @NonNull
+  @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
   @Override
   public Lifecycle getLifecycle() {
-    return lifecycleRegistry;
+    try {
+      Object reference = activityBinding.getLifecycle();
+      Class hiddenLifecycleClass =
+          Class.forName("io.flutter.embedding.engine.plugins.lifecycle.HiddenLifecycleReference");
+
+      if (!reference.getClass().equals(hiddenLifecycleClass)) {
+        throw new IllegalArgumentException(
+            "The reference argument must be of type HiddenLifecycleReference. Was actually "
+                + reference);
+      }
+
+      Method getLifecycle = reference.getClass().getMethod("getLifecycle");
+      return (Lifecycle) getLifecycle.invoke(reference);
+    } catch (ClassNotFoundException
+        | NoSuchMethodException
+        | IllegalAccessException
+        | InvocationTargetException e) {
+      Log.e(
+          "super_camera",
+          "You are attempting to use Flutter plugins that are newer than your"
+              + " version of Flutter. Plugins may not work as expected.");
+    }
+    return null;
   }
 }
