@@ -7,10 +7,212 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
+class $Context extends Wrapper {
+  const $Context(
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
+
+  @override
+  String get platformClassName => 'Context';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+}
+
+class $SurfaceTexture extends Wrapper {
+  const $SurfaceTexture(
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
+
+  @override
+  String get platformClassName => 'SurfaceTexture';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+}
+
+class $CameraInfo extends Wrapper {
+  const $CameraInfo(
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
+
+  @override
+  String get platformClassName => 'CameraCameraInfo';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+
+  MethodCall $CameraInfo$Default() {
+    return MethodCall(
+      'CameraCameraInfo()',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+      },
+    );
+  }
+
+  MethodCall $facing({
+    int facing,
+    String $newUniqueId,
+  }) {
+    return MethodCall(
+      'CameraCameraInfo.facing',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        if (facing != null) 'facing': facing,
+      },
+    );
+  }
+
+  MethodCall $orientation({
+    int orientation,
+    String $newUniqueId,
+  }) {
+    return MethodCall(
+      'CameraCameraInfo.orientation',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        if (orientation != null) 'orientation': orientation,
+      },
+    );
+  }
+}
+
+class $LifecycleOwner extends Wrapper {
+  const $LifecycleOwner(
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
+
+  @override
+  String get platformClassName => 'LifecycleOwner';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+}
+
+class $PreviewConfig extends Wrapper {
+  const $PreviewConfig(
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
+
+  @override
+  String get platformClassName => 'PreviewConfig';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+}
+
+class $PreviewOutput extends Wrapper {
+  const $PreviewOutput(
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
+
+  @override
+  String get platformClassName => 'PreviewOutput';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+
+  MethodCall $getSurfaceTexture([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'PreviewOutput#getSurfaceTexture',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+      },
+    );
+  }
+}
+
+class $OnPreviewOutputUpdateListener extends Wrapper {
+  const $OnPreviewOutputUpdateListener(
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+    this.$onUpdated$Callback,
+  }) : super(uniqueId, onCreateView: onCreateView);
+
+  final List<MethodCall> Function(
+    $PreviewOutput previewOutput,
+  ) $onUpdated$Callback;
+
+  @override
+  String get platformClassName => 'OnPreviewOutputUpdateListener';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+      case 'OnPreviewOutputUpdateListener#onUpdated':
+        return $onUpdated$Callback(
+          $PreviewOutput(call.arguments['previewOutput']),
+        );
+        break;
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+
+  MethodCall $OnPreviewOutputUpdateListener$Default() {
+    return MethodCall(
+      'OnPreviewOutputUpdateListener()',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+      },
+    );
+  }
+
+  MethodCall $onUpdated(
+    $PreviewOutput previewOutput, [
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'OnPreviewOutputUpdateListener#onUpdated',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        'previewOutput': previewOutput?.uniqueId,
+      },
+    );
+  }
+}
+
 class $Camera extends Wrapper {
   const $Camera(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'Camera';
@@ -112,63 +314,11 @@ class $Camera extends Wrapper {
   }
 }
 
-class $CameraInfo extends Wrapper {
-  const $CameraInfo(
-    String uniqueId,
-  ) : super(uniqueId);
-
-  @override
-  String get platformClassName => 'CameraCameraInfo';
-
-  @override
-  List<MethodCall> onMethodCall(MethodCall call) {
-    switch (call.method) {
-    }
-    throw UnimplementedError('No implementation for ${call.method}.');
-  }
-
-  MethodCall $CameraInfo$Default() {
-    return MethodCall(
-      'CameraCameraInfo()',
-      <String, String>{
-        r'$uniqueId': uniqueId,
-      },
-    );
-  }
-
-  MethodCall $facing({
-    int facing,
-    String $newUniqueId,
-  }) {
-    return MethodCall(
-      'CameraCameraInfo.facing',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        'facing': facing,
-      },
-    );
-  }
-
-  MethodCall $orientation({
-    int orientation,
-    String $newUniqueId,
-  }) {
-    return MethodCall(
-      'CameraCameraInfo.orientation',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        'orientation': orientation,
-      },
-    );
-  }
-}
-
 class $Activity extends Wrapper {
   const $Activity(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'Activity';
@@ -183,8 +333,9 @@ class $Activity extends Wrapper {
 
 class $SurfaceTextureEntry extends Wrapper {
   const $SurfaceTextureEntry(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'SurfaceTextureEntry';
@@ -233,26 +384,11 @@ class $SurfaceTextureEntry extends Wrapper {
   }
 }
 
-class $SurfaceTexture extends Wrapper {
-  const $SurfaceTexture(
-    String uniqueId,
-  ) : super(uniqueId);
-
-  @override
-  String get platformClassName => 'SurfaceTexture';
-
-  @override
-  List<MethodCall> onMethodCall(MethodCall call) {
-    switch (call.method) {
-    }
-    throw UnimplementedError('No implementation for ${call.method}.');
-  }
-}
-
 class $TextureRegistry extends Wrapper {
   const $TextureRegistry(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'TextureRegistry';
@@ -279,8 +415,9 @@ class $TextureRegistry extends Wrapper {
 
 class $UseCase extends Wrapper {
   const $UseCase(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'UseCase';
@@ -295,8 +432,9 @@ class $UseCase extends Wrapper {
 
 class $LensFacing extends Wrapper {
   const $LensFacing(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'LensFacing';
@@ -316,7 +454,7 @@ class $LensFacing extends Wrapper {
       'LensFacing.BACK',
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
-        'BACK': BACK?.uniqueId,
+        if (BACK != null) 'BACK': BACK?.uniqueId,
       },
     );
   }
@@ -329,7 +467,7 @@ class $LensFacing extends Wrapper {
       'LensFacing.FRONT',
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
-        'FRONT': FRONT?.uniqueId,
+        if (FRONT != null) 'FRONT': FRONT?.uniqueId,
       },
     );
   }
@@ -337,8 +475,9 @@ class $LensFacing extends Wrapper {
 
 class $CameraInfoX extends Wrapper {
   const $CameraInfoX(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'CameraInfo';
@@ -365,8 +504,9 @@ class $CameraInfoX extends Wrapper {
 
 class $CameraX extends Wrapper {
   const $CameraX(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'CameraX';
@@ -418,26 +558,11 @@ class $CameraX extends Wrapper {
   }
 }
 
-class $LifecycleOwner extends Wrapper {
-  const $LifecycleOwner(
-    String uniqueId,
-  ) : super(uniqueId);
-
-  @override
-  String get platformClassName => 'LifecycleOwner';
-
-  @override
-  List<MethodCall> onMethodCall(MethodCall call) {
-    switch (call.method) {
-    }
-    throw UnimplementedError('No implementation for ${call.method}.');
-  }
-}
-
 class $Preview extends Wrapper {
   const $Preview(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'Preview';
@@ -454,7 +579,7 @@ class $Preview extends Wrapper {
   ) {
     return MethodCall(
       'Preview()',
-      <String, String>{
+      <String, dynamic>{
         r'$uniqueId': uniqueId,
         'previewConfig': previewConfig?.uniqueId,
       },
@@ -476,103 +601,11 @@ class $Preview extends Wrapper {
   }
 }
 
-class $OnPreviewOutputUpdateListener extends Wrapper {
-  const $OnPreviewOutputUpdateListener(
-    String uniqueId, {
-    this.$onUpdated$Callback,
-  }) : super(uniqueId);
-
-  final List<MethodCall> Function(
-    $PreviewOutput previewOutput,
-  ) $onUpdated$Callback;
-
-  @override
-  String get platformClassName => 'OnPreviewOutputUpdateListener';
-
-  @override
-  List<MethodCall> onMethodCall(MethodCall call) {
-    switch (call.method) {
-      case 'OnPreviewOutputUpdateListener#onUpdated':
-        return $onUpdated$Callback(
-          $PreviewOutput(call.arguments['previewOutput']),
-        );
-        break;
-    }
-    throw UnimplementedError('No implementation for ${call.method}.');
-  }
-
-  MethodCall $OnPreviewOutputUpdateListener$Default() {
-    return MethodCall(
-      'OnPreviewOutputUpdateListener()',
-      <String, String>{
-        r'$uniqueId': uniqueId,
-      },
-    );
-  }
-
-  MethodCall $onUpdated(
-    $PreviewOutput previewOutput, [
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'OnPreviewOutputUpdateListener#onUpdated',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        'previewOutput': previewOutput?.uniqueId,
-      },
-    );
-  }
-}
-
-class $PreviewOutput extends Wrapper {
-  const $PreviewOutput(
-    String uniqueId,
-  ) : super(uniqueId);
-
-  @override
-  String get platformClassName => 'PreviewOutput';
-
-  @override
-  List<MethodCall> onMethodCall(MethodCall call) {
-    switch (call.method) {
-    }
-    throw UnimplementedError('No implementation for ${call.method}.');
-  }
-
-  MethodCall $getSurfaceTexture([
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'PreviewOutput#getSurfaceTexture',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-      },
-    );
-  }
-}
-
-class $PreviewConfig extends Wrapper {
-  const $PreviewConfig(
-    String uniqueId,
-  ) : super(uniqueId);
-
-  @override
-  String get platformClassName => 'PreviewConfig';
-
-  @override
-  List<MethodCall> onMethodCall(MethodCall call) {
-    switch (call.method) {
-    }
-    throw UnimplementedError('No implementation for ${call.method}.');
-  }
-}
-
 class $PreviewConfigBuilder extends Wrapper {
   const $PreviewConfigBuilder(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'PreviewConfigBuilder';
@@ -587,7 +620,7 @@ class $PreviewConfigBuilder extends Wrapper {
   MethodCall $PreviewConfigBuilder$Default() {
     return MethodCall(
       'PreviewConfigBuilder()',
-      <String, String>{
+      <String, dynamic>{
         r'$uniqueId': uniqueId,
       },
     );
@@ -622,8 +655,9 @@ class $PreviewConfigBuilder extends Wrapper {
 
 class $_TextureViewState extends Wrapper {
   const $_TextureViewState(
-    String uniqueId,
-  ) : super(uniqueId);
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
 
   @override
   String get platformClassName => 'TextureView';
@@ -640,7 +674,7 @@ class $_TextureViewState extends Wrapper {
   ) {
     return MethodCall(
       'TextureView()',
-      <String, String>{
+      <String, dynamic>{
         r'$uniqueId': uniqueId,
         'activity': activity?.uniqueId,
       },
@@ -665,9 +699,16 @@ class $_TextureViewState extends Wrapper {
 class CallbackHandler {
   CallbackHandler() {
     _methodCallHandler = (MethodCall call) async {
-      final List<MethodCall> result =
-          _wrappers[call.arguments[r'$uniqueId']].onMethodCall(call);
-      if (result == null) return null;
+      List<MethodCall> result;
+      if (call.method == 'CreateView') {
+        result = _wrappers[call.arguments[r'$uniqueId']].onCreateView(
+          $Context(call.arguments[r'context']),
+        );
+      } else {
+        result = _wrappers[call.arguments[r'$uniqueId']].onMethodCall(call);
+      }
+
+      if (result == null) return <MethodCall>[];
       return result
           .map<Map<String, dynamic>>(
             (MethodCall methodCall) => <String, dynamic>{
@@ -693,9 +734,10 @@ class CallbackHandler {
 }
 
 abstract class Wrapper {
-  const Wrapper(this.uniqueId);
+  const Wrapper(this.uniqueId, {this.onCreateView});
 
   final String uniqueId;
+  final List<MethodCall> Function($Context context) onCreateView;
 
   String get platformClassName;
   List<MethodCall> onMethodCall(MethodCall call);
