@@ -27,17 +27,17 @@ import android.widget.FrameLayout;
 
 import android.content.Context;
 
-import android.graphics.SurfaceTexture;
-
-import android.hardware.Camera;
-
 import androidx.lifecycle.LifecycleOwner;
 
 import androidx.camera.core.PreviewConfig;
 
+import android.graphics.SurfaceTexture;
+
 import androidx.camera.core.Preview.PreviewOutput;
 
 import androidx.camera.core.Preview.OnPreviewOutputUpdateListener;
+
+import android.hardware.Camera;
 
 import android.app.Activity;
 
@@ -155,21 +155,21 @@ public class ChannelGenerated {
           }
           return resultData;
         
-        case "CameraCameraInfo()": {
-            if (Build.VERSION.SDK_INT >= 16) {
-              new $CameraCameraInfo(this, wrapperManager, callbackChannel, call);
-              return null;
-            } else {
-              throw new UnsupportedOperationException("This operation requires api 16 and above");
-            }
-          }
-        
         case "OnPreviewOutputUpdateListener()": {
             if (Build.VERSION.SDK_INT >= 21) {
               new $OnPreviewOutputUpdateListener(this, wrapperManager, callbackChannel, call);
               return null;
             } else {
               throw new UnsupportedOperationException("This operation requires api 21 and above");
+            }
+          }
+        
+        case "CameraCameraInfo()": {
+            if (Build.VERSION.SDK_INT >= 16) {
+              new $CameraCameraInfo(this, wrapperManager, callbackChannel, call);
+              return null;
+            } else {
+              throw new UnsupportedOperationException("This operation requires api 16 and above");
             }
           }
         
@@ -191,7 +191,7 @@ public class ChannelGenerated {
             }
           }
         
-        case "TextureView()": {
+        case "TextureView(forCodeGen)": {
             if (Build.VERSION.SDK_INT >= 16) {
               new $TextureView(this, wrapperManager, callbackChannel, call);
               return null;
@@ -390,164 +390,6 @@ public class ChannelGenerated {
   }
   
   
-  public static class $SurfaceTexture extends Wrapper {
-    private final SurfaceTexture $value;
-
-    public $SurfaceTexture(final WrapperManager wrapperManager, final String uniqueId, final SurfaceTexture value) {
-      super(uniqueId);
-      this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
-    }
-
-    private $SurfaceTexture(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
-      switch(call.method) {
-        
-        default:
-          this.$value = null;
-      }
-      wrapperManager.addTemporaryWrapper(this);
-    }
-    
-    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        case "SurfaceTexture#allocate":
-          allocate(wrapperManager);
-          return null;
-        case "SurfaceTexture#deallocate":
-          deallocate(wrapperManager);
-          return null;
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-
-    
-  }
-  
-  
-  public static class $CameraCameraInfo extends Wrapper {
-    private final Camera.CameraInfo $value;
-
-    public $CameraCameraInfo(final WrapperManager wrapperManager, final String uniqueId, final Camera.CameraInfo value) {
-      super(uniqueId);
-      this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
-    }
-
-    private $CameraCameraInfo(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
-      switch(call.method) {
-        
-        case "CameraCameraInfo()":
-          this.$value = new Camera.CameraInfo(
-          
-          ) ;
-          break; 
-        
-        default:
-          this.$value = null;
-      }
-      wrapperManager.addTemporaryWrapper(this);
-    }
-    
-    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        case "Camera.CameraInfo#allocate":
-          allocate(wrapperManager);
-          return null;
-        case "Camera.CameraInfo#deallocate":
-          deallocate(wrapperManager);
-          return null;
-        
-        case "CameraCameraInfo.facing":
-          return facing(wrapperManager, call);
-        
-        case "CameraCameraInfo.orientation":
-          return orientation(wrapperManager, call);
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-     private Object facing(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      if (((HashMap<String, Object>) call.arguments).containsKey("facing")) {
-         $value.facing =
-         
-      call.argument("facing") != null ? (Integer) call.argument("facing") : null
-      
-        ;
-      }
-      
-      
-      return
-      
-      
-      $value.facing
-      
-      
-      ;
-      
-    }
-    
-     private Object orientation(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      if (((HashMap<String, Object>) call.arguments).containsKey("orientation")) {
-         $value.orientation =
-         
-      call.argument("orientation") != null ? (Integer) call.argument("orientation") : null
-      
-        ;
-      }
-      
-      
-      return
-      
-      
-      $value.orientation
-      
-      
-      ;
-      
-    }
-    
-
-    
-  }
-  
-  
   public static class $LifecycleOwner extends Wrapper {
     private final LifecycleOwner $value;
 
@@ -635,6 +477,59 @@ public class ChannelGenerated {
           allocate(wrapperManager);
           return null;
         case "PreviewConfig#deallocate":
+          deallocate(wrapperManager);
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+  }
+  
+  
+  public static class $SurfaceTexture extends Wrapper {
+    private final SurfaceTexture $value;
+
+    public $SurfaceTexture(final WrapperManager wrapperManager, final String uniqueId, final SurfaceTexture value) {
+      super(uniqueId);
+      this.$value = value;
+      wrapperManager.addTemporaryWrapper(this);
+    }
+
+    private $SurfaceTexture(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
+      super((String) call.argument("$uniqueId"));
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      wrapperManager.addTemporaryWrapper(this);
+    }
+    
+    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        case "SurfaceTexture#allocate":
+          allocate(wrapperManager);
+          return null;
+        case "SurfaceTexture#deallocate":
           deallocate(wrapperManager);
           return null;
         
@@ -1017,6 +912,111 @@ public class ChannelGenerated {
       return null;
       
     }
+    
+  }
+  
+  
+  public static class $CameraCameraInfo extends Wrapper {
+    private final Camera.CameraInfo $value;
+
+    public $CameraCameraInfo(final WrapperManager wrapperManager, final String uniqueId, final Camera.CameraInfo value) {
+      super(uniqueId);
+      this.$value = value;
+      wrapperManager.addTemporaryWrapper(this);
+    }
+
+    private $CameraCameraInfo(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
+      super((String) call.argument("$uniqueId"));
+      switch(call.method) {
+        
+        case "CameraCameraInfo()":
+          this.$value = new Camera.CameraInfo(
+          
+          ) ;
+          break; 
+        
+        default:
+          this.$value = null;
+      }
+      wrapperManager.addTemporaryWrapper(this);
+    }
+    
+    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        case "Camera.CameraInfo#allocate":
+          allocate(wrapperManager);
+          return null;
+        case "Camera.CameraInfo#deallocate":
+          deallocate(wrapperManager);
+          return null;
+        
+        case "CameraCameraInfo.facing":
+          return facing(wrapperManager, call);
+        
+        case "CameraCameraInfo.orientation":
+          return orientation(wrapperManager, call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+     private Object facing(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      if (((HashMap<String, Object>) call.arguments).containsKey("facing")) {
+         $value.facing =
+         
+      call.argument("facing") != null ? (Integer) call.argument("facing") : null
+      
+        ;
+      }
+      
+      
+      return
+      
+      
+      $value.facing
+      
+      
+      ;
+      
+    }
+    
+     private Object orientation(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      if (((HashMap<String, Object>) call.arguments).containsKey("orientation")) {
+         $value.orientation =
+         
+      call.argument("orientation") != null ? (Integer) call.argument("orientation") : null
+      
+        ;
+      }
+      
+      
+      return
+      
+      
+      $value.orientation
+      
+      
+      ;
+      
+    }
+    
+
     
   }
   
@@ -1756,10 +1756,10 @@ public class ChannelGenerated {
       super((String) call.argument("$uniqueId"));
       switch(call.method) {
         
-        case "TextureView()":
+        case "TextureView(forCodeGen)":
           this.$value = new TextureView(
           
-      call.argument("activity") != null ? (Activity) wrapperManager.getWrapper((String) call.argument("activity")).$getValue() : null
+      call.argument("context") != null ? (Context) wrapperManager.getWrapper((String) call.argument("context")).$getValue() : null
       
           ) ;
           break; 

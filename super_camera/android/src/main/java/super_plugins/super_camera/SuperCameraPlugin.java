@@ -15,7 +15,7 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   private static final String CHANNEL_NAME = "super_plugins/super_camera";
   private static final String PLATFORM_VIEW_FACTORY_NAME = CHANNEL_NAME + "/views";
   private static final String TEXTURE_REGISTRY_ID = "texture_registry";
-  private static final String LIFECYCLE_OWNER_ID = "lifecycle";
+  private static final String LIFECYCLE_OWNER_ID = "lifecycle_owner";
 
   private FlutterPluginBinding flutterBinding;
   private Lifecycle lifecycle;

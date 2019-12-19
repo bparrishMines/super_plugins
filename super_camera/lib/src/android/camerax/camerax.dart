@@ -4,7 +4,6 @@ import 'package:penguin/penguin.dart';
 import 'package:super_camera/src/interface/camera_interface.dart';
 import 'package:uuid/uuid.dart';
 
-import '../common/activity.dart';
 import '../common/texture_registry.dart';
 import '../../common/channel.dart';
 import '../../../android.penguin.g.dart';
@@ -405,17 +404,18 @@ class TextureView extends StatefulWidget {
   final SurfaceTexture surfaceTexture;
 
   @override
-  State<StatefulWidget> createState() => _TextureViewState(Activity());
+  State<StatefulWidget> createState() => _TextureViewState();
 }
 
 @Class(AndroidPlatform(
   AndroidType('	android.view', <String>['TextureView']),
 ))
 class _TextureViewState extends State<TextureView> {
-  @Constructor()
-  _TextureViewState(this.activity);
+  _TextureViewState();
 
-  final Activity activity;
+  @Constructor()
+  _TextureViewState.forCodeGen(Context context);
+
   $_TextureViewState textureView;
 
   @Method()
@@ -426,17 +426,21 @@ class _TextureViewState extends State<TextureView> {
   @override
   void initState() {
     super.initState();
-    textureView = $_TextureViewState(Uuid().v4());
-    invokeAll(Channel.channel, [
-      textureView.$_TextureViewState$Default(activity.activity),
-      textureView.allocate(),
-    ]);
+    textureView = $_TextureViewState(
+      Uuid().v4(),
+      onCreateView: ($Context context) {
+        return <MethodCall>[
+          textureView.$_TextureViewStateforCodeGen(context),
+        ];
+      },
+    );
+    CameraX._callbackHandler.addWrapper(textureView);
   }
 
   @override
   void dispose() {
     super.dispose();
-    invoke<void>(Channel.channel, textureView.deallocate());
+    CameraX._callbackHandler.removeWrapper(textureView);
   }
 
   @override

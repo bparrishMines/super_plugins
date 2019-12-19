@@ -24,77 +24,6 @@ class $Context extends Wrapper {
   }
 }
 
-class $SurfaceTexture extends Wrapper {
-  const $SurfaceTexture(
-    String uniqueId, {
-    List<MethodCall> Function($Context context) onCreateView,
-  }) : super(uniqueId, onCreateView: onCreateView);
-
-  @override
-  String get platformClassName => 'SurfaceTexture';
-
-  @override
-  List<MethodCall> onMethodCall(MethodCall call) {
-    switch (call.method) {
-    }
-    throw UnimplementedError('No implementation for ${call.method}.');
-  }
-}
-
-class $CameraInfo extends Wrapper {
-  const $CameraInfo(
-    String uniqueId, {
-    List<MethodCall> Function($Context context) onCreateView,
-  }) : super(uniqueId, onCreateView: onCreateView);
-
-  @override
-  String get platformClassName => 'CameraCameraInfo';
-
-  @override
-  List<MethodCall> onMethodCall(MethodCall call) {
-    switch (call.method) {
-    }
-    throw UnimplementedError('No implementation for ${call.method}.');
-  }
-
-  MethodCall $CameraInfo$Default() {
-    return MethodCall(
-      'CameraCameraInfo()',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-      },
-    );
-  }
-
-  MethodCall $facing({
-    int facing,
-    String $newUniqueId,
-  }) {
-    return MethodCall(
-      'CameraCameraInfo.facing',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        if (facing != null) 'facing': facing,
-      },
-    );
-  }
-
-  MethodCall $orientation({
-    int orientation,
-    String $newUniqueId,
-  }) {
-    return MethodCall(
-      'CameraCameraInfo.orientation',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        if (orientation != null) 'orientation': orientation,
-      },
-    );
-  }
-}
-
 class $LifecycleOwner extends Wrapper {
   const $LifecycleOwner(
     String uniqueId, {
@@ -120,6 +49,23 @@ class $PreviewConfig extends Wrapper {
 
   @override
   String get platformClassName => 'PreviewConfig';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+}
+
+class $SurfaceTexture extends Wrapper {
+  const $SurfaceTexture(
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
+
+  @override
+  String get platformClassName => 'SurfaceTexture';
 
   @override
   List<MethodCall> onMethodCall(MethodCall call) {
@@ -309,6 +255,60 @@ class $Camera extends Wrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         'surfaceTexture': surfaceTexture?.uniqueId,
+      },
+    );
+  }
+}
+
+class $CameraInfo extends Wrapper {
+  const $CameraInfo(
+    String uniqueId, {
+    List<MethodCall> Function($Context context) onCreateView,
+  }) : super(uniqueId, onCreateView: onCreateView);
+
+  @override
+  String get platformClassName => 'CameraCameraInfo';
+
+  @override
+  List<MethodCall> onMethodCall(MethodCall call) {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
+  }
+
+  MethodCall $CameraInfo$Default() {
+    return MethodCall(
+      'CameraCameraInfo()',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+      },
+    );
+  }
+
+  MethodCall $facing({
+    int facing,
+    String $newUniqueId,
+  }) {
+    return MethodCall(
+      'CameraCameraInfo.facing',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        if (facing != null) 'facing': facing,
+      },
+    );
+  }
+
+  MethodCall $orientation({
+    int orientation,
+    String $newUniqueId,
+  }) {
+    return MethodCall(
+      'CameraCameraInfo.orientation',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        if (orientation != null) 'orientation': orientation,
       },
     );
   }
@@ -669,14 +669,14 @@ class $_TextureViewState extends Wrapper {
     throw UnimplementedError('No implementation for ${call.method}.');
   }
 
-  MethodCall $_TextureViewState$Default(
-    $Activity activity,
+  MethodCall $_TextureViewStateforCodeGen(
+    $Context context,
   ) {
     return MethodCall(
-      'TextureView()',
+      'TextureView(forCodeGen)',
       <String, dynamic>{
         r'$uniqueId': uniqueId,
-        'activity': activity?.uniqueId,
+        'context': context?.uniqueId,
       },
     );
   }
