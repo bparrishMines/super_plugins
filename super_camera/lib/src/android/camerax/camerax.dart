@@ -418,6 +418,8 @@ class _TextureViewState extends State<TextureView> {
 
   $_TextureViewState textureView;
 
+  bool created = false;
+
   @Method()
   void setSurfaceTexture(SurfaceTexture surfaceTexture) {
     // Do nothing
@@ -429,8 +431,12 @@ class _TextureViewState extends State<TextureView> {
     textureView = $_TextureViewState(
       Uuid().v4(),
       onCreateView: ($Context context) {
+        created = true;
         return <MethodCall>[
           textureView.$_TextureViewStateforCodeGen(context),
+          textureView.allocate(),
+          if (widget.surfaceTexture.surfaceTexture != null)
+            textureView.$setSurfaceTexture(widget.surfaceTexture.surfaceTexture)
         ];
       },
     );
@@ -440,12 +446,13 @@ class _TextureViewState extends State<TextureView> {
   @override
   void dispose() {
     super.dispose();
+    invoke(Channel.channel, textureView.deallocate());
     CameraX._callbackHandler.removeWrapper(textureView);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.surfaceTexture != null) {
+    if (widget.surfaceTexture != null && created) {
       invoke(
         Channel.channel,
         textureView.$setSurfaceTexture(widget.surfaceTexture.surfaceTexture),
