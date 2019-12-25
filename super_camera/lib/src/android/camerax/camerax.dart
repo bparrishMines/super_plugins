@@ -36,22 +36,27 @@ abstract class UseCase {
   androidApi: AndroidApi(21),
 )
 class LensFacing extends $LensFacing {
-  LensFacing._(String uniqueId) : super(uniqueId) {
+  LensFacing._(String uniqueId, LensDirection lensDirection) : super(uniqueId) {
     invoke<void>(Common.channel, [
-      if (this == BACK) $LensFacing.$BACK($newUniqueId: uniqueId),
-      if (this == FRONT) $LensFacing.$FRONT($newUniqueId: uniqueId),
+      if (lensDirection == LensDirection.back)
+        $LensFacing.$BACK($newUniqueId: uniqueId),
+      if (lensDirection == LensDirection.front)
+        $LensFacing.$FRONT($newUniqueId: uniqueId),
+      $LensFacing(uniqueId).allocate(),
     ]);
   }
 
   /// A camera on the device facing the opposite direction as the device's screen.
   @Field()
   // ignore: non_constant_identifier_names
-  static final LensFacing BACK = LensFacing._(Common.uuid.v4());
+  static final LensFacing BACK =
+      LensFacing._(Common.uuid.v4(), LensDirection.back);
 
   /// A camera on the device facing the same direction as the device's screen.
   @Field()
   // ignore: non_constant_identifier_names
-  static final LensFacing FRONT = LensFacing._(Common.uuid.v4());
+  static final LensFacing FRONT =
+      LensFacing._(Common.uuid.v4(), LensDirection.front);
 
   static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }
@@ -144,7 +149,7 @@ class CameraX extends $CameraX {
   /// PlatformException.
   @Method()
   static Future<void> bindToLifecycle(LifecycleOwner owner, UseCase useCase) {
-    Common.callbackHandler = AndroidCallbackHandler();
+    Common.callbackHandler = _callbackHandler;
     if (useCase is Preview) return _bindPreview(owner, useCase);
     throw UnsupportedError('Only $Preview use case is supported');
   }
@@ -275,8 +280,10 @@ class Preview extends $Preview implements UseCase {
   void setOnPreviewOutputUpdateListener(
     OnPreviewOutputUpdateListener listener,
   ) {
-    methodCallStorageHelper
-        .replace($setOnPreviewOutputUpdateListener(listener));
+    methodCallStorageHelper.replaceAll([
+      ...listener.methodCallStorageHelper.methodCalls,
+      $setOnPreviewOutputUpdateListener(listener),
+    ]);
     _listener = listener;
   }
 
@@ -298,7 +305,9 @@ class Preview extends $Preview implements UseCase {
 abstract class OnPreviewOutputUpdateListener
     extends $OnPreviewOutputUpdateListener {
   @Constructor()
-  OnPreviewOutputUpdateListener() : super(Common.uuid.v4());
+  OnPreviewOutputUpdateListener() : super(Common.uuid.v4()) {
+    methodCallStorageHelper.store($OnPreviewOutputUpdateListener$Default());
+  }
 
   /// Callback when [PreviewOutput] has been updated.
   @Method(callback: true)
@@ -358,7 +367,8 @@ class PreviewOutput extends $PreviewOutput {
   androidApi: AndroidApi(21),
 )
 class PreviewConfig extends $PreviewConfig {
-  PreviewConfig._(Iterable<MethodCall> methodCalls) : super(Common.uuid.v4()) {
+  PreviewConfig._(String uniqueId, Iterable<MethodCall> methodCalls)
+      : super(uniqueId) {
     methodCallStorageHelper.storeAll(methodCalls);
   }
 
@@ -389,8 +399,13 @@ class PreviewConfigBuilder extends $PreviewConfigBuilder {
 
   /// Builds a [PreviewConfig] from the current state.
   @Method()
-  PreviewConfig build() =>
-      PreviewConfig._(methodCallStorageHelper.methodCalls..add($build()));
+  PreviewConfig build() {
+    final String previewConfigId = Common.uuid.v4();
+    return PreviewConfig._(previewConfigId, [
+      ...methodCallStorageHelper.methodCalls,
+      $build(previewConfigId),
+    ]);
+  }
 
   static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }
