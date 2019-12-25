@@ -1,12 +1,17 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:penguin/penguin.dart';
+import 'package:penguin_plugin/android_wrapper.dart';
+import 'package:penguin_plugin/penguin_plugin.dart';
 import 'package:super_camera/src/interface/camera_interface.dart';
 import 'package:uuid/uuid.dart';
 
 import '../common/texture_registry.dart';
 import '../../common/channel.dart';
-import '../../../android.penguin.g.dart';
+
+part 'camerax.android.penguin.g.dart';
 
 /// The use case which all other use cases are built on top of.
 ///
@@ -19,7 +24,9 @@ import '../../../android.penguin.g.dart';
   ),
   androidApi: AndroidApi(21),
 )
-abstract class UseCase {}
+abstract class UseCase {
+  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+}
 
 /// The direction the camera faces relative to device screen.
 @Class(
@@ -28,20 +35,25 @@ abstract class UseCase {}
   ),
   androidApi: AndroidApi(21),
 )
-class LensFacing {
-  const LensFacing._(this._lensFacing);
-
-  final $LensFacing _lensFacing;
+class LensFacing extends $LensFacing {
+  LensFacing._(String uniqueId) : super(uniqueId) {
+    invoke<void>(Common.channel, [
+      if (this == BACK) $LensFacing.$BACK($newUniqueId: uniqueId),
+      if (this == FRONT) $LensFacing.$FRONT($newUniqueId: uniqueId),
+    ]);
+  }
 
   /// A camera on the device facing the opposite direction as the device's screen.
   @Field()
   // ignore: non_constant_identifier_names
-  static final LensFacing BACK = LensFacing._($LensFacing(Uuid().v4()));
+  static final LensFacing BACK = LensFacing._(Common.uuid.v4());
 
   /// A camera on the device facing the same direction as the device's screen.
   @Field()
   // ignore: non_constant_identifier_names
-  static final LensFacing FRONT = LensFacing._($LensFacing(Uuid().v4()));
+  static final LensFacing FRONT = LensFacing._(Common.uuid.v4());
+
+  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }
 
 /// An interface for retrieving camera information.
@@ -56,12 +68,14 @@ class LensFacing {
   ),
   androidApi: AndroidApi(21),
 )
-class CameraInfoX implements CameraDescription {
+class CameraInfoX extends $CameraInfoX implements CameraDescription {
   CameraInfoX._({
+    String uniqueId,
     int sensorRotationDegrees,
     LensFacing lensFacing,
   })  : _sensorRotationDegrees = sensorRotationDegrees,
-        _lensFacing = lensFacing;
+        _lensFacing = lensFacing,
+        super(uniqueId);
 
   final int _sensorRotationDegrees;
   final LensFacing _lensFacing;
@@ -86,6 +100,9 @@ class CameraInfoX implements CameraDescription {
     if (_lensFacing == LensFacing.BACK) return 'BACK';
     throw StateError('No name for $LensFacing');
   }
+
+  static FutureOr<CameraInfoX> onAllocated(String uniqueId) =>
+      throw UnimplementedError();
 }
 
 /// Main interface for accessing CameraX library.
@@ -110,8 +127,10 @@ class CameraInfoX implements CameraDescription {
   ),
   androidApi: AndroidApi(21),
 )
-class CameraX {
-  static final CallbackHandler _callbackHandler = CallbackHandler();
+class CameraX extends $CameraX {
+  CameraX._() : super(null);
+
+  static final CallbackHandler _callbackHandler = AndroidCallbackHandler();
   static final List<Wrapper> _allocatedWrappers = <Wrapper>[];
 
   /// Binds a [UseCase] to a LifecycleOwner.
@@ -125,60 +144,30 @@ class CameraX {
   /// PlatformException.
   @Method()
   static Future<void> bindToLifecycle(LifecycleOwner owner, UseCase useCase) {
-    Channel.callbackHandler = _callbackHandler;
-
+    Common.callbackHandler = AndroidCallbackHandler();
     if (useCase is Preview) return _bindPreview(owner, useCase);
     throw UnsupportedError('Only $Preview use case is supported');
   }
 
   static Future<void> _bindPreview(LifecycleOwner owner, Preview preview) {
-    _allocatedWrappers
-        .where(
-          (Wrapper wrapper) =>
-              wrapper is $PreviewOutput || wrapper is $SurfaceTexture,
-        )
-        .forEach(
-          (Wrapper wrapper) => invoke<void>(
-            Channel.channel,
-            wrapper.deallocate(),
-          ),
-        );
-    _allocatedWrappers.removeWhere(
-      (Wrapper wrapper) =>
-          wrapper is $PreviewOutput || wrapper is $SurfaceTexture,
-    );
+    _allocatedWrappers.removeWhere((Wrapper wrapper) {
+      if (wrapper is PreviewOutput || wrapper is SurfaceTexture) {
+        invoke<void>(Common.channel, [wrapper.deallocate()]);
+        return true;
+      }
 
-    final $PreviewConfigBuilder builder = $PreviewConfigBuilder(Uuid().v4());
-    final $LensFacing lensFacing =
-        preview._previewConfig._lensFacing._lensFacing;
-    final $PreviewConfig config = $PreviewConfig(Uuid().v4());
-    final $Preview $preview = $Preview(Uuid().v4());
+      return false;
+    });
 
-    final $OnPreviewOutputUpdateListener updateListener =
-        preview._listener?._onPreviewOutputUpdateListener;
-    if (updateListener != null) _callbackHandler.addWrapper(updateListener);
+    if (preview._listener != null) {
+      _callbackHandler.addWrapper(preview._listener);
+    }
 
     return invoke<void>(
-      Channel.channel,
-      builder.$PreviewConfigBuilder$Default(),
+      Common.channel,
       <MethodCall>[
-        if (lensFacing != null) ...[
-          if (lensFacing == LensFacing.FRONT._lensFacing)
-            $LensFacing.$FRONT($newUniqueId: lensFacing.uniqueId),
-          if (lensFacing == LensFacing.BACK._lensFacing)
-            $LensFacing.$BACK($newUniqueId: lensFacing.uniqueId),
-          builder.$setLensFacing(lensFacing),
-        ],
-        builder.$build(config.uniqueId),
-        $preview.$Preview$Default(config),
-        if (updateListener != null) ...[
-          updateListener.$OnPreviewOutputUpdateListener$Default(),
-          $preview.$setOnPreviewOutputUpdateListener(updateListener)
-        ],
-        $CameraX.$bindToLifecycle(
-          owner._lifecycleOwner,
-          $UseCase($preview.uniqueId),
-        ),
+        ...preview.methodCallStorageHelper.methodCalls,
+        $CameraX.$bindToLifecycle(owner, preview),
       ],
     );
   }
@@ -186,22 +175,19 @@ class CameraX {
   /// Returns the camera info for the camera with the given lens facing.
   @Method()
   static Future<CameraInfoX> getCameraInfo(LensFacing lensFacing) async {
-    final $CameraInfoX cameraInfoX = $CameraInfoX(Uuid().v4());
+    final $CameraInfoX cameraInfoX = $CameraInfoX(Common.uuid.v4());
 
-    final List<dynamic> result = await invokeAll(
-      Channel.channel,
+    final List<dynamic> result = await invokeForAll(
+      Common.channel,
       <MethodCall>[
-        if (lensFacing == LensFacing.BACK)
-          $LensFacing.$BACK($newUniqueId: lensFacing._lensFacing.uniqueId),
-        if (lensFacing == LensFacing.FRONT)
-          $LensFacing.$FRONT($newUniqueId: lensFacing._lensFacing.uniqueId),
-        $CameraX.$getCameraInfo(lensFacing._lensFacing, cameraInfoX.uniqueId),
+        $CameraX.$getCameraInfo(lensFacing, cameraInfoX.uniqueId),
         cameraInfoX.$getSensorRotationDegrees(),
       ],
     );
 
     return CameraInfoX._(
-      sensorRotationDegrees: result[2],
+      uniqueId: cameraInfoX.uniqueId,
+      sensorRotationDegrees: result[1],
       lensFacing: lensFacing,
     );
   }
@@ -213,16 +199,17 @@ class CameraX {
   static Future<void> unbindAll() {
     _allocatedWrappers.forEach(
       (Wrapper wrapper) => invoke<void>(
-        Channel.channel,
-        wrapper.deallocate(),
+        Common.channel,
+        [wrapper.deallocate()],
       ),
     );
     _allocatedWrappers.clear();
     _callbackHandler.clearAll();
-    Channel.callbackHandler = null;
 
-    return invoke<void>(Channel.channel, $CameraX.$unbindAll());
+    return invoke<void>(Common.channel, [$CameraX.$unbindAll()]);
   }
+
+  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }
 
 /// A class that has an Android lifecycle.
@@ -234,12 +221,12 @@ class CameraX {
 @Class(AndroidPlatform(
   AndroidType('androidx.lifecycle', <String>['LifecycleOwner']),
 ))
-class LifecycleOwner {
-  LifecycleOwner._();
+class LifecycleOwner extends $LifecycleOwner {
+  LifecycleOwner._() : super('lifecycle_owner');
 
   static final LifecycleOwner instance = LifecycleOwner._();
 
-  final $LifecycleOwner _lifecycleOwner = $LifecycleOwner("lifecycle_owner");
+  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }
 
 /// A use case that provides a camera preview stream for displaying on-screen.
@@ -271,13 +258,15 @@ class LifecycleOwner {
   ),
   androidApi: AndroidApi(21),
 )
-class Preview implements UseCase {
+class Preview extends $Preview implements UseCase {
   @Constructor()
   Preview(PreviewConfig previewConfig)
-      : _previewConfig = previewConfig,
-        assert(previewConfig != null);
-
-  final PreviewConfig _previewConfig;
+      : assert(previewConfig != null),
+        super(Common.uuid.v4()) {
+    methodCallStorageHelper
+        .storeAll(previewConfig.methodCallStorageHelper.methodCalls);
+    methodCallStorageHelper.store($Preview$Default(previewConfig));
+  }
 
   OnPreviewOutputUpdateListener _listener;
 
@@ -286,8 +275,12 @@ class Preview implements UseCase {
   void setOnPreviewOutputUpdateListener(
     OnPreviewOutputUpdateListener listener,
   ) {
+    methodCallStorageHelper
+        .replace($setOnPreviewOutputUpdateListener(listener));
     _listener = listener;
   }
+
+  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }
 
 /// A listener of [PreviewOutput].
@@ -302,24 +295,16 @@ class Preview implements UseCase {
   ),
   androidApi: AndroidApi(21),
 )
-abstract class OnPreviewOutputUpdateListener {
+abstract class OnPreviewOutputUpdateListener
+    extends $OnPreviewOutputUpdateListener {
   @Constructor()
-  OnPreviewOutputUpdateListener() {
-    _onPreviewOutputUpdateListener = $OnPreviewOutputUpdateListener(
-      Uuid().v4(),
-      $onUpdated$Callback: ($PreviewOutput output) {
-        CameraX._allocatedWrappers.add(output);
-        onUpdated(PreviewOutput._(output));
-        return <MethodCall>[];
-      },
-    );
-  }
-
-  $OnPreviewOutputUpdateListener _onPreviewOutputUpdateListener;
+  OnPreviewOutputUpdateListener() : super(Common.uuid.v4());
 
   /// Callback when [PreviewOutput] has been updated.
   @Method(callback: true)
   void onUpdated(PreviewOutput previewOutput);
+
+  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }
 
 /// A bundle containing a [SurfaceTexture] and properties needed to display a [Preview].
@@ -332,26 +317,36 @@ abstract class OnPreviewOutputUpdateListener {
   ),
   androidApi: AndroidApi(21),
 )
-class PreviewOutput {
-  PreviewOutput._($PreviewOutput previewOutput) {
-    invokeAll(Channel.channel, <MethodCall>[
-      previewOutput.$getSurfaceTexture(_surfaceTexture.surfaceTexture.uniqueId),
-      _surfaceTexture.surfaceTexture.allocate(),
-    ]);
-    CameraX._allocatedWrappers.add(_surfaceTexture.surfaceTexture);
-  }
+class PreviewOutput extends $PreviewOutput {
+  PreviewOutput._(String uniqueId, this._surfaceTexture) : super(uniqueId);
 
-  final SurfaceTexture _surfaceTexture =
-      SurfaceTexture.internal($SurfaceTexture(Uuid().v4()));
+  final SurfaceTexture _surfaceTexture;
 
   /// Returns the [SurfaceTexture] that receives image data to display.
   @Method()
   SurfaceTexture getSurfaceTexture() {
     assert(
-      CameraX._allocatedWrappers.contains(_surfaceTexture.surfaceTexture),
-      '${Channel.deallocatedMsg(this)}. This $SurfaceTexture is no longer available.',
+      CameraX._allocatedWrappers.contains(_surfaceTexture),
+      '${Common.deallocatedMsg(this)}. This $SurfaceTexture is no longer available.',
     );
     return _surfaceTexture;
+  }
+
+  static FutureOr<PreviewOutput> onAllocated(String uniqueId) {
+    final $PreviewOutput previewOutput = $PreviewOutput(uniqueId);
+    final String surfaceTextureId = Common.uuid.v4();
+
+    invokeForAll(Common.channel, <MethodCall>[
+      previewOutput.$getSurfaceTexture(surfaceTextureId),
+      $SurfaceTexture(surfaceTextureId).allocate(),
+      previewOutput.deallocate(),
+    ]);
+
+    final SurfaceTexture surfaceTexture =
+        SurfaceTexture.onAllocated(surfaceTextureId);
+    CameraX._allocatedWrappers.add(surfaceTexture);
+
+    return PreviewOutput._(uniqueId, surfaceTexture);
   }
 }
 
@@ -362,10 +357,12 @@ class PreviewOutput {
   ),
   androidApi: AndroidApi(21),
 )
-class PreviewConfig {
-  PreviewConfig._(this._lensFacing);
+class PreviewConfig extends $PreviewConfig {
+  PreviewConfig._(Iterable<MethodCall> methodCalls) : super(Common.uuid.v4()) {
+    methodCallStorageHelper.storeAll(methodCalls);
+  }
 
-  final LensFacing _lensFacing;
+  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }
 
 /// Builder for a [PreviewConfig].
@@ -375,22 +372,27 @@ class PreviewConfig {
   ),
   androidApi: AndroidApi(21),
 )
-class PreviewConfigBuilder {
+class PreviewConfigBuilder extends $PreviewConfigBuilder {
   @Constructor()
-  PreviewConfigBuilder();
-
-  LensFacing _lensFacing;
+  PreviewConfigBuilder() : super(Common.uuid.v4()) {
+    methodCallStorageHelper.store($PreviewConfigBuilder$Default());
+  }
 
   /// Sets the primary camera to be configured based on the direction the lens is facing.
   ///
   /// If multiple cameras exist with equivalent lens facing direction, the first
   /// "primary" camera for that direction will be chosen.
   @Method()
-  void setLensFacing(LensFacing lensFacing) => _lensFacing = lensFacing;
+  void setLensFacing(LensFacing lensFacing) {
+    methodCallStorageHelper.replace($setLensFacing(lensFacing));
+  }
 
   /// Builds a [PreviewConfig] from the current state.
   @Method()
-  PreviewConfig build() => PreviewConfig._(_lensFacing);
+  PreviewConfig build() =>
+      PreviewConfig._(methodCallStorageHelper.methodCalls..add($build()));
+
+  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }
 
 /// A TextureView can be used to display a [CameraX] preview stream.
@@ -430,13 +432,13 @@ class _TextureViewState extends State<TextureView> {
     super.initState();
     textureView = $_TextureViewState(
       Uuid().v4(),
-      onCreateView: ($Context context) {
+      onCreateView: (Context context) {
         created = true;
         return <MethodCall>[
           textureView.$_TextureViewStateforCodeGen(context),
           textureView.allocate(),
-          if (widget.surfaceTexture.surfaceTexture != null)
-            textureView.$setSurfaceTexture(widget.surfaceTexture.surfaceTexture)
+          if (widget.surfaceTexture != null)
+            textureView.$setSurfaceTexture(widget.surfaceTexture)
         ];
       },
     );
@@ -446,7 +448,7 @@ class _TextureViewState extends State<TextureView> {
   @override
   void dispose() {
     super.dispose();
-    invoke(Channel.channel, textureView.deallocate());
+    invoke(Common.channel, [textureView.deallocate()]);
     CameraX._callbackHandler.removeWrapper(textureView);
   }
 
@@ -454,14 +456,16 @@ class _TextureViewState extends State<TextureView> {
   Widget build(BuildContext context) {
     if (widget.surfaceTexture != null && created) {
       invoke(
-        Channel.channel,
-        textureView.$setSurfaceTexture(widget.surfaceTexture.surfaceTexture),
+        Common.channel,
+        [textureView.$setSurfaceTexture(widget.surfaceTexture)],
       );
     }
     return AndroidView(
-      viewType: '${Channel.channel.name}/views',
+      viewType: '${Common.channel.name}/views',
       creationParams: textureView.uniqueId,
       creationParamsCodec: const StandardMessageCodec(),
     );
   }
+
+  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }

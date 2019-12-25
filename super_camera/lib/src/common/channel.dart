@@ -1,10 +1,13 @@
 import 'package:flutter/services.dart';
-import 'package:super_camera/android.penguin.g.dart';
+import 'package:penguin_plugin/penguin_plugin.dart';
+import 'package:uuid/uuid.dart';
 
 /// INTERNAL ONLY CLASS
 // Specifies the MethodChannel for Android and iOS. Also, specifies the message
 // for a deallocated object.
-class Channel {
+class Common {
+  static final Uuid uuid = Uuid();
+
   static const MethodChannel channel = const MethodChannel(
     'super_plugins/super_camera',
   );

@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:penguin/penguin.dart';
+import 'package:penguin_plugin/penguin_plugin.dart';
+import 'package:penguin_plugin/android_wrapper.dart';
 import 'package:super_camera/src/interface/camera_interface.dart';
-import 'package:uuid/uuid.dart';
 
 import '../common/texture_registry.dart';
-import '../../../android.penguin.g.dart';
 import '../../common/channel.dart';
+
+part 'camera.android.penguin.g.dart';
 
 /// The Camera class is used to set image capture settings, start/stop preview, snap pictures, and retrieve frames for encoding for video.
 ///
@@ -17,10 +19,8 @@ import '../../common/channel.dart';
 /// This uses the [Camera](https://developer.android.com/reference/android/hardware/Camera)
 /// API and is deprecated for Android versions 21+.
 @Class(AndroidPlatform(AndroidType('android.hardware', <String>['Camera'])))
-class Camera {
-  Camera._() : _camera = $Camera(Uuid().v4());
-
-  final $Camera _camera;
+class Camera extends $Camera {
+  Camera._(String uniqueId) : super(uniqueId);
 
   bool _isReleased = false;
 
@@ -34,7 +34,7 @@ class Camera {
   /// camera2 API to see all cameras.
   @Method()
   static Future<int> getNumberOfCameras() =>
-      invoke(Channel.channel, $Camera.$getNumberOfCameras());
+      invoke<int>(Common.channel, [$Camera.$getNumberOfCameras()]);
 
   /// Creates a new Camera object to access a particular hardware camera.
   ///
@@ -47,12 +47,12 @@ class Camera {
   /// particular hardware camera.
   @Method()
   static Camera open(int cameraId) {
-    final Camera camera = Camera._();
-    invokeAll(
-      Channel.channel,
+    final Camera camera = Camera._(Common.uuid.v4());
+    invoke<void>(
+      Common.channel,
       <MethodCall>[
-        $Camera.$open(cameraId, camera._camera.uniqueId),
-        camera._camera.allocate(),
+        $Camera.$open(cameraId, camera.uniqueId),
+        camera.allocate(),
       ],
     );
     return camera;
@@ -63,13 +63,13 @@ class Camera {
   /// If [Camera.getNumberOfCameras] returns N, the valid id is 0 to N-1.
   @Method()
   static Future<void> getCameraInfo(int cameraId, CameraInfo cameraInfo) async {
-    final List<dynamic> result = await invokeAll(
-      Channel.channel,
+    final List<dynamic> result = await invokeForAll(
+      Common.channel,
       <MethodCall>[
-        cameraInfo._cameraInfo.$CameraInfo$Default(),
-        $Camera.$getCameraInfo(cameraId, cameraInfo._cameraInfo),
-        cameraInfo._cameraInfo.$facing(),
-        cameraInfo._cameraInfo.$orientation(),
+        cameraInfo.$CameraInfo$Default(),
+        $Camera.$getCameraInfo(cameraId, cameraInfo),
+        cameraInfo.$facing(),
+        cameraInfo.$orientation(),
       ],
     );
 
@@ -88,9 +88,9 @@ class Camera {
 
     final Completer<void> completer = Completer<void>();
 
-    invokeAll(
-      Channel.channel,
-      <MethodCall>[_camera.$release(), _camera.deallocate()],
+    invoke<void>(
+      Common.channel,
+      <MethodCall>[$release(), deallocate()],
     ).then((_) => completer.complete());
 
     return completer.future;
@@ -102,8 +102,8 @@ class Camera {
   /// [setPreviewTexture].
   @Method()
   Future<void> startPreview() {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
-    return invoke(Channel.channel, _camera.$startPreview());
+    assert(!_isReleased, Common.deallocatedMsg(this));
+    return invoke<void>(Common.channel, [$startPreview()]);
   }
 
   /// Stops capturing and drawing preview frames to the surface.
@@ -111,8 +111,8 @@ class Camera {
   /// Resets the camera for a future call to [startPreview].
   @Method()
   Future<void> stopPreview() {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
-    return invoke(Channel.channel, _camera.$stopPreview());
+    assert(!_isReleased, Common.deallocatedMsg(this));
+    return invoke<void>(Common.channel, [$stopPreview()]);
   }
 
   /// Sets the SurfaceTexture to be used for live preview.
@@ -130,12 +130,14 @@ class Camera {
   /// surface texture may not otherwise change while preview is running.
   @Method()
   Future<void> setPreviewTexture(SurfaceTexture surfaceTexture) {
-    assert(!_isReleased, Channel.deallocatedMsg(this));
-    return invoke(
-      Channel.channel,
-      _camera.$setPreviewTexture(surfaceTexture.surfaceTexture),
+    assert(!_isReleased, Common.deallocatedMsg(this));
+    return invoke<void>(
+      Common.channel,
+      [$setPreviewTexture(surfaceTexture)],
     );
   }
+
+  static FutureOr<Camera> onAllocated(String uniqueId) => Camera._(uniqueId);
 }
 
 /// Information about a camera.
@@ -144,17 +146,15 @@ class Camera {
 @Class(AndroidPlatform(
   AndroidType('android.hardware', <String>['Camera', 'CameraInfo']),
 ))
-class CameraInfo implements CameraDescription {
+class CameraInfo extends $CameraInfo implements CameraDescription {
   @Constructor()
-  CameraInfo() : _cameraInfo = $CameraInfo(Uuid().v4());
+  CameraInfo() : super(Common.uuid.v4());
 
   /// The facing of the camera is opposite to that of the screen.
-  static const int CAMERA_FACING_BACK = 0x00000000;
+  static const int CAMERA_FACING_BACK = 0;
 
   /// The facing of the camera is the same as that of the screen.
-  static const int CAMERA_FACING_FRONT = 0x00000001;
-
-  final $CameraInfo _cameraInfo;
+  static const int CAMERA_FACING_FRONT = 1;
 
   /// The identifier for this camera device.
   ///
@@ -199,4 +199,6 @@ class CameraInfo implements CameraDescription {
 
   @override
   String get name => id.toString();
+
+  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
 }

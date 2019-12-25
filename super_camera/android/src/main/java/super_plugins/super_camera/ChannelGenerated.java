@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
-
-import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -27,23 +25,11 @@ import io.flutter.plugin.platform.PlatformViewFactory;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import android.content.Context;
-
-import androidx.lifecycle.LifecycleOwner;
-
-import androidx.camera.core.PreviewConfig;
-
-import android.graphics.SurfaceTexture;
-
-import androidx.camera.core.Preview.PreviewOutput;
-
-import androidx.camera.core.Preview.OnPreviewOutputUpdateListener;
-
 import android.hardware.Camera;
 
-import android.app.Activity;
-
 import io.flutter.view.TextureRegistry.SurfaceTextureEntry;
+
+import android.graphics.SurfaceTexture;
 
 import io.flutter.view.TextureRegistry;
 
@@ -55,9 +41,19 @@ import androidx.camera.core.CameraInfo;
 
 import androidx.camera.core.CameraX;
 
+import androidx.lifecycle.LifecycleOwner;
+
 import androidx.camera.core.Preview;
 
+import androidx.camera.core.Preview.OnPreviewOutputUpdateListener;
+
+import androidx.camera.core.Preview.PreviewOutput;
+
+import androidx.camera.core.PreviewConfig;
+
 import 	android.view.TextureView;
+
+import android.content.Context;
 
 
 public class ChannelGenerated {
@@ -145,7 +141,6 @@ public class ChannelGenerated {
     }
   
     private Object onMethodCall(MethodCall call) throws Exception {
-      Log.d("handle", call.method);
       switch(call.method) {
         case "MultiInvoke":
           final ArrayList<HashMap<String, Object>> allMethodCallData = (ArrayList<HashMap<String, Object>>) call.arguments;
@@ -157,15 +152,6 @@ public class ChannelGenerated {
             resultData.add(onMethodCall(methodCall));
           }
           return resultData;
-        
-        case "OnPreviewOutputUpdateListener()": {
-            if (Build.VERSION.SDK_INT >= 21) {
-              new $OnPreviewOutputUpdateListener(this, wrapperManager, callbackChannel, call);
-              return null;
-            } else {
-              throw new UnsupportedOperationException("This operation requires api 21 and above");
-            }
-          }
         
         case "CameraCameraInfo()": {
             if (Build.VERSION.SDK_INT >= 16) {
@@ -179,6 +165,15 @@ public class ChannelGenerated {
         case "Preview()": {
             if (Build.VERSION.SDK_INT >= 21) {
               new $Preview(this, wrapperManager, callbackChannel, call);
+              return null;
+            } else {
+              throw new UnsupportedOperationException("This operation requires api 21 and above");
+            }
+          }
+        
+        case "OnPreviewOutputUpdateListener()": {
+            if (Build.VERSION.SDK_INT >= 21) {
+              new $OnPreviewOutputUpdateListener(this, wrapperManager, callbackChannel, call);
               return null;
             } else {
               throw new UnsupportedOperationException("This operation requires api 21 and above");
@@ -338,408 +333,6 @@ public class ChannelGenerated {
     }
   }
 
-  
-  
-  public static class $Context extends Wrapper {
-    private final Context $value;
-
-    public $Context(final WrapperManager wrapperManager, final String uniqueId, final Context value) {
-      super(uniqueId);
-      this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
-    }
-
-    private $Context(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
-      switch(call.method) {
-        
-        default:
-          this.$value = null;
-      }
-      wrapperManager.addTemporaryWrapper(this);
-    }
-    
-    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        case "Context#allocate":
-          allocate(wrapperManager);
-          return null;
-        case "Context#deallocate":
-          deallocate(wrapperManager);
-          return null;
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-
-    
-  }
-  
-  
-  public static class $LifecycleOwner extends Wrapper {
-    private final LifecycleOwner $value;
-
-    public $LifecycleOwner(final WrapperManager wrapperManager, final String uniqueId, final LifecycleOwner value) {
-      super(uniqueId);
-      this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
-    }
-
-    private $LifecycleOwner(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
-      switch(call.method) {
-        
-        default:
-          this.$value = null;
-      }
-      wrapperManager.addTemporaryWrapper(this);
-    }
-    
-    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        case "LifecycleOwner#allocate":
-          allocate(wrapperManager);
-          return null;
-        case "LifecycleOwner#deallocate":
-          deallocate(wrapperManager);
-          return null;
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-
-    
-  }
-  
-  @RequiresApi(api = 21)
-  public static class $PreviewConfig extends Wrapper {
-    private final PreviewConfig $value;
-
-    public $PreviewConfig(final WrapperManager wrapperManager, final String uniqueId, final PreviewConfig value) {
-      super(uniqueId);
-      this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
-    }
-
-    private $PreviewConfig(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
-      switch(call.method) {
-        
-        default:
-          this.$value = null;
-      }
-      wrapperManager.addTemporaryWrapper(this);
-    }
-    
-    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        case "PreviewConfig#allocate":
-          allocate(wrapperManager);
-          return null;
-        case "PreviewConfig#deallocate":
-          deallocate(wrapperManager);
-          return null;
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-
-    
-  }
-  
-  
-  public static class $SurfaceTexture extends Wrapper {
-    private final SurfaceTexture $value;
-
-    public $SurfaceTexture(final WrapperManager wrapperManager, final String uniqueId, final SurfaceTexture value) {
-      super(uniqueId);
-      this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
-    }
-
-    private $SurfaceTexture(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
-      switch(call.method) {
-        
-        default:
-          this.$value = null;
-      }
-      wrapperManager.addTemporaryWrapper(this);
-    }
-    
-    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        case "SurfaceTexture#allocate":
-          allocate(wrapperManager);
-          return null;
-        case "SurfaceTexture#deallocate":
-          deallocate(wrapperManager);
-          return null;
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-
-    
-  }
-  
-  @RequiresApi(api = 21)
-  public static class $PreviewOutput extends Wrapper {
-    private final PreviewOutput $value;
-
-    public $PreviewOutput(final WrapperManager wrapperManager, final String uniqueId, final PreviewOutput value) {
-      super(uniqueId);
-      this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
-    }
-
-    private $PreviewOutput(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
-      switch(call.method) {
-        
-        default:
-          this.$value = null;
-      }
-      wrapperManager.addTemporaryWrapper(this);
-    }
-    
-    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        case "PreviewOutput#allocate":
-          allocate(wrapperManager);
-          return null;
-        case "PreviewOutput#deallocate":
-          deallocate(wrapperManager);
-          return null;
-        
-        case "PreviewOutput#getSurfaceTexture":
-          return getSurfaceTexture(wrapperManager, call);
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-
-    
-     Object getSurfaceTexture(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      
-      new $SurfaceTexture(wrapperManager, (String) call.argument("$newUniqueId"),
-      
-      
-      $value.getSurfaceTexture(
-      
-      )
-      
-      );
-      return null;
-      
-    }
-    
-  }
-  
-  @RequiresApi(api = 21)
-  public static class $OnPreviewOutputUpdateListener extends Wrapper {
-    private final OnPreviewOutputUpdateListener $value;
-
-    public $OnPreviewOutputUpdateListener(final WrapperManager wrapperManager, final String uniqueId, final OnPreviewOutputUpdateListener value) {
-      super(uniqueId);
-      this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
-    }
-
-    private $OnPreviewOutputUpdateListener(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
-      switch(call.method) {
-        
-        case "OnPreviewOutputUpdateListener()":
-          this.$value = new OnPreviewOutputUpdateListener(
-          
-          ) {
-            
-            @Override
-            public void onUpdated(
-            
-            PreviewOutput $previewOutput
-            
-            ) {
-              final HashMap<String, Object> arguments = new HashMap<>();
-              final ArrayList<Wrapper> wrappers = new ArrayList<>();
-              arguments.put("$uniqueId", $uniqueId);
-
-              
-              final String $$previewOutputId = UUID.randomUUID().toString();
-              wrappers.add(new $PreviewOutput(wrapperManager, $$previewOutputId, $previewOutput));
-              arguments.put("previewOutput", $$previewOutputId);
-              
-              
-              callbackChannel.invokeMethod("OnPreviewOutputUpdateListener#onUpdated", arguments, new Result() {
-                @Override
-                public void success(Object result) {
-                  try {
-                    for (final Wrapper wrapper : wrappers) wrapperManager.addTemporaryWrapper(wrapper);
-                    methodCallHandler.onMethodCall(new MethodCall("MultiInvoke", result));
-                  } catch (Exception exception) {
-                    exception.printStackTrace();
-                  } finally {
-                    wrapperManager.clearTemporaryWrappers();
-                  }
-                }
-
-                @Override
-                public void error(String errorCode, String errorMessage, Object errorDetails) {
-                  throw new RuntimeException(errorMessage);
-                }
-
-                @Override
-                public void notImplemented() {
-                  throw new RuntimeException();
-                }
-              });  
-            }
-            
-          };
-          break; 
-        
-        default:
-          this.$value = null;
-      }
-      wrapperManager.addTemporaryWrapper(this);
-    }
-    
-    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        case "OnPreviewOutputUpdateListener#allocate":
-          allocate(wrapperManager);
-          return null;
-        case "OnPreviewOutputUpdateListener#deallocate":
-          deallocate(wrapperManager);
-          return null;
-        
-        case "OnPreviewOutputUpdateListener#onUpdated":
-          return onUpdated(wrapperManager, call);
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-
-    
-     Object onUpdated(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      
-      
-      
-      $value.onUpdated(
-      
-      call.argument("previewOutput") != null ? (PreviewOutput) wrapperManager.getWrapper((String) call.argument("previewOutput")).$getValue() : null
-      
-      )
-      
-      ;
-      return null;
-      
-    }
-    
-  }
   
   
   public static class $Camera extends Wrapper {
@@ -1024,59 +617,6 @@ public class ChannelGenerated {
   }
   
   
-  public static class $Activity extends Wrapper {
-    private final Activity $value;
-
-    public $Activity(final WrapperManager wrapperManager, final String uniqueId, final Activity value) {
-      super(uniqueId);
-      this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
-    }
-
-    private $Activity(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
-      switch(call.method) {
-        
-        default:
-          this.$value = null;
-      }
-      wrapperManager.addTemporaryWrapper(this);
-    }
-    
-    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-
-    @Override
-    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      switch(call.method) {
-        case "Activity#allocate":
-          allocate(wrapperManager);
-          return null;
-        case "Activity#deallocate":
-          deallocate(wrapperManager);
-          return null;
-        
-        default:
-          throw new NotImplementedException(call.method);
-      }
-    }
-    
-    @Override
-    public Object $getValue() {
-      return $value;
-    }
-    
-    
-
-    
-  }
-  
-  
   public static class $SurfaceTextureEntry extends Wrapper {
     private final SurfaceTextureEntry $value;
 
@@ -1117,11 +657,11 @@ public class ChannelGenerated {
         case "SurfaceTextureEntry#id":
           return id(wrapperManager, call);
         
-        case "SurfaceTextureEntry#release":
-          return release(wrapperManager, call);
-        
         case "SurfaceTextureEntry#surfaceTexture":
           return surfaceTexture(wrapperManager, call);
+        
+        case "SurfaceTextureEntry#release":
+          return release(wrapperManager, call);
         
         default:
           throw new NotImplementedException(call.method);
@@ -1149,19 +689,6 @@ public class ChannelGenerated {
       
     }
     
-     Object release(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      
-      
-      
-      $value.release(
-      
-      )
-      
-      ;
-      return null;
-      
-    }
-    
      Object surfaceTexture(WrapperManager wrapperManager, MethodCall call) throws Exception {
       
       new $SurfaceTexture(wrapperManager, (String) call.argument("$newUniqueId"),
@@ -1175,6 +702,72 @@ public class ChannelGenerated {
       return null;
       
     }
+    
+     Object release(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      
+      
+      
+      $value.release(
+      
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+  }
+  
+  
+  public static class $SurfaceTexture extends Wrapper {
+    private final SurfaceTexture $value;
+
+    public $SurfaceTexture(final WrapperManager wrapperManager, final String uniqueId, final SurfaceTexture value) {
+      super(uniqueId);
+      this.$value = value;
+      wrapperManager.addTemporaryWrapper(this);
+    }
+
+    private $SurfaceTexture(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
+      super((String) call.argument("$uniqueId"));
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      wrapperManager.addTemporaryWrapper(this);
+    }
+    
+    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        case "SurfaceTexture#allocate":
+          allocate(wrapperManager);
+          return null;
+        case "SurfaceTexture#deallocate":
+          deallocate(wrapperManager);
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
     
   }
   
@@ -1572,6 +1165,59 @@ public class ChannelGenerated {
     
   }
   
+  
+  public static class $LifecycleOwner extends Wrapper {
+    private final LifecycleOwner $value;
+
+    public $LifecycleOwner(final WrapperManager wrapperManager, final String uniqueId, final LifecycleOwner value) {
+      super(uniqueId);
+      this.$value = value;
+      wrapperManager.addTemporaryWrapper(this);
+    }
+
+    private $LifecycleOwner(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
+      super((String) call.argument("$uniqueId"));
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      wrapperManager.addTemporaryWrapper(this);
+    }
+    
+    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        case "LifecycleOwner#allocate":
+          allocate(wrapperManager);
+          return null;
+        case "LifecycleOwner#deallocate":
+          deallocate(wrapperManager);
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+  }
+  
   @RequiresApi(api = 21)
   public static class $Preview extends Wrapper {
     private final Preview $value;
@@ -1648,6 +1294,226 @@ public class ChannelGenerated {
       return null;
       
     }
+    
+  }
+  
+  @RequiresApi(api = 21)
+  public static class $OnPreviewOutputUpdateListener extends Wrapper {
+    private final OnPreviewOutputUpdateListener $value;
+
+    public $OnPreviewOutputUpdateListener(final WrapperManager wrapperManager, final String uniqueId, final OnPreviewOutputUpdateListener value) {
+      super(uniqueId);
+      this.$value = value;
+      wrapperManager.addTemporaryWrapper(this);
+    }
+
+    private $OnPreviewOutputUpdateListener(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
+      super((String) call.argument("$uniqueId"));
+      switch(call.method) {
+        
+        case "OnPreviewOutputUpdateListener()":
+          this.$value = new OnPreviewOutputUpdateListener(
+          
+          ) {
+            
+            @Override
+            public void onUpdated(
+            
+            PreviewOutput $previewOutput
+            
+            ) {
+              final HashMap<String, Object> arguments = new HashMap<>();
+              arguments.put("$uniqueId", $uniqueId);
+
+              
+              final String $$previewOutputId = UUID.randomUUID().toString();
+              wrapperManager.addAllocatedWrapper(new $PreviewOutput(wrapperManager, $$previewOutputId, $previewOutput));
+              arguments.put("previewOutput", $$previewOutputId);
+              
+              
+              callbackChannel.invokeMethod("OnPreviewOutputUpdateListener#onUpdated", arguments);  
+            }
+            
+          };
+          break; 
+        
+        default:
+          this.$value = null;
+      }
+      wrapperManager.addTemporaryWrapper(this);
+    }
+    
+    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        case "OnPreviewOutputUpdateListener#allocate":
+          allocate(wrapperManager);
+          return null;
+        case "OnPreviewOutputUpdateListener#deallocate":
+          deallocate(wrapperManager);
+          return null;
+        
+        case "OnPreviewOutputUpdateListener#onUpdated":
+          return onUpdated(wrapperManager, call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+     Object onUpdated(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      
+      
+      
+      $value.onUpdated(
+      
+      call.argument("previewOutput") != null ? (PreviewOutput) wrapperManager.getWrapper((String) call.argument("previewOutput")).$getValue() : null
+      
+      )
+      
+      ;
+      return null;
+      
+    }
+    
+  }
+  
+  @RequiresApi(api = 21)
+  public static class $PreviewOutput extends Wrapper {
+    private final PreviewOutput $value;
+
+    public $PreviewOutput(final WrapperManager wrapperManager, final String uniqueId, final PreviewOutput value) {
+      super(uniqueId);
+      this.$value = value;
+      wrapperManager.addTemporaryWrapper(this);
+    }
+
+    private $PreviewOutput(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
+      super((String) call.argument("$uniqueId"));
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      wrapperManager.addTemporaryWrapper(this);
+    }
+    
+    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        case "PreviewOutput#allocate":
+          allocate(wrapperManager);
+          return null;
+        case "PreviewOutput#deallocate":
+          deallocate(wrapperManager);
+          return null;
+        
+        case "PreviewOutput#getSurfaceTexture":
+          return getSurfaceTexture(wrapperManager, call);
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
+    
+     Object getSurfaceTexture(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      
+      new $SurfaceTexture(wrapperManager, (String) call.argument("$newUniqueId"),
+      
+      
+      $value.getSurfaceTexture(
+      
+      )
+      
+      );
+      return null;
+      
+    }
+    
+  }
+  
+  @RequiresApi(api = 21)
+  public static class $PreviewConfig extends Wrapper {
+    private final PreviewConfig $value;
+
+    public $PreviewConfig(final WrapperManager wrapperManager, final String uniqueId, final PreviewConfig value) {
+      super(uniqueId);
+      this.$value = value;
+      wrapperManager.addTemporaryWrapper(this);
+    }
+
+    private $PreviewConfig(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
+      super((String) call.argument("$uniqueId"));
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      wrapperManager.addTemporaryWrapper(this);
+    }
+    
+    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        case "PreviewConfig#allocate":
+          allocate(wrapperManager);
+          return null;
+        case "PreviewConfig#deallocate":
+          deallocate(wrapperManager);
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
     
   }
   
@@ -1821,6 +1687,59 @@ public class ChannelGenerated {
       return null;
       
     }
+    
+  }
+  
+  
+  public static class $Context extends Wrapper {
+    private final Context $value;
+
+    public $Context(final WrapperManager wrapperManager, final String uniqueId, final Context value) {
+      super(uniqueId);
+      this.$value = value;
+      wrapperManager.addTemporaryWrapper(this);
+    }
+
+    private $Context(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
+      super((String) call.argument("$uniqueId"));
+      switch(call.method) {
+        
+        default:
+          this.$value = null;
+      }
+      wrapperManager.addTemporaryWrapper(this);
+    }
+    
+    static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+
+    @Override
+    public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
+      switch(call.method) {
+        case "Context#allocate":
+          allocate(wrapperManager);
+          return null;
+        case "Context#deallocate":
+          deallocate(wrapperManager);
+          return null;
+        
+        default:
+          throw new NotImplementedException(call.method);
+      }
+    }
+    
+    @Override
+    public Object $getValue() {
+      return $value;
+    }
+    
+    
+
     
   }
   
