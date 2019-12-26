@@ -231,7 +231,8 @@ class $OnPreviewOutputUpdateListener extends AndroidWrapper {
     switch (call.method) {
       case 'OnPreviewOutputUpdateListener#onUpdated':
         (this as OnPreviewOutputUpdateListener).onUpdated(
-          await PreviewOutput.onAllocated(call.arguments['previewOutput']),
+          await PreviewOutput.onAllocated(
+              $PreviewOutput(call.arguments['previewOutput'])),
         );
         break;
     }
@@ -442,40 +443,44 @@ class _GenericHelper {
       return $_TextureViewState(uniqueId);
     } else if (isTypeOf<T, Context>()) {
       return $Context(uniqueId);
+    } else if (isTypeOf<T, SurfaceTexture>()) {
+      return $SurfaceTexture(uniqueId);
     }
 
     throw UnsupportedError('Could not instantiate class ${T.toString()}');
   }
 
-  static FutureOr<dynamic> onAllocated<T>(String uniqueId) {
-    assert(isTypeOf<T, Wrapper>());
-
-    if (isTypeOf<T, UseCase>()) {
-      return UseCase.onAllocated(uniqueId);
-    } else if (isTypeOf<T, LensFacing>()) {
-      return LensFacing.onAllocated(uniqueId);
-    } else if (isTypeOf<T, CameraInfoX>()) {
-      return CameraInfoX.onAllocated(uniqueId);
-    } else if (isTypeOf<T, CameraX>()) {
-      return CameraX.onAllocated(uniqueId);
-    } else if (isTypeOf<T, LifecycleOwner>()) {
-      return LifecycleOwner.onAllocated(uniqueId);
-    } else if (isTypeOf<T, Preview>()) {
-      return Preview.onAllocated(uniqueId);
-    } else if (isTypeOf<T, OnPreviewOutputUpdateListener>()) {
-      return OnPreviewOutputUpdateListener.onAllocated(uniqueId);
-    } else if (isTypeOf<T, PreviewOutput>()) {
-      return PreviewOutput.onAllocated(uniqueId);
-    } else if (isTypeOf<T, PreviewConfig>()) {
-      return PreviewConfig.onAllocated(uniqueId);
-    } else if (isTypeOf<T, PreviewConfigBuilder>()) {
-      return PreviewConfigBuilder.onAllocated(uniqueId);
-    } else if (isTypeOf<T, _TextureViewState>()) {
-      return _TextureViewState.onAllocated(uniqueId);
-    } else if (isTypeOf<T, Context>()) {
-      return Context.onAllocated(uniqueId);
+  static FutureOr<dynamic> onAllocated(Wrapper wrapper) {
+    if (wrapper is $UseCase) {
+      return UseCase.onAllocated(wrapper as $UseCase);
+    } else if (wrapper is $LensFacing) {
+      return LensFacing.onAllocated(wrapper as $LensFacing);
+    } else if (wrapper is $CameraInfoX) {
+      return CameraInfoX.onAllocated(wrapper as $CameraInfoX);
+    } else if (wrapper is $CameraX) {
+      return CameraX.onAllocated(wrapper as $CameraX);
+    } else if (wrapper is $LifecycleOwner) {
+      return LifecycleOwner.onAllocated(wrapper as $LifecycleOwner);
+    } else if (wrapper is $Preview) {
+      return Preview.onAllocated(wrapper as $Preview);
+    } else if (wrapper is $OnPreviewOutputUpdateListener) {
+      return OnPreviewOutputUpdateListener.onAllocated(
+          wrapper as $OnPreviewOutputUpdateListener);
+    } else if (wrapper is $PreviewOutput) {
+      return PreviewOutput.onAllocated(wrapper as $PreviewOutput);
+    } else if (wrapper is $PreviewConfig) {
+      return PreviewConfig.onAllocated(wrapper as $PreviewConfig);
+    } else if (wrapper is $PreviewConfigBuilder) {
+      return PreviewConfigBuilder.onAllocated(wrapper as $PreviewConfigBuilder);
+    } else if (wrapper is $_TextureViewState) {
+      return _TextureViewState.onAllocated(wrapper as $_TextureViewState);
+    } else if (wrapper is $Context) {
+      return Context.onAllocated(wrapper as $Context);
+    } else if (wrapper is $SurfaceTexture) {
+      return SurfaceTexture.onAllocated(wrapper as $SurfaceTexture);
     }
 
-    throw UnsupportedError('Could not instantiate class ${T.toString()}');
+    throw UnsupportedError(
+        'Could not instantiate class ${wrapper.runtimeType}');
   }
 }

@@ -48,11 +48,12 @@ class SurfaceTextureEntry extends $SurfaceTextureEntry {
     ]);
   }
 
-  static FutureOr<SurfaceTextureEntry> onAllocated(String uniqueId) {
+  static FutureOr<SurfaceTextureEntry> onAllocated(
+    $SurfaceTextureEntry entry,
+  ) {
     final Completer<SurfaceTextureEntry> completer =
         Completer<SurfaceTextureEntry>();
 
-    final $SurfaceTextureEntry entry = $SurfaceTextureEntry(uniqueId);
     final SurfaceTexture surfaceTexture = SurfaceTexture._(Common.uuid.v4());
 
     invokeForAll(
@@ -64,7 +65,7 @@ class SurfaceTextureEntry extends $SurfaceTextureEntry {
       ],
     ).then(
       (List<dynamic> result) => completer.complete(
-        SurfaceTextureEntry._(uniqueId, surfaceTexture, result[2]),
+        SurfaceTextureEntry._(entry.uniqueId, surfaceTexture, result[2]),
       ),
     );
 
@@ -82,7 +83,8 @@ class SurfaceTexture extends $SurfaceTexture {
   /// Constructor for internal use only.
   SurfaceTexture._(String uniqueId) : super(uniqueId);
 
-  static FutureOr onAllocated(String uniqueId) => SurfaceTexture._(uniqueId);
+  static FutureOr onAllocated($SurfaceTexture texture) =>
+      SurfaceTexture._(texture.uniqueId);
 }
 
 /// Gives access to surfaces to draw frames to.
@@ -97,16 +99,17 @@ class TextureRegistry extends $TextureRegistry {
 
   @Method()
   Future<SurfaceTextureEntry> createSurfaceTexture() {
-    final String textureEntryId = Common.uuid.v4();
+    final $SurfaceTextureEntry textureEntry =
+        $SurfaceTextureEntry(Common.uuid.v4());
 
     invoke<void>(Common.channel, [
-      $createSurfaceTexture(textureEntryId),
-      $SurfaceTextureEntry(textureEntryId).allocate(),
+      $createSurfaceTexture(textureEntry.uniqueId),
+      textureEntry.allocate(),
     ]);
 
-    return SurfaceTextureEntry.onAllocated(textureEntryId);
+    return SurfaceTextureEntry.onAllocated(textureEntry);
   }
 
-  static FutureOr<TextureRegistry> onAllocated(String uniqueId) =>
+  static FutureOr<TextureRegistry> onAllocated($TextureRegistry wrapper) =>
       throw UnimplementedError();
 }

@@ -137,7 +137,7 @@ class Camera extends $Camera {
     );
   }
 
-  static FutureOr<Camera> onAllocated(String uniqueId) => Camera._(uniqueId);
+  static FutureOr<Camera> onAllocated($Camera wrapper) => Camera._(wrapper.uniqueId);
 }
 
 /// Information about a camera.
@@ -200,5 +200,5 @@ class CameraInfo extends $CameraInfo implements CameraDescription {
   @override
   String get name => id.toString();
 
-  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+  static FutureOr onAllocated($CameraInfo wrapper) => throw UnimplementedError();
 }

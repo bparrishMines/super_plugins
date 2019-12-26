@@ -179,20 +179,27 @@ class _GenericHelper {
       return $Camera(uniqueId);
     } else if (isTypeOf<T, CameraInfo>()) {
       return $CameraInfo(uniqueId);
+    } else if (isTypeOf<T, Context>()) {
+      return $Context(uniqueId);
+    } else if (isTypeOf<T, SurfaceTexture>()) {
+      return $SurfaceTexture(uniqueId);
     }
 
     throw UnsupportedError('Could not instantiate class ${T.toString()}');
   }
 
-  static FutureOr<dynamic> onAllocated<T>(String uniqueId) {
-    assert(isTypeOf<T, Wrapper>());
-
-    if (isTypeOf<T, Camera>()) {
-      return Camera.onAllocated(uniqueId);
-    } else if (isTypeOf<T, CameraInfo>()) {
-      return CameraInfo.onAllocated(uniqueId);
+  static FutureOr<dynamic> onAllocated(Wrapper wrapper) {
+    if (wrapper is $Camera) {
+      return Camera.onAllocated(wrapper as $Camera);
+    } else if (wrapper is $CameraInfo) {
+      return CameraInfo.onAllocated(wrapper as $CameraInfo);
+    } else if (wrapper is $Context) {
+      return Context.onAllocated(wrapper as $Context);
+    } else if (wrapper is $SurfaceTexture) {
+      return SurfaceTexture.onAllocated(wrapper as $SurfaceTexture);
     }
 
-    throw UnsupportedError('Could not instantiate class ${T.toString()}');
+    throw UnsupportedError(
+        'Could not instantiate class ${wrapper.runtimeType}');
   }
 }

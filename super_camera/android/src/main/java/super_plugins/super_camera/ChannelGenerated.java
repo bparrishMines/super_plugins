@@ -143,7 +143,6 @@ public class ChannelGenerated {
     }
   
     private Object onMethodCall(MethodCall call) throws Exception {
-      Log.d("handle", call.method);
       switch(call.method) {
         case "MultiInvoke":
           final ArrayList<HashMap<String, Object>> allMethodCallData = (ArrayList<HashMap<String, Object>>) call.arguments;

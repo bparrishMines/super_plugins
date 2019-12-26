@@ -118,22 +118,25 @@ class _GenericHelper {
       return $SurfaceTexture(uniqueId);
     } else if (isTypeOf<T, TextureRegistry>()) {
       return $TextureRegistry(uniqueId);
+    } else if (isTypeOf<T, Context>()) {
+      return $Context(uniqueId);
     }
 
     throw UnsupportedError('Could not instantiate class ${T.toString()}');
   }
 
-  static FutureOr<dynamic> onAllocated<T>(String uniqueId) {
-    assert(isTypeOf<T, Wrapper>());
-
-    if (isTypeOf<T, SurfaceTextureEntry>()) {
-      return SurfaceTextureEntry.onAllocated(uniqueId);
-    } else if (isTypeOf<T, SurfaceTexture>()) {
-      return SurfaceTexture.onAllocated(uniqueId);
-    } else if (isTypeOf<T, TextureRegistry>()) {
-      return TextureRegistry.onAllocated(uniqueId);
+  static FutureOr<dynamic> onAllocated(Wrapper wrapper) {
+    if (wrapper is $SurfaceTextureEntry) {
+      return SurfaceTextureEntry.onAllocated(wrapper as $SurfaceTextureEntry);
+    } else if (wrapper is $SurfaceTexture) {
+      return SurfaceTexture.onAllocated(wrapper as $SurfaceTexture);
+    } else if (wrapper is $TextureRegistry) {
+      return TextureRegistry.onAllocated(wrapper as $TextureRegistry);
+    } else if (wrapper is $Context) {
+      return Context.onAllocated(wrapper as $Context);
     }
 
-    throw UnsupportedError('Could not instantiate class ${T.toString()}');
+    throw UnsupportedError(
+        'Could not instantiate class ${wrapper.runtimeType}');
   }
 }

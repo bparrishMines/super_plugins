@@ -6,7 +6,6 @@ import 'package:penguin/penguin.dart';
 import 'package:penguin_plugin/android_wrapper.dart';
 import 'package:penguin_plugin/penguin_plugin.dart';
 import 'package:super_camera/src/interface/camera_interface.dart';
-import 'package:uuid/uuid.dart';
 
 import '../common/texture_registry.dart';
 import '../../common/channel.dart';
@@ -25,7 +24,7 @@ part 'camerax.android.penguin.g.dart';
   androidApi: AndroidApi(21),
 )
 abstract class UseCase {
-  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+  static FutureOr onAllocated($UseCase wrapper) => throw UnimplementedError();
 }
 
 /// The direction the camera faces relative to device screen.
@@ -58,7 +57,8 @@ class LensFacing extends $LensFacing {
   static final LensFacing FRONT =
       LensFacing._(Common.uuid.v4(), LensDirection.front);
 
-  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+  static FutureOr onAllocated($LensFacing wrapper) =>
+      throw UnimplementedError();
 }
 
 /// An interface for retrieving camera information.
@@ -106,7 +106,7 @@ class CameraInfoX extends $CameraInfoX implements CameraDescription {
     throw StateError('No name for $LensFacing');
   }
 
-  static FutureOr<CameraInfoX> onAllocated(String uniqueId) =>
+  static FutureOr<CameraInfoX> onAllocated($CameraInfoX wrapper) =>
       throw UnimplementedError();
 }
 
@@ -151,7 +151,7 @@ class CameraX extends $CameraX {
   static Future<void> bindToLifecycle(LifecycleOwner owner, UseCase useCase) {
     Common.callbackHandler = _callbackHandler;
     if (useCase is Preview) return _bindPreview(owner, useCase);
-    throw UnsupportedError('Only $Preview use case is supported');
+    throw UnsupportedError('Only $Preview use case is supported.');
   }
 
   static Future<void> _bindPreview(LifecycleOwner owner, Preview preview) {
@@ -214,7 +214,7 @@ class CameraX extends $CameraX {
     return invoke<void>(Common.channel, [$CameraX.$unbindAll()]);
   }
 
-  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+  static FutureOr onAllocated($CameraX cameraX) => throw UnimplementedError();
 }
 
 /// A class that has an Android lifecycle.
@@ -231,7 +231,8 @@ class LifecycleOwner extends $LifecycleOwner {
 
   static final LifecycleOwner instance = LifecycleOwner._();
 
-  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+  static FutureOr onAllocated($LifecycleOwner owner) =>
+      throw UnimplementedError();
 }
 
 /// A use case that provides a camera preview stream for displaying on-screen.
@@ -287,7 +288,7 @@ class Preview extends $Preview implements UseCase {
     _listener = listener;
   }
 
-  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+  static FutureOr onAllocated($Preview wrapper) => throw UnimplementedError();
 }
 
 /// A listener of [PreviewOutput].
@@ -313,7 +314,8 @@ abstract class OnPreviewOutputUpdateListener
   @Method(callback: true)
   void onUpdated(PreviewOutput previewOutput);
 
-  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+  static FutureOr onAllocated($OnPreviewOutputUpdateListener listener) =>
+      throw UnimplementedError();
 }
 
 /// A bundle containing a [SurfaceTexture] and properties needed to display a [Preview].
@@ -341,21 +343,20 @@ class PreviewOutput extends $PreviewOutput {
     return _surfaceTexture;
   }
 
-  static FutureOr<PreviewOutput> onAllocated(String uniqueId) {
-    final $PreviewOutput previewOutput = $PreviewOutput(uniqueId);
-    final String surfaceTextureId = Common.uuid.v4();
+  static FutureOr<PreviewOutput> onAllocated($PreviewOutput output) {
+    final $SurfaceTexture surfaceTexture = $SurfaceTexture(Common.uuid.v4());
 
-    invokeForAll(Common.channel, <MethodCall>[
-      previewOutput.$getSurfaceTexture(surfaceTextureId),
-      $SurfaceTexture(surfaceTextureId).allocate(),
-      previewOutput.deallocate(),
+    invoke<void>(Common.channel, <MethodCall>[
+      output.$getSurfaceTexture(surfaceTexture.uniqueId),
+      surfaceTexture.allocate(),
+      output.deallocate(),
     ]);
 
-    final SurfaceTexture surfaceTexture =
-        SurfaceTexture.onAllocated(surfaceTextureId);
-    CameraX._allocatedWrappers.add(surfaceTexture);
+    final SurfaceTexture surfaceTextureObj =
+        SurfaceTexture.onAllocated(surfaceTexture);
+    CameraX._allocatedWrappers.add(surfaceTextureObj);
 
-    return PreviewOutput._(uniqueId, surfaceTexture);
+    return PreviewOutput._(output.uniqueId, surfaceTextureObj);
   }
 }
 
@@ -372,7 +373,8 @@ class PreviewConfig extends $PreviewConfig {
     methodCallStorageHelper.storeAll(methodCalls);
   }
 
-  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+  static FutureOr onAllocated($PreviewConfig config) =>
+      throw UnimplementedError();
 }
 
 /// Builder for a [PreviewConfig].
@@ -407,7 +409,8 @@ class PreviewConfigBuilder extends $PreviewConfigBuilder {
     ]);
   }
 
-  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+  static FutureOr onAllocated($PreviewConfigBuilder builder) =>
+      throw UnimplementedError();
 }
 
 /// A TextureView can be used to display a [CameraX] preview stream.
@@ -446,7 +449,7 @@ class _TextureViewState extends State<TextureView> {
   void initState() {
     super.initState();
     textureView = $_TextureViewState(
-      Uuid().v4(),
+      Common.uuid.v4(),
       onCreateView: (Context context) {
         created = true;
         return <MethodCall>[
@@ -482,5 +485,6 @@ class _TextureViewState extends State<TextureView> {
     );
   }
 
-  static FutureOr onAllocated(String uniqueId) => throw UnimplementedError();
+  static FutureOr onAllocated($_TextureViewState wrapper) =>
+      throw UnimplementedError();
 }
