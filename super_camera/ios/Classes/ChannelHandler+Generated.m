@@ -294,7 +294,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 
 + (NSObject *)devicesWithMediaType:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
   
-  [[$Array<CaptureDevice> alloc] initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"uniqueId"] value:
+  [[$NSArray alloc] initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$newUniqueId"] value:
   
   
   [AVCaptureDevice devicesWithMediaType
