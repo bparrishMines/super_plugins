@@ -58,6 +58,9 @@ class $CaptureDevice extends IosWrapper {
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
         'mediaType': mediaType,
       },
     );
@@ -96,7 +99,7 @@ class $Array<T> extends IosWrapper {
   }
 
   MethodCall $objectAtIndex(
-    dynamic index, [
+    int index, [
     String $newUniqueId,
   ]) {
     return MethodCall(
@@ -105,6 +108,9 @@ class $Array<T> extends IosWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<T, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<T, Wrapper>()
+            ? _GenericHelper.getWrapperForType<T>('').platformClassName
+            : null,
         'index': index,
       },
     );

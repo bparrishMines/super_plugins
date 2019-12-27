@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:super_camera/super_camera.dart';
+import 'package:super_camera/ios_camera.dart';
 
 void main() {
   runApp(MaterialApp(home: MyApp()));
@@ -27,8 +28,18 @@ class _MyAppState extends State<MyApp> {
     ]);
 
     _getCameraPermission().then((bool success) {
-      if (success) _setupCamera();
+      //if (success) _setupCamera();
+      _printIds();
     });
+  }
+
+  Future<void> _printIds() async {
+    final Array<CaptureDevice> devices =
+        await CaptureDevice.devicesWithMediaType(MediaType.video);
+
+    for (CaptureDevice device in devices.toList()) {
+      print(device.uniqueID);
+    }
   }
 
   Future<void> _toggleLensDirection() {

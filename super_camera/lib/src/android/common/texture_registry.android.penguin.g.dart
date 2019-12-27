@@ -26,6 +26,9 @@ class $SurfaceTextureEntry extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -39,6 +42,9 @@ class $SurfaceTextureEntry extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -52,6 +58,9 @@ class $SurfaceTextureEntry extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -101,6 +110,9 @@ class $TextureRegistry extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }

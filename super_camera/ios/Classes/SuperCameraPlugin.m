@@ -16,7 +16,7 @@
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
   FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:@"super_camera"
+      methodChannelWithName:@"super_plugins/super_camera"
             binaryMessenger:[registrar messenger]];
   SuperCameraPlugin* instance = [[SuperCameraPlugin alloc] initWithCallbackChannel:channel];
   [registrar addMethodCallDelegate:instance channel:channel];

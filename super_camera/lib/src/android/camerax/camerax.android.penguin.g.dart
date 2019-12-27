@@ -88,6 +88,9 @@ class $CameraInfoX extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -120,6 +123,9 @@ class $CameraX extends AndroidWrapper {
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
         'owner': (owner as Wrapper)?.uniqueId,
         'useCase': (useCase as Wrapper)?.uniqueId,
       },
@@ -135,6 +141,9 @@ class $CameraX extends AndroidWrapper {
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
         'lensFacing': (lensFacing as Wrapper)?.uniqueId,
       },
     );
@@ -148,6 +157,9 @@ class $CameraX extends AndroidWrapper {
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -210,6 +222,9 @@ class $Preview extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
         'listener': (listener as Wrapper)?.uniqueId,
       },
     );
@@ -258,6 +273,9 @@ class $OnPreviewOutputUpdateListener extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
         'previewOutput': (previewOutput as Wrapper)?.uniqueId,
       },
     );
@@ -290,6 +308,9 @@ class $PreviewOutput extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -349,6 +370,9 @@ class $PreviewConfigBuilder extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
         'lensFacing': (lensFacing as Wrapper)?.uniqueId,
       },
     );
@@ -363,6 +387,9 @@ class $PreviewConfigBuilder extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -407,6 +434,9 @@ class $_TextureViewState extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
         'surfaceTexture': (surfaceTexture as Wrapper)?.uniqueId,
       },
     );

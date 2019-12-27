@@ -12,7 +12,7 @@ part 'foundation.ios.penguin.g.dart';
 class MediaType {
   MediaType._();
 
-  static const String video = 'AVMediaTypeVideo';
+  static const String video = 'vide';
 }
 
 @Class(IosPlatform(
@@ -39,18 +39,21 @@ class CaptureDevice extends $CaptureDevice {
 
   @Method()
   static Future<Array<CaptureDevice>> devicesWithMediaType(String mediaType) {
-    final $Array array = $Array(Common.uuid.v4());
+    final $Array<CaptureDevice> array = $Array<CaptureDevice>(Common.uuid.v4());
 
-    invokeForAll(Common.channel, [
+    array.methodCallStorageHelper.storeAll([
       $CaptureDevice.$devicesWithMediaType(mediaType, array.uniqueId),
-      array.allocate(),
     ]);
 
     return Array.onAllocated<CaptureDevice>(array);
   }
 
   static FutureOr<CaptureDevice> onAllocated($CaptureDevice wrapper) async {
-    return CaptureDevice._(uniqueId: wrapper.uniqueId, uniqueID: 'er');
+    final String uniqueID = await invoke<String>(Common.channel, [
+      ...wrapper.methodCallStorageHelper.methodCalls,
+      wrapper.$uniqueID(),
+    ]);
+    return CaptureDevice._(uniqueId: wrapper.uniqueId, uniqueID: uniqueID);
   }
 }
 
@@ -65,28 +68,32 @@ class Array<T> extends $Array<T> {
   final List<T> _wrappers;
 
   @Method()
-  T objectAtIndex(@int64 index) => _wrappers[index];
+  T objectAtIndex(@int64 int index) => _wrappers[index];
 
-  static FutureOr<Array<S>> onAllocated<S>($Array wrapper) async {
+  List<T> toList() => List<T>.of(_wrappers);
+
+  static FutureOr<Array<S>> onAllocated<S>($Array array) async {
     if (isTypeOf<S, Wrapper>()) {
-      final int count = await invoke<int>(Common.channel, [wrapper.$count()]);
+      final int count = await invoke<int>(Common.channel, [
+        ...array.methodCallStorageHelper.methodCalls,
+        array.$count(),
+      ]);
+
       final List<S> wrappers = <S>[];
 
       for (int i = 0; i < count; i++) {
         final Wrapper newWrapper =
             _GenericHelper.getWrapperForType<S>(Common.uuid.v4());
-        invoke<void>(
-          Common.channel,
-          [
-            wrapper.$objectAtIndex(i, newWrapper.uniqueId),
-            newWrapper.allocate()
-          ],
-        );
+
+        newWrapper.methodCallStorageHelper.storeAll([
+          ...array.methodCallStorageHelper.methodCalls,
+          array.$objectAtIndex(i, newWrapper.uniqueId),
+        ]);
 
         wrappers.add(await _GenericHelper.onAllocated(newWrapper));
       }
 
-      return Array._(wrapper.uniqueId, count, wrappers);
+      return Array<S>._(array.uniqueId, count, wrappers);
     }
 
     throw UnimplementedError();

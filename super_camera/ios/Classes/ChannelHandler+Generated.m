@@ -411,7 +411,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   
   ;
   if (![call.arguments[@"$returnTypeIsWrapper"] boolValue]) return result;
-  NSString *wrapperClassName = [NSString stringWithFormat:@"$%@", NSStringFromClass([result class])];
+  NSString *wrapperClassName = [NSString stringWithFormat:@"$%@", call.arguments[@"$returnTypePlatformName"]];
   Class wrapperClass = NSClassFromString(wrapperClassName);
   [[wrapperClass alloc] initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$newUniqueId"] value:result];
   return [NSNull null];

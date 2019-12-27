@@ -25,6 +25,9 @@ class $Camera extends AndroidWrapper {
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -38,6 +41,9 @@ class $Camera extends AndroidWrapper {
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
         'cameraId': cameraId,
       },
     );
@@ -53,6 +59,9 @@ class $Camera extends AndroidWrapper {
       <String, dynamic>{
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
         'cameraId': cameraId,
         'cameraInfo': (cameraInfo as Wrapper)?.uniqueId,
       },
@@ -68,6 +77,9 @@ class $Camera extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -81,6 +93,9 @@ class $Camera extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -94,6 +109,9 @@ class $Camera extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
       },
     );
   }
@@ -108,6 +126,9 @@ class $Camera extends AndroidWrapper {
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
         'surfaceTexture': (surfaceTexture as Wrapper)?.uniqueId,
       },
     );
