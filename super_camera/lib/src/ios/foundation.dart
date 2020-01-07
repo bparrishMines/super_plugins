@@ -43,7 +43,6 @@ class CaptureDeviceInput extends $CaptureDeviceInput {
     assert(error == null);
     methodCallStorageHelper.storeAll([
       ...device.methodCallStorageHelper.methodCalls,
-      device.allocate(),
       $CaptureDeviceInputinitWithDevice(device, null),
     ]);
   }
@@ -55,40 +54,65 @@ class CaptureDeviceInput extends $CaptureDeviceInput {
 @Class(IosPlatform(
   IosType('AVCaptureSession', import: '<AVFoundation/AVFoundation.h>'),
 ))
-class CaptureSession extends $CaptureSession {
+class CaptureSession extends $CaptureSession
+    with _AllocationListener<CaptureSession> {
   @Constructor()
   CaptureSession() : super(Common.uuid.v4()) {
-    methodCallStorageHelper.storeAll([$CaptureSession$Default()]);
+    methodCallStorageHelper.store($CaptureSession$Default());
   }
 
   bool _isAllocated = false;
 
+  @override
+  void addOnAllocatedCallback(AllocationCallback<CaptureSession> callback) {
+    super.addOnAllocatedCallback(callback);
+    if (_isAllocated) {
+      getAndClearAllocatedCalls().then(
+        (List<MethodCall> methodCalls) => invoke<void>(
+          Common.channel,
+          methodCalls,
+        ),
+      );
+    }
+  }
+
   @Method()
   Future<void> startRunning() {
     final Completer<void> completer = Completer<void>();
+    final bool wasAllocated = _isAllocated;
 
-    invoke<void>(Common.channel, [
-//      if (!_isAllocated) ...methodCallStorageHelper.methodCalls,
-//      if (!_isAllocated) allocate(),
-      $startRunning(),
-    ]).then((_) => completer.complete());
+    getAndClearAllocatedCalls()
+        .then(
+          (List<MethodCall> methodCalls) => invoke<void>(Common.channel, [
+            if (!wasAllocated) ...methodCallStorageHelper.methodCalls,
+            if (!wasAllocated) allocate(),
+            ...methodCalls,
+            $startRunning(),
+          ]),
+        )
+        .then((_) => completer.complete());
 
-    //_isAllocated = true;
+    _isAllocated = true;
 
     return completer.future;
   }
 
   @Method()
   void addInput(CaptureDeviceInput input) {
-    methodCallStorageHelper.storeAll([
-      ...input.methodCallStorageHelper.methodCalls,
-      input.allocate(),
-      $addInput(input),
-    ]);
+    addOnAllocatedCallback(
+      (CaptureSession session) async => <MethodCall>[
+        ...input.methodCallStorageHelper.methodCalls,
+        input.allocate(),
+        $addInput(input),
+      ],
+    );
   }
 
   static FutureOr onAllocated($CaptureSession wrapper) =>
       throw UnimplementedError();
+
+  @override
+  CaptureSession get self => this;
 }
 
 @Class(IosPlatform(
@@ -200,12 +224,11 @@ class Array<T> extends $Array<T> {
 }
 
 class View extends StatefulWidget {
-  View({this.sublayers = const <Layer>[], this.onViewCreated}) {
+  View({this.sublayers = const <Layer>[]}) {
     Common.callbackHandler = _callbackHandler;
   }
 
   final List<Layer> sublayers;
-  final Function onViewCreated;
 
   @override
   State<StatefulWidget> createState() => _ViewState();
@@ -223,19 +246,40 @@ class _ViewState extends State<View> {
   $_ViewState view;
 
   @Field()
-  Layer get layer {
-    final Layer layer = Layer._(Common.uuid.v4());
-    layer.methodCallStorageHelper.store(view.$layer(
-      $newUniqueId: layer.uniqueId,
-    ));
-    return layer;
-  }
+  final Layer layer = Layer._(Common.uuid.v4());
 
   @override
   void dispose() {
     super.dispose();
-    invoke<void>(Common.channel, [view.deallocate()]);
+    invoke<void>(Common.channel, [
+      view.deallocate(),
+      layer.deallocate(),
+    ]);
     _callbackHandler.removeWrapper(view);
+  }
+
+  Iterable<MethodCall> handlePreviewLayer(CaptureVideoPreviewLayer layer) {
+    final CaptureSession session = layer._session;
+    if (session != null && !session._isAllocated) {
+      session.addOnAllocatedCallback(
+        (CaptureSession session) async => <MethodCall>[
+          layer.$session(session: session),
+        ],
+      );
+    }
+
+    session?.addOnDeallocatedCallback(
+      (CaptureSession session) async => <MethodCall>[
+        layer.deallocate(),
+      ],
+    );
+
+    return <MethodCall>[
+      ...layer.methodCallStorageHelper.methodCalls,
+      if (session != null && session._isAllocated)
+        layer.$session(session: session),
+      layer.allocate(),
+    ];
   }
 
   @override
@@ -245,22 +289,18 @@ class _ViewState extends State<View> {
       created = true;
 
       final Iterable<MethodCall> sublayerCalls = widget.sublayers
-          .expand<MethodCall>(
-              (Layer layer) => layer.methodCallStorageHelper.methodCalls);
-
-      final Layer viewLayer = layer;
-
-      if (widget.onViewCreated != null)
-        Future<void>.delayed(Duration(seconds: 1), () {
-          widget.onViewCreated();
-        });
+          .expand<MethodCall>((Layer sublayer) =>
+              sublayer is CaptureVideoPreviewLayer
+                  ? handlePreviewLayer(sublayer)
+                  : sublayer.methodCallStorageHelper.methodCalls);
 
       return <MethodCall>[
         view.$_ViewStateinitWithFrame(cgRect),
         view.allocate(),
         ...sublayerCalls,
-        ...viewLayer.methodCallStorageHelper.methodCalls,
-        for (Layer layer in widget.sublayers) viewLayer.$addSublayer(layer),
+        view.$layer($newUniqueId: layer.uniqueId),
+        layer.allocate(),
+        for (Layer sublayer in widget.sublayers) layer.$addSublayer(sublayer),
       ];
     });
     _callbackHandler.addWrapper(view);
@@ -285,25 +325,16 @@ class CaptureVideoPreviewLayer extends $CaptureVideoPreviewLayer
     implements Layer {
   @Constructor()
   CaptureVideoPreviewLayer() : super(Common.uuid.v4()) {
-    methodCallStorageHelper.storeAll([$CaptureVideoPreviewLayer$Default(), allocate()]);
+    methodCallStorageHelper.store($CaptureVideoPreviewLayer$Default());
   }
+
+  CaptureSession _session;
 
   @Field()
-  set session(CaptureSession session) {
-    methodCallStorageHelper.replaceAll([
-      if (!session._isAllocated) ...session.methodCallStorageHelper.methodCalls,
-      if (!session._isAllocated) session.allocate(),
-      $session(session: session),
-    ]);
-  }
+  set session(CaptureSession session) => _session = session;
 
   @override
-  void addSublayer(Layer layer) {
-    methodCallStorageHelper.replaceAll([
-      ...layer.methodCallStorageHelper.methodCalls,
-      $addSublayer(layer),
-    ]);
-  }
+  void addSublayer(Layer layer) => throw UnimplementedError();
 
   static FutureOr onAllocated($CaptureVideoPreviewLayer wrapper) =>
       throw UnimplementedError();
@@ -322,4 +353,54 @@ class Layer extends $Layer {
   }
 
   static FutureOr onAllocated($Layer wrapper) => throw UnimplementedError();
+}
+
+typedef AllocationCallback<T> = Future<Iterable<MethodCall>> Function(T caller);
+
+abstract class _AllocationListener<T> {
+  T get self;
+
+  final List<AllocationCallback<T>> _onAllocatedCallbacks =
+      <AllocationCallback<T>>[];
+  final List<AllocationCallback<T>> _onDeallocatedCallbacks =
+      <AllocationCallback<T>>[];
+
+  @mustCallSuper
+  void addOnAllocatedCallback(AllocationCallback<T> callback) {
+    _onAllocatedCallbacks.add(callback);
+  }
+
+  @mustCallSuper
+  void addOnDeallocatedCallback(AllocationCallback<T> callback) {
+    _onDeallocatedCallbacks.add(callback);
+  }
+
+  static Future<List<MethodCall>> _getAndClear<S>(
+    List<AllocationCallback<S>> callbacks,
+    S object,
+  ) async {
+    final Iterable<Future<Iterable<MethodCall>>> futures =
+        callbacks.map<Future<Iterable<MethodCall>>>(
+      (AllocationCallback<S> callback) =>
+          callback(object) ??
+          Future<Iterable<MethodCall>>.value(<MethodCall>[]),
+    );
+
+    final List<Iterable<MethodCall>> methodCallIterables =
+        await Future.wait<Iterable<MethodCall>>(futures);
+
+    callbacks.clear();
+
+    return methodCallIterables.fold<List<MethodCall>>(
+      <MethodCall>[],
+      (List<MethodCall> previous, Iterable<MethodCall> next) =>
+          previous..addAll(next),
+    );
+  }
+
+  Future<List<MethodCall>> getAndClearAllocatedCalls() =>
+      _getAndClear<T>(_onAllocatedCallbacks, self);
+
+  Future<List<MethodCall>> getAndClearDeallocatedCalls() =>
+      _getAndClear<T>(_onDeallocatedCallbacks, self);
 }
