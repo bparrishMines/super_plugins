@@ -7,9 +7,6 @@
 
 #import <AVFoundation/AVFoundation.h>
 
-#import <AVFoundation/AVFoundation.h>
-
-
 @interface Wrapper : NSObject<FlutterPlatformView>
 @end
 
@@ -30,6 +27,26 @@
 @property FlutterMethodChannel *_Nonnull callbackChannel;
 @end
 
+
+@interface $NSError : Wrapper
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                uniqueId:(NSString *_Nonnull)uniqueId
+                                value:(
+                                
+                                NSError *
+                                
+                                _Nullable)value;
+@end
+
+@interface $AVCaptureDeviceInput : Wrapper
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                uniqueId:(NSString *_Nonnull)uniqueId
+                                value:(
+                                
+                                AVCaptureDeviceInput *
+                                
+                                _Nullable)value;
+@end
 
 @interface $AVCaptureSession : Wrapper
 - (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
@@ -67,6 +84,26 @@
                                 value:(
                                 
                                 UIView *
+                                
+                                _Nullable)value;
+@end
+
+@interface $AVCaptureVideoPreviewLayer : Wrapper
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                uniqueId:(NSString *_Nonnull)uniqueId
+                                value:(
+                                
+                                AVCaptureVideoPreviewLayer *
+                                
+                                _Nullable)value;
+@end
+
+@interface $CALayer : Wrapper
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                uniqueId:(NSString *_Nonnull)uniqueId
+                                value:(
+                                
+                                CALayer *
                                 
                                 _Nullable)value;
 @end

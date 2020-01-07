@@ -20,6 +20,7 @@
             binaryMessenger:[registrar messenger]];
   SuperCameraPlugin* instance = [[SuperCameraPlugin alloc] initWithCallbackChannel:channel];
   [registrar addMethodCallDelegate:instance channel:channel];
+  [registrar registerViewFactory:instance.handler.viewFactory withId:@"super_plugins/super_camera/views"];
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {

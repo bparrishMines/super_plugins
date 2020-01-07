@@ -28,18 +28,8 @@ class _MyAppState extends State<MyApp> {
     ]);
 
     _getCameraPermission().then((bool success) {
-      //if (success) _setupCamera();
-      _printIds();
+      if (success) _setupCamera();
     });
-  }
-
-  Future<void> _printIds() async {
-    final Array<CaptureDevice> devices =
-        await CaptureDevice.devicesWithMediaType(MediaType.video);
-
-    for (CaptureDevice device in devices.toList()) {
-      print(device.uniqueID);
-    }
   }
 
   Future<void> _toggleLensDirection() {

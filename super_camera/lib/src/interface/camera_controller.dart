@@ -4,8 +4,10 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/foundation.dart';
 import 'package:super_camera/src/android/camera/android_camera_configurator.dart';
+import 'package:super_camera/src/ios/ios_camera_configurator.dart';
 
 import '../../android_camera.dart';
+import '../../ios_camera.dart';
 import 'camera_interface.dart';
 
 /// Controls a device camera.
@@ -84,6 +86,10 @@ class CameraController {
       // TODO(bparrishMines): Check if there exists a front/back camera.
       descriptions.add(await CameraX.getCameraInfo(LensFacing.FRONT));
       descriptions.add(await CameraX.getCameraInfo(LensFacing.BACK));
+    } else if (Platform.isIOS) {
+      final Array<CaptureDevice> devices =
+          await CaptureDevice.devicesWithMediaType(MediaType.video);
+      descriptions.addAll(devices.toList());
     } else {
       throw UnsupportedError('${Platform.operatingSystem} is not supported.');
     }
@@ -144,6 +150,8 @@ class CameraController {
       return AndroidCameraConfigurator(description);
     } else if (Platform.isAndroid && description is CameraInfoX) {
       return AndroidCameraXConfigurator(description);
+    } else if (Platform.isIOS && description is CaptureDevice) {
+      return IosCameraConfigurator(description);
     }
 
     throw UnsupportedError(

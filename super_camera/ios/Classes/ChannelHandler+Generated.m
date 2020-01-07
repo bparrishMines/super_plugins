@@ -146,9 +146,9 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 
 
 
-@implementation $AVCaptureSession {
+@implementation $NSError {
   
-  AVCaptureSession *
+  NSError *
   
   _value;
 }
@@ -156,7 +156,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 - (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
                                        uniqueId:(NSString *_Nonnull)uniqueId
                                           value:(
-  AVCaptureSession *
+  NSError *
    _Nullable)value {
   self = [super initWithWrapperManager:wrapperManager uniqueId:uniqueId];
   if (self) {
@@ -187,10 +187,10 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 - (NSObject *)onMethodCall:(WrapperManager *)wrapperManager call:(FlutterMethodCall *_Nonnull)call {
-  if ([@"AVCaptureSession#allocate" isEqualToString:call.method]) {
+  if ([@"NSError#allocate" isEqualToString:call.method]) {
     [self $allocate:wrapperManager];
     return [NSNull null];
-  } else if ([@"AVCaptureSession#deallocate" isEqualToString:call.method]) {
+  } else if ([@"NSError#deallocate" isEqualToString:call.method]) {
     [self $deallocate:wrapperManager];
     return [NSNull null];
   }
@@ -203,6 +203,201 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 
 
 
+
+
+- (id)getValue {
+  return _value;
+}
+@end
+
+
+
+@implementation $AVCaptureDeviceInput {
+  
+  AVCaptureDeviceInput *
+  
+  _value;
+}
+
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                       uniqueId:(NSString *_Nonnull)uniqueId
+                                          value:(
+  AVCaptureDeviceInput *
+   _Nullable)value {
+  self = [super initWithWrapperManager:wrapperManager uniqueId:uniqueId];
+  if (self) {
+    _value = value;
+  }
+  return self;
+}
+
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                callbackChannel:(FlutterMethodChannel *_Nullable)callbackChannel
+                                           call:(FlutterMethodCall *_Nonnull)call {
+  self = [super initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$uniqueId"]];
+  if (!self) return self;
+  
+  self.callbackChannel = callbackChannel;
+  
+  if ([@"AVCaptureDeviceInput(initWithDevice)" isEqualToString:call.method]) {
+    _value = [[AVCaptureDeviceInput alloc] initWithDevice
+      
+:![call.arguments[@"device"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"device"]] getValue] : nil
+  
+  error:nil
+  
+    ];  
+  }
+  
+  
+  
+  
+  return self;
+}
+
++ (NSObject *)onStaticMethodCall:(WrapperManager *_Nonnull)wrapperManager
+                            call:(FlutterMethodCall *_Nonnull)call {
+  
+  
+  @throw [[NotImplementedException alloc] initWithMethod:call.method];
+}
+
+- (NSObject *)onMethodCall:(WrapperManager *)wrapperManager call:(FlutterMethodCall *_Nonnull)call {
+  if ([_value isEqual:[NSNull null]]) {
+    NSLog(@"null");
+  }
+  if ([@"AVCaptureDeviceInput#allocate" isEqualToString:call.method]) {
+    [self $allocate:wrapperManager];
+    return [NSNull null];
+  } else if ([@"AVCaptureDeviceInput#deallocate" isEqualToString:call.method]) {
+    [self $deallocate:wrapperManager];
+    return [NSNull null];
+  }
+  
+  
+  @throw [[NotImplementedException alloc] initWithMethod:call.method];
+}
+
+
+
+
+
+
+
+- (id)getValue {
+  return _value;
+}
+@end
+
+
+
+@implementation $AVCaptureSession {
+  
+  AVCaptureSession *
+  
+  _value;
+}
+
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                       uniqueId:(NSString *_Nonnull)uniqueId
+                                          value:(
+  AVCaptureSession *
+   _Nullable)value {
+  self = [super initWithWrapperManager:wrapperManager uniqueId:uniqueId];
+  if (self) {
+    _value = value;
+  }
+  return self;
+}
+
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                callbackChannel:(FlutterMethodChannel *_Nullable)callbackChannel
+                                           call:(FlutterMethodCall *_Nonnull)call {
+  self = [super initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$uniqueId"]];
+  if (!self) return self;
+  
+  self.callbackChannel = callbackChannel;
+  
+  if ([@"AVCaptureSession()" isEqualToString:call.method]) {
+    _value = [[AVCaptureSession alloc] init
+      
+    ];  
+  }
+  
+  
+  
+  
+  return self;
+}
+
++ (NSObject *)onStaticMethodCall:(WrapperManager *_Nonnull)wrapperManager
+                            call:(FlutterMethodCall *_Nonnull)call {
+  
+  
+  @throw [[NotImplementedException alloc] initWithMethod:call.method];
+}
+
+- (NSObject *)onMethodCall:(WrapperManager *)wrapperManager call:(FlutterMethodCall *_Nonnull)call {
+  if ([_value isEqual:[NSNull null]]) {
+    NSLog(@"null");
+  }
+  if ([@"AVCaptureSession#allocate" isEqualToString:call.method]) {
+    [self $allocate:wrapperManager];
+    return [NSNull null];
+  } else if ([@"AVCaptureSession#deallocate" isEqualToString:call.method]) {
+    [self $deallocate:wrapperManager];
+    return [NSNull null];
+  }
+  
+  else if ([@"AVCaptureSession#startRunning" isEqualToString:call.method]) {
+    return [self startRunning:wrapperManager call:call];
+  }
+  
+  else if ([@"AVCaptureSession#addInput" isEqualToString:call.method]) {
+    return [self addInput:wrapperManager call:call];
+  }
+  
+  
+  @throw [[NotImplementedException alloc] initWithMethod:call.method];
+}
+
+
+
+
+
+
+- (NSObject *)startRunning:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
+  
+  if ([_value isEqual:[NSNull null]]) {
+    NSLog(@"null");
+  }
+  
+  [_value startRunning
+  
+  ]
+  
+  
+  ;
+  return [NSNull null];
+  
+}
+
+- (NSObject *)addInput:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
+  
+  
+  
+  [_value addInput
+  
+:![call.arguments[@"input"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"input"]] getValue] : nil
+  
+  ]
+  
+  
+  ;
+  [_value addOutput:[AVCapturePhotoOutput new]];
+  return [NSNull null];
+  
+}
 
 
 - (id)getValue {
@@ -257,6 +452,9 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 - (NSObject *)onMethodCall:(WrapperManager *)wrapperManager call:(FlutterMethodCall *_Nonnull)call {
+  if ([_value isEqual:[NSNull null]]) {
+    NSLog(@"null");
+  }
   if ([@"AVCaptureDevice#allocate" isEqualToString:call.method]) {
     [self $allocate:wrapperManager];
     return [NSNull null];
@@ -267,6 +465,10 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   
   else if ([@"AVCaptureDevice.uniqueID" isEqualToString:call.method]) {
     return [self uniqueID:wrapperManager call:call];
+  }
+  
+  else if ([@"AVCaptureDevice.position" isEqualToString:call.method]) {
+    return [self position:wrapperManager call:call];
   }
   
   
@@ -287,6 +489,20 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 
   
   ;
+  
+}
+
+- (NSObject *)position:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
+  
+  
+  
+  return @(
+  
+
+  _value.position
+
+  
+  );
   
 }
 
@@ -358,6 +574,9 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 - (NSObject *)onMethodCall:(WrapperManager *)wrapperManager call:(FlutterMethodCall *_Nonnull)call {
+  if ([_value isEqual:[NSNull null]]) {
+    NSLog(@"null");
+  }
   if ([@"NSArray#allocate" isEqualToString:call.method]) {
     [self $allocate:wrapperManager];
     return [NSNull null];
@@ -456,9 +675,10 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   if ([@"UIView(initWithFrame)" isEqualToString:call.method]) {
     _value = [[UIView alloc] initWithFrame
       
-:[NSValue getCGRect:[[wrapperManager getWrapper:call.arguments[@"rect"]] getValue]]
+:CGRectMake(0, 0, 200, 200)
   
-    ];  
+    ];
+    _value.backgroundColor = UIColor.blueColor;
   }
   
   
@@ -475,12 +695,232 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 - (NSObject *)onMethodCall:(WrapperManager *)wrapperManager call:(FlutterMethodCall *_Nonnull)call {
+  if ([_value isEqual:[NSNull null]]) {
+    NSLog(@"null");
+  }
   if ([@"UIView#allocate" isEqualToString:call.method]) {
     [self $allocate:wrapperManager];
     return [NSNull null];
   } else if ([@"UIView#deallocate" isEqualToString:call.method]) {
     [self $deallocate:wrapperManager];
     return [NSNull null];
+  }
+  
+  else if ([@"UIView.layer" isEqualToString:call.method]) {
+    return [self layer:wrapperManager call:call];
+  }
+  
+  
+  @throw [[NotImplementedException alloc] initWithMethod:call.method];
+}
+
+
+
+
+- (NSObject *)layer:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
+  
+  
+  
+  [[$CALayer alloc] initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$newUniqueId"] value:
+  
+
+  _value.layer
+
+  
+  ];
+  return [NSNull null];
+  
+}
+
+
+
+
+- (id)getValue {
+  return _value;
+}
+@end
+
+
+
+@implementation $AVCaptureVideoPreviewLayer {
+  
+  AVCaptureVideoPreviewLayer *
+  
+  _value;
+}
+
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                       uniqueId:(NSString *_Nonnull)uniqueId
+                                          value:(
+  AVCaptureVideoPreviewLayer *
+   _Nullable)value {
+  self = [super initWithWrapperManager:wrapperManager uniqueId:uniqueId];
+  if (self) {
+    _value = value;
+    _value.frame = CGRectMake(0.0, 0.0, 100, 100);
+    _value.backgroundColor = UIColor.grayColor.CGColor;
+  }
+  return self;
+}
+
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                callbackChannel:(FlutterMethodChannel *_Nullable)callbackChannel
+                                           call:(FlutterMethodCall *_Nonnull)call {
+  self = [super initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$uniqueId"]];
+  if (!self) return self;
+  
+  self.callbackChannel = callbackChannel;
+  
+  if ([@"AVCaptureVideoPreviewLayer()" isEqualToString:call.method]) {
+    _value = [[AVCaptureVideoPreviewLayer alloc] init
+      
+    ];
+    _value.frame = CGRectMake(0.0, 0.0, 100, 100);
+    _value.backgroundColor = UIColor.grayColor.CGColor;
+  }
+  
+  
+  
+  
+  return self;
+}
+
++ (NSObject *)onStaticMethodCall:(WrapperManager *_Nonnull)wrapperManager
+                            call:(FlutterMethodCall *_Nonnull)call {
+  
+  
+  @throw [[NotImplementedException alloc] initWithMethod:call.method];
+}
+
+- (NSObject *)onMethodCall:(WrapperManager *)wrapperManager call:(FlutterMethodCall *_Nonnull)call {
+  if ([_value isEqual:[NSNull null]]) {
+    NSLog(@"null");
+  }
+  if ([@"AVCaptureVideoPreviewLayer#allocate" isEqualToString:call.method]) {
+    [self $allocate:wrapperManager];
+    return [NSNull null];
+  } else if ([@"AVCaptureVideoPreviewLayer#deallocate" isEqualToString:call.method]) {
+    [self $deallocate:wrapperManager];
+    return [NSNull null];
+  }
+  
+  else if ([@"AVCaptureVideoPreviewLayer#addSublayer" isEqualToString:call.method]) {
+    return [self addSublayer:wrapperManager call:call];
+  }
+  
+  else if ([@"AVCaptureVideoPreviewLayer.session" isEqualToString:call.method]) {
+    return [self session:wrapperManager call:call];
+  }
+  
+  
+  @throw [[NotImplementedException alloc] initWithMethod:call.method];
+}
+
+
+
+
+- (NSObject *)session:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
+  if (call.arguments[@"session"] != nil) {
+    _value.session =
+    
+![call.arguments[@"session"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"session"]] getValue] : nil
+  
+    ;
+  }
+  
+  
+  [[$AVCaptureSession alloc] initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$newUniqueId"] value:
+  
+
+  _value.session
+
+  
+  ];
+  return [NSNull null];
+  
+}
+
+
+
+- (NSObject *)addSublayer:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
+  
+  
+  
+  [_value addSublayer
+  
+:![call.arguments[@"layer"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"layer"]] getValue] : nil
+  
+  ]
+  
+  
+  ;
+  return [NSNull null];
+  
+}
+
+
+- (id)getValue {
+  return _value;
+}
+@end
+
+
+
+@implementation $CALayer {
+  
+  CALayer *
+  
+  _value;
+}
+
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                       uniqueId:(NSString *_Nonnull)uniqueId
+                                          value:(
+  CALayer *
+   _Nullable)value {
+  self = [super initWithWrapperManager:wrapperManager uniqueId:uniqueId];
+  if (self) {
+    _value = value;
+    _value.frame = CGRectMake(0.0, 0.0, 200, 200);
+  }
+  return self;
+}
+
+- (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
+                                callbackChannel:(FlutterMethodChannel *_Nullable)callbackChannel
+                                           call:(FlutterMethodCall *_Nonnull)call {
+  self = [super initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$uniqueId"]];
+  if (!self) return self;
+  
+  self.callbackChannel = callbackChannel;
+  
+  
+  
+  
+  return self;
+}
+
++ (NSObject *)onStaticMethodCall:(WrapperManager *_Nonnull)wrapperManager
+                            call:(FlutterMethodCall *_Nonnull)call {
+  
+  
+  @throw [[NotImplementedException alloc] initWithMethod:call.method];
+}
+
+- (NSObject *)onMethodCall:(WrapperManager *)wrapperManager call:(FlutterMethodCall *_Nonnull)call {
+  if ([_value isEqual:[NSNull null]]) {
+    NSLog(@"null");
+  }
+  if ([@"CALayer#allocate" isEqualToString:call.method]) {
+    [self $allocate:wrapperManager];
+    return [NSNull null];
+  } else if ([@"CALayer#deallocate" isEqualToString:call.method]) {
+    [self $deallocate:wrapperManager];
+    return [NSNull null];
+  }
+  
+  else if ([@"CALayer#addSublayer" isEqualToString:call.method]) {
+    return [self addSublayer:wrapperManager call:call];
   }
   
   
@@ -491,6 +931,29 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 
 
 
+
+- (NSObject *)addSublayer:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
+  
+  NSLog(@"adding layer");
+
+//  CALayer *magentaLayer = [CALayer layer];
+//  magentaLayer.frame = CGRectMake(0, 0, 100, 100);
+//  magentaLayer.backgroundColor = UIColor.brownColor.CGColor;
+//
+//  [_value addSublayer:magentaLayer];
+  
+  
+  [_value addSublayer
+
+:![call.arguments[@"layer"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"layer"]] getValue] : nil
+
+  ]
+
+
+  ;
+  return [NSNull null];
+  
+}
 
 
 - (id)getValue {
@@ -541,6 +1004,9 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 - (NSObject *)onMethodCall:(WrapperManager *)wrapperManager call:(FlutterMethodCall *_Nonnull)call {
+  if ([_value isEqual:[NSNull null]]) {
+    NSLog(@"null");
+  }
   if ([@"CGRect#allocate" isEqualToString:call.method]) {
     [self $allocate:wrapperManager];
     return [NSNull null];
@@ -655,6 +1121,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 - (NSObject *)onMethodCall:(FlutterMethodCall *)call {
+  NSLog(@"%@", call.method);
   if ([@"MultiInvoke" isEqualToString:call.method]) {
     NSArray<NSDictionary*> *allMethodCalls = call.arguments;
     NSMutableArray<NSObject *> *resultData = [NSMutableArray array];
@@ -672,8 +1139,23 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
     return resultData;
   }
   
+  else if ([@"AVCaptureDeviceInput(initWithDevice)" isEqualToString:call.method]) {
+    [[$AVCaptureDeviceInput alloc] initWithWrapperManager:_wrapperManager callbackChannel:_callbackChannel call:call];
+    return [NSNull null];
+  }
+  
+  else if ([@"AVCaptureSession()" isEqualToString:call.method]) {
+    [[$AVCaptureSession alloc] initWithWrapperManager:_wrapperManager callbackChannel:_callbackChannel call:call];
+    return [NSNull null];
+  }
+  
   else if ([@"UIView(initWithFrame)" isEqualToString:call.method]) {
     [[$UIView alloc] initWithWrapperManager:_wrapperManager callbackChannel:_callbackChannel call:call];
+    return [NSNull null];
+  }
+  
+  else if ([@"AVCaptureVideoPreviewLayer()" isEqualToString:call.method]) {
+    [[$AVCaptureVideoPreviewLayer alloc] initWithWrapperManager:_wrapperManager callbackChannel:_callbackChannel call:call];
     return [NSNull null];
   }
   
@@ -720,7 +1202,10 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
                                                  arguments:(id _Nullable)args {
   __block NSString *uniqueId = args;
   __block PlatformViewFrame *viewFrame = [[PlatformViewFrame alloc] init];
+  NSLog(@"%f", frame.size.width);
+  NSLog(@"%f", frame.size.height);
   viewFrame.frame = [[UIView alloc] initWithFrame:frame];
+  viewFrame.frame.backgroundColor = UIColor.greenColor;
   
   NSValue *rectValue = [NSValue valueWithBytes:&frame objCType:@encode(CGRect)];
   __block $CGRect *cgRectWrapper = [[$CGRect alloc] initWithWrapperManager:_wrapperManager
@@ -731,8 +1216,9 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   
   [_callbackChannel invokeMethod:@"CreateView"
                        arguments:callbackArguments
-                          result:^(id  _Nullable result) {
+                          result:^(id _Nullable result) {
                             [self->_wrapperManager addTemporaryWrapper:cgRectWrapper];
+                          
                             @try {
                               FlutterMethodCall *methodCall = [FlutterMethodCall methodCallWithMethodName:@"MultiInvoke" arguments:result];
                               [self->_methodCallHandler onMethodCall:methodCall];
