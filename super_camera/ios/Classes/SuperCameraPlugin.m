@@ -28,3 +28,13 @@
 }
 
 @end
+
+@implementation CAMAutoresizeLayerView
+- (void)layoutSubviews {
+  self.layer.frame = self.bounds;
+  NSArray<CALayer *> *sublayers = self.layer.sublayers;
+  if (sublayers) {
+    for (CALayer *layer in sublayers) layer.frame = self.bounds;
+  }
+}
+@end

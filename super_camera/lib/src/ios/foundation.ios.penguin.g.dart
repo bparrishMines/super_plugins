@@ -202,26 +202,23 @@ class $Array<T> extends IosWrapper {
 
 class $View extends IosWrapper {
   $View(String uniqueId)
-      : super(uniqueId: uniqueId, platformClassName: 'UIView');
+      : super(uniqueId: uniqueId, platformClassName: 'CAMAutoresizeLayerView');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
     switch (call.method) {
-      case 'UIView#layoutSubviews':
-        (this as View).layoutSubviews();
-        break;
     }
     throw UnimplementedError('No implementation for ${call.method}.');
   }
 
   MethodCall $ViewinitWithFrame(
-    CGRect rect,
+    CGRect frame,
   ) {
     return MethodCall(
-      'UIView(initWithFrame)',
+      'CAMAutoresizeLayerView(initWithFrame)',
       <String, dynamic>{
         r'$uniqueId': uniqueId,
-        'rect': (rect as Wrapper)?.uniqueId,
+        'frame': (frame as Wrapper)?.uniqueId,
       },
     );
   }
@@ -231,27 +228,11 @@ class $View extends IosWrapper {
     String $newUniqueId,
   }) {
     return MethodCall(
-      'UIView.layer',
+      'CAMAutoresizeLayerView.layer',
       <String, dynamic>{
         r'$uniqueId': uniqueId,
         r'$newUniqueId': $newUniqueId,
         if (layer != null) 'layer': (layer as Wrapper)?.uniqueId,
-      },
-    );
-  }
-
-  MethodCall $layoutSubviews([
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'UIView#layoutSubviews',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
-        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
-            ? _GenericHelper.getWrapperForType<void>('').platformClassName
-            : null,
       },
     );
   }

@@ -8,6 +8,8 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+#import "SuperCameraPlugin.h"
+
 
 @interface Wrapper : NSObject<FlutterPlatformView>
 @end
@@ -80,12 +82,12 @@
                                 _Nullable)value;
 @end
 
-@interface $UIView : Wrapper
+@interface $CAMAutoresizeLayerView : Wrapper
 - (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
                                 uniqueId:(NSString *_Nonnull)uniqueId
                                 value:(
                                 
-                                id<UIView>
+                                CAMAutoresizeLayerView *
                                 
                                 _Nullable)value;
 @end

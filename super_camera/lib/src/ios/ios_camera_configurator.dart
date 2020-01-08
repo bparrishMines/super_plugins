@@ -10,14 +10,14 @@ class IosCameraConfigurator implements CameraConfigurator {
     );
 
     _session.addInput(deviceInput);
-//    _view = ViewWidget(sublayers: <Layer>[
-//      CaptureVideoPreviewLayer()..session = _session,
-//    ]);
+    final View view = View.initWithFrame();
+    view.layer.addSublayer(CaptureVideoPreviewLayer()..session = _session);
+    _previewWidget = ViewWidget(view);
   }
 
   final CaptureDevice _captureDevice;
   final CaptureSession _session = CaptureSession();
-  ViewWidget _view;
+  ViewWidget _previewWidget;
 
   @override
   CameraDescription get cameraDescription => _captureDevice;
@@ -28,7 +28,7 @@ class IosCameraConfigurator implements CameraConfigurator {
   }
 
   @override
-  Future<Widget> getPreviewWidget() => Future<Widget>.value(_view);
+  Future<Widget> getPreviewWidget() => Future<Widget>.value(_previewWidget);
 
   @override
   Future<void> initialize() => Future<void>.value();

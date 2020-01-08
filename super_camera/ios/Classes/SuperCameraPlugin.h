@@ -2,3 +2,6 @@
 
 @interface SuperCameraPlugin : NSObject<FlutterPlugin>
 @end
+
+@interface CAMAutoresizeLayerView : UIView
+@end

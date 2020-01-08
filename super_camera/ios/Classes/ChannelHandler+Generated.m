@@ -245,7 +245,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
       
 :![call.arguments[@"device"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"device"]] getValue] : nil
   
-  error:![call.arguments[@"error"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"error"]] getValue] : nil
+  error:nil
   
     ];  
   }
@@ -629,15 +629,11 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 @end
 
-@interface $UIViewImpl : NSObject<UIView>
-@end
 
-@implementation $UIViewImpl
-@end
 
-@implementation $UIView {
+@implementation $CAMAutoresizeLayerView {
   
-  id<UIView>
+  CAMAutoresizeLayerView *
   
   _value;
 }
@@ -645,7 +641,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 - (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
                                        uniqueId:(NSString *_Nonnull)uniqueId
                                           value:(
-  id<UIView>
+  CAMAutoresizeLayerView *
    _Nullable)value {
   self = [super initWithWrapperManager:wrapperManager uniqueId:uniqueId];
   if (self) {
@@ -662,20 +658,15 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   
   self.callbackChannel = callbackChannel;
   
-  if ([@"UIView(initWithFrame)" isEqualToString:call.method]) {
-    _value = [[$UIViewImpl alloc] initWithFrame
+  if ([@"CAMAutoresizeLayerView(initWithFrame)" isEqualToString:call.method]) {
+    _value = [[CAMAutoresizeLayerView alloc] initWithFrame
       
-:[NSValue getCGRect:[[wrapperManager getWrapper:call.arguments[@"rect"]] getValue]]
+:[NSValue getCGRect:[[wrapperManager getWrapper:call.arguments[@"frame"]] getValue]]
   
     ];  
   }
   
   
-  
-  class_replaceMethod([(id)_value class], NSSelectorFromString(@"layoutSubviews"),
-    class_getMethodImplementation([self class], NSSelectorFromString(@"layoutSubviews$Callback")),
-    method_getTypeEncoding(class_getInstanceMethod([(id)_value class], NSSelectorFromString(@"layoutSubviews"))));  
-  objc_setAssociatedObject(_value, wrapperCallbackKey, self, OBJC_ASSOCIATION_RETAIN);
   
   
   return self;
@@ -689,19 +680,15 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 - (NSObject *)onMethodCall:(WrapperManager *)wrapperManager call:(FlutterMethodCall *_Nonnull)call {
-  if ([@"UIView#allocate" isEqualToString:call.method]) {
+  if ([@"CAMAutoresizeLayerView#allocate" isEqualToString:call.method]) {
     [self $allocate:wrapperManager];
     return [NSNull null];
-  } else if ([@"UIView#deallocate" isEqualToString:call.method]) {
+  } else if ([@"CAMAutoresizeLayerView#deallocate" isEqualToString:call.method]) {
     [self $deallocate:wrapperManager];
     return [NSNull null];
   }
   
-  else if ([@"UIView#layoutSubviews" isEqualToString:call.method]) {
-    return [self layoutSubviews:wrapperManager call:call];
-  }
-  
-  else if ([@"UIView.layer" isEqualToString:call.method]) {
+  else if ([@"CAMAutoresizeLayerView.layer" isEqualToString:call.method]) {
     return [self layer:wrapperManager call:call];
   }
   
@@ -709,11 +696,6 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   @throw [[NotImplementedException alloc] initWithMethod:call.method];
 }
 
-
-- (void)layoutSubviews$Callback {
-  $UIView *wrapper = objc_getAssociatedObject(self, wrapperCallbackKey);
-  [wrapper.callbackChannel invokeMethod:@"UIView#layoutSubviews" arguments:@{@"$uniqueId": wrapper.$uniqueId}];
-}
 
 
 
@@ -733,20 +715,6 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 
-
-- (NSObject *)layoutSubviews:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
-  
-  
-  
-  [_value layoutSubviews
-  
-  ]
-  
-  
-  ;
-  return [NSNull null];
-  
-}
 
 
 - (id)getValue {
@@ -1114,6 +1082,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 - (NSObject *)onMethodCall:(FlutterMethodCall *)call {
+  NSLog(@"%@", call.method);
   if ([@"MultiInvoke" isEqualToString:call.method]) {
     NSArray<NSDictionary*> *allMethodCalls = call.arguments;
     NSMutableArray<NSObject *> *resultData = [NSMutableArray array];
@@ -1141,8 +1110,8 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
     return [NSNull null];
   }
   
-  else if ([@"UIView(initWithFrame)" isEqualToString:call.method]) {
-    [[$UIView alloc] initWithWrapperManager:_wrapperManager callbackChannel:_callbackChannel call:call];
+  else if ([@"CAMAutoresizeLayerView(initWithFrame)" isEqualToString:call.method]) {
+    [[$CAMAutoresizeLayerView alloc] initWithWrapperManager:_wrapperManager callbackChannel:_callbackChannel call:call];
     return [NSNull null];
   }
   

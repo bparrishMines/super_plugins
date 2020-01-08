@@ -224,7 +224,7 @@ class Array<T> extends $Array<T> {
 }
 
 class ViewWidget extends StatefulWidget {
-  ViewWidget(this.view) {
+  ViewWidget(this.view) : assert(view != null) {
     Common.callbackHandler = _callbackHandler;
   }
 
@@ -235,92 +235,65 @@ class ViewWidget extends StatefulWidget {
 }
 
 class _ViewWidgetState extends State<ViewWidget> {
-  _ViewWidgetState();
-
-  @Constructor()
-  _ViewWidgetState.initWithFrame(CGRect rect);
-
-  bool created = false;
-
   @override
   void dispose() {
     super.dispose();
-    invoke<void>(Common.channel, [
-      widget.view.deallocate(),
-      widget.view.layer.deallocate(),
-    ]);
+    invoke<void>(Common.channel, [widget.view.deallocate()]);
     _callbackHandler.removeWrapper(widget.view);
-  }
-
-  Iterable<MethodCall> handlePreviewLayer(CaptureVideoPreviewLayer layer) {
-    final CaptureSession session = layer._session;
-    if (session != null && !session._isAllocated) {
-      session.addOnAllocatedCallback(
-        (CaptureSession session) async => <MethodCall>[
-          layer.$session(session: session),
-        ],
-      );
-    }
-
-    session?.addOnDeallocatedCallback(
-      (CaptureSession session) async => <MethodCall>[
-        layer.deallocate(),
-      ],
-    );
-
-    return <MethodCall>[
-      ...layer.methodCallStorageHelper.methodCalls,
-      if (session != null && session._isAllocated)
-        layer.$session(session: session),
-      layer.allocate(),
-    ];
   }
 
   @override
   void initState() {
     super.initState();
-//    view = $_ViewState(Common.uuid.v4(), onCreateView: (CGRect cgRect) {
-//      created = true;
-//
-//      final Iterable<MethodCall> sublayerCalls = widget.sublayers
-//          .expand<MethodCall>((Layer sublayer) =>
-//              sublayer is CaptureVideoPreviewLayer
-//                  ? handlePreviewLayer(sublayer)
-//                  : sublayer.methodCallStorageHelper.methodCalls);
-//
-//      return <MethodCall>[
-//        view.$_ViewStateinitWithFrame(cgRect),
-//        view.allocate(),
-//        ...sublayerCalls,
-//        view.$layer($newUniqueId: layer.uniqueId),
-//        layer.allocate(),
-//        for (Layer sublayer in widget.sublayers) layer.$addSublayer(sublayer),
-//      ];
-//    });
     _callbackHandler.addWrapper(widget.view);
   }
 
   @override
   Widget build(BuildContext context) {
+    final View view = widget.view;
+    if (view._isCreated) {
+      invoke<void>(Common.channel, [
+        ...view.methodCallStorageHelper.methodCalls,
+        view.$layer($newUniqueId: widget.view.layer.uniqueId),
+        ...view.layer.methodCallStorageHelper.methodCalls,
+      ]);
+      widget.view.methodCallStorageHelper.clearMethodCalls();
+      widget.view.layer.methodCallStorageHelper.clearMethodCalls();
+    }
     return UiKitView(
       viewType: '${Common.channel.name}/views',
-      creationParams: widget.view.uniqueId,
+      creationParams: view.uniqueId,
       creationParamsCodec: const StandardMessageCodec(),
     );
   }
 }
 
-@Class(IosPlatform(IosType('UIView')))
+@Class(IosPlatform(IosType('CAMAutoresizeLayerView', import: '"SuperCameraPlugin.h"')))
 class View extends $View {
   @Constructor()
-  View.initWithFrame(CGRect rect) : super(Common.uuid.v4());
+  View.initWithFrame([CGRect frame]) : super(Common.uuid.v4());
+
+  bool _isCreated = false;
 
   @Field()
   final Layer layer = Layer._(Common.uuid.v4());
 
-  @Method(callback: true)
-  void layoutSubviews() {
-    print('oooooowe');
+  @override
+  FutureOr<Iterable<MethodCall>> onCreateView(CGRect frame) {
+    final List<MethodCall> methodCalls = methodCallStorageHelper.methodCalls;
+    final List<MethodCall> layerMethodCalls =
+        layer.methodCallStorageHelper.methodCalls;
+    methodCallStorageHelper.clearMethodCalls();
+    layer.methodCallStorageHelper.clearMethodCalls();
+
+    _isCreated = true;
+    return <MethodCall>[
+      $ViewinitWithFrame(frame),
+      $layer($newUniqueId: layer.uniqueId),
+      ...methodCalls,
+      ...layerMethodCalls,
+      allocate(),
+    ];
   }
 
   static FutureOr onAllocated($View wrapper) => throw UnimplementedError();
@@ -335,10 +308,27 @@ class CaptureVideoPreviewLayer extends $CaptureVideoPreviewLayer
     methodCallStorageHelper.store($CaptureVideoPreviewLayer$Default());
   }
 
-  CaptureSession _session;
-
   @Field()
-  set session(CaptureSession session) => _session = session;
+  set session(CaptureSession session) {
+    if (session != null && !session._isAllocated) {
+      session.addOnAllocatedCallback(
+        (CaptureSession session) async => <MethodCall>[
+          //$session(session: session),
+        ],
+      );
+    }
+
+    session?.addOnDeallocatedCallback(
+      (CaptureSession session) async => <MethodCall>[
+        deallocate(),
+      ],
+    );
+
+    methodCallStorageHelper.replaceAll(<MethodCall>[
+      allocate(),
+      $session(session: session),
+    ]);
+  }
 
   @override
   void addSublayer(Layer layer) => throw UnimplementedError();
@@ -353,7 +343,7 @@ class Layer extends $Layer {
 
   @Method()
   void addSublayer(Layer layer) {
-    methodCallStorageHelper.replaceAll([
+    methodCallStorageHelper.storeAll([
       ...layer.methodCallStorageHelper.methodCalls,
       $addSublayer(layer),
     ]);
