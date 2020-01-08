@@ -3,6 +3,7 @@
 // **************************************************************************
 // PenguinGenerator
 // **************************************************************************
+
 #import <Flutter/Flutter.h>
 
 #import <AVFoundation/AVFoundation.h>
@@ -84,7 +85,7 @@
                                 uniqueId:(NSString *_Nonnull)uniqueId
                                 value:(
                                 
-                                UIView *
+                                id<UIView>
                                 
                                 _Nullable)value;
 @end

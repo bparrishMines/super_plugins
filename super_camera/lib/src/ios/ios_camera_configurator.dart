@@ -10,14 +10,14 @@ class IosCameraConfigurator implements CameraConfigurator {
     );
 
     _session.addInput(deviceInput);
-    _view = View(sublayers: <Layer>[
-      CaptureVideoPreviewLayer()..session = _session,
-    ]);
+//    _view = ViewWidget(sublayers: <Layer>[
+//      CaptureVideoPreviewLayer()..session = _session,
+//    ]);
   }
 
   final CaptureDevice _captureDevice;
   final CaptureSession _session = CaptureSession();
-  View _view;
+  ViewWidget _view;
 
   @override
   CameraDescription get cameraDescription => _captureDevice;

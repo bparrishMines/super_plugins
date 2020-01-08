@@ -1,14 +1,14 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// PenguinGenerator
+// **************************************************************************
+
 part of 'camera.dart';
 
 class $Camera extends AndroidWrapper {
-  $Camera(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'Camera',
-          onCreateView: onCreateView,
-        );
+  $Camera(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'Camera');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -136,14 +136,8 @@ class $Camera extends AndroidWrapper {
 }
 
 class $CameraInfo extends AndroidWrapper {
-  $CameraInfo(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'CameraCameraInfo',
-          onCreateView: onCreateView,
-        );
+  $CameraInfo(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'CameraCameraInfo');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {

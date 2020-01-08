@@ -3,6 +3,7 @@
 // **************************************************************************
 // PenguinGenerator
 // **************************************************************************
+
 package super_plugins.super_camera;
 
 import android.content.Context;
@@ -189,7 +190,7 @@ public class ChannelGenerated {
             }
           }
         
-        case "TextureView(forCodeGen)": {
+        case "TextureView()": {
             if (Build.VERSION.SDK_INT >= 16) {
               new $TextureView(this, wrapperManager, callbackChannel, call);
               return null;
@@ -1625,7 +1626,7 @@ public class ChannelGenerated {
       super((String) call.argument("$uniqueId"));
       switch(call.method) {
         
-        case "TextureView(forCodeGen)":
+        case "TextureView()":
           this.$value = new TextureView(
           
       call.argument("context") != null ? (Context) wrapperManager.getWrapper((String) call.argument("context")).$getValue() : null

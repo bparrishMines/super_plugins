@@ -1,14 +1,14 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// PenguinGenerator
+// **************************************************************************
+
 part of 'camerax.dart';
 
 class $UseCase extends AndroidWrapper {
-  $UseCase(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'UseCase',
-          onCreateView: onCreateView,
-        );
+  $UseCase(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'UseCase');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -19,14 +19,8 @@ class $UseCase extends AndroidWrapper {
 }
 
 class $LensFacing extends AndroidWrapper {
-  $LensFacing(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'LensFacing',
-          onCreateView: onCreateView,
-        );
+  $LensFacing(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'LensFacing');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -63,14 +57,8 @@ class $LensFacing extends AndroidWrapper {
 }
 
 class $CameraInfoX extends AndroidWrapper {
-  $CameraInfoX(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'CameraInfo',
-          onCreateView: onCreateView,
-        );
+  $CameraInfoX(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'CameraInfo');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -97,14 +85,8 @@ class $CameraInfoX extends AndroidWrapper {
 }
 
 class $CameraX extends AndroidWrapper {
-  $CameraX(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'CameraX',
-          onCreateView: onCreateView,
-        );
+  $CameraX(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'CameraX');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -166,14 +148,8 @@ class $CameraX extends AndroidWrapper {
 }
 
 class $LifecycleOwner extends AndroidWrapper {
-  $LifecycleOwner(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'LifecycleOwner',
-          onCreateView: onCreateView,
-        );
+  $LifecycleOwner(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'LifecycleOwner');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -184,14 +160,8 @@ class $LifecycleOwner extends AndroidWrapper {
 }
 
 class $Preview extends AndroidWrapper {
-  $Preview(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'Preview',
-          onCreateView: onCreateView,
-        );
+  $Preview(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'Preview');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -232,14 +202,10 @@ class $Preview extends AndroidWrapper {
 }
 
 class $OnPreviewOutputUpdateListener extends AndroidWrapper {
-  $OnPreviewOutputUpdateListener(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'OnPreviewOutputUpdateListener',
-          onCreateView: onCreateView,
-        );
+  $OnPreviewOutputUpdateListener(String uniqueId)
+      : super(
+            uniqueId: uniqueId,
+            platformClassName: 'OnPreviewOutputUpdateListener');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -283,14 +249,8 @@ class $OnPreviewOutputUpdateListener extends AndroidWrapper {
 }
 
 class $PreviewOutput extends AndroidWrapper {
-  $PreviewOutput(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'PreviewOutput',
-          onCreateView: onCreateView,
-        );
+  $PreviewOutput(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'PreviewOutput');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -317,14 +277,8 @@ class $PreviewOutput extends AndroidWrapper {
 }
 
 class $PreviewConfig extends AndroidWrapper {
-  $PreviewConfig(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'PreviewConfig',
-          onCreateView: onCreateView,
-        );
+  $PreviewConfig(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'PreviewConfig');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -335,14 +289,8 @@ class $PreviewConfig extends AndroidWrapper {
 }
 
 class $PreviewConfigBuilder extends AndroidWrapper {
-  $PreviewConfigBuilder(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'PreviewConfigBuilder',
-          onCreateView: onCreateView,
-        );
+  $PreviewConfigBuilder(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'PreviewConfigBuilder');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -395,15 +343,9 @@ class $PreviewConfigBuilder extends AndroidWrapper {
   }
 }
 
-class $_TextureViewState extends AndroidWrapper {
-  $_TextureViewState(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'TextureView',
-          onCreateView: onCreateView,
-        );
+class $TextureView extends AndroidWrapper {
+  $TextureView(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'TextureView');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -412,11 +354,11 @@ class $_TextureViewState extends AndroidWrapper {
     throw UnimplementedError('No implementation for ${call.method}.');
   }
 
-  MethodCall $_TextureViewStateforCodeGen(
+  MethodCall $TextureView$Default(
     Context context,
   ) {
     return MethodCall(
-      'TextureView(forCodeGen)',
+      'TextureView()',
       <String, dynamic>{
         r'$uniqueId': uniqueId,
         'context': (context as Wrapper)?.uniqueId,
@@ -469,8 +411,8 @@ class _GenericHelper {
       return $PreviewConfig(uniqueId);
     } else if (isTypeOf<T, PreviewConfigBuilder>()) {
       return $PreviewConfigBuilder(uniqueId);
-    } else if (isTypeOf<T, _TextureViewState>()) {
-      return $_TextureViewState(uniqueId);
+    } else if (isTypeOf<T, TextureView>()) {
+      return $TextureView(uniqueId);
     } else if (isTypeOf<T, SurfaceTexture>()) {
       return $SurfaceTexture(uniqueId);
     } else if (isTypeOf<T, Context>()) {
@@ -502,8 +444,8 @@ class _GenericHelper {
       return PreviewConfig.onAllocated(wrapper as $PreviewConfig);
     } else if (wrapper is $PreviewConfigBuilder) {
       return PreviewConfigBuilder.onAllocated(wrapper as $PreviewConfigBuilder);
-    } else if (wrapper is $_TextureViewState) {
-      return _TextureViewState.onAllocated(wrapper as $_TextureViewState);
+    } else if (wrapper is $TextureView) {
+      return TextureView.onAllocated(wrapper as $TextureView);
     } else if (wrapper is $SurfaceTexture) {
       return SurfaceTexture.onAllocated(wrapper as $SurfaceTexture);
     } else if (wrapper is $Context) {

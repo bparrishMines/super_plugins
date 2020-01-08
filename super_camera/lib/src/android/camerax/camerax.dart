@@ -254,7 +254,7 @@ class LifecycleOwner extends $LifecycleOwner {
 /// [Preview] [OnPreviewOutputUpdateListener] can be used to create a correct
 /// transformation matrix for display. See
 /// setOnPreviewOutputUpdateListener(OnPreviewOutputUpdateListener) for notes if
-/// attaching the SurfaceTexture to [TextureView].
+/// attaching the SurfaceTexture to [TextureViewWidget].
 ///
 /// The application is responsible for managing SurfaceTexture after receiving
 /// it.
@@ -417,79 +417,75 @@ class PreviewConfigBuilder extends $PreviewConfigBuilder {
 ///
 /// This is typically used in conjunction with the [SurfaceTexture] received
 /// from [PreviewOutput].
-class TextureView extends StatefulWidget {
-  TextureView(this.surfaceTexture);
+class TextureViewWidget extends StatefulWidget {
+  TextureViewWidget(this.textureView) : assert(textureView != null);
 
-  /// The source of the camera data displayed by this widget.
-  final SurfaceTexture surfaceTexture;
+  /// Android view used to display this widget.
+  final TextureView textureView;
 
   @override
-  State<StatefulWidget> createState() => _TextureViewState();
+  State<StatefulWidget> createState() => _TextureViewWidgetState();
 }
 
-@Class(AndroidPlatform(
-  AndroidType('	android.view', <String>['TextureView']),
-))
-class _TextureViewState extends State<TextureView> {
-  _TextureViewState();
-
-  @Constructor()
-  _TextureViewState.forCodeGen(Context context);
-
-  $_TextureViewState textureView;
-
-  bool created = false;
-
-  @Method()
-  void setSurfaceTexture(SurfaceTexture surfaceTexture) {
-    // Do nothing
-  }
-
+class _TextureViewWidgetState extends State<TextureViewWidget> {
   @override
   void initState() {
     super.initState();
-    textureView = $_TextureViewState(
-      Common.uuid.v4(),
-      onCreateView: (Context context) {
-        created = true;
-
-        return <MethodCall>[
-          textureView.$_TextureViewStateforCodeGen(context),
-          textureView.allocate(),
-          if (widget.surfaceTexture != null)
-            textureView.$setSurfaceTexture(widget.surfaceTexture)
-        ];
-
-
-      },
-    );
-
-
-    CameraX._callbackHandler.addWrapper(textureView);
+    CameraX._callbackHandler.addWrapper(widget.textureView);
   }
 
   @override
   void dispose() {
     super.dispose();
-    invoke(Common.channel, [textureView.deallocate()]);
-    CameraX._callbackHandler.removeWrapper(textureView);
+    invoke(Common.channel, [widget.textureView.deallocate()]);
+    CameraX._callbackHandler.removeWrapper(widget.textureView);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.surfaceTexture != null && created) {
-      invoke(
+    if (widget.textureView._isCreated) {
+      invoke<void>(
         Common.channel,
-        [textureView.$setSurfaceTexture(widget.surfaceTexture)],
+        widget.textureView.methodCallStorageHelper.methodCalls,
       );
+      widget.textureView.methodCallStorageHelper.clearMethodCalls();
     }
     return AndroidView(
       viewType: '${Common.channel.name}/views',
-      creationParams: textureView.uniqueId,
+      creationParams: widget.textureView.uniqueId,
       creationParamsCodec: const StandardMessageCodec(),
     );
   }
+}
 
-  static FutureOr onAllocated($_TextureViewState wrapper) =>
+@Class(AndroidPlatform(
+  AndroidType('	android.view', <String>['TextureView']),
+))
+class TextureView extends $TextureView {
+  @Constructor()
+  TextureView([Context context]) : super(Common.uuid.v4());
+
+  bool _isCreated = false;
+
+  /// Sets the source of the camera data displayed by this widget.
+  @Method()
+  void setSurfaceTexture(SurfaceTexture surfaceTexture) {
+    methodCallStorageHelper.replace($setSurfaceTexture(surfaceTexture));
+  }
+
+  @override
+  FutureOr<Iterable<MethodCall>> onCreateView(Context context) {
+    final List<MethodCall> methodCalls = methodCallStorageHelper.methodCalls;
+    methodCallStorageHelper.clearMethodCalls();
+
+    _isCreated = true;
+    return <MethodCall>[
+      $TextureView$Default(context),
+      ...methodCalls,
+      allocate(),
+    ];
+  }
+
+  static FutureOr onAllocated($TextureView wrapper) =>
       throw UnimplementedError();
 }

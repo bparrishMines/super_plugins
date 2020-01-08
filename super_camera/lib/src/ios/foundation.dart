@@ -223,39 +223,33 @@ class Array<T> extends $Array<T> {
   }
 }
 
-class View extends StatefulWidget {
-  View({this.sublayers = const <Layer>[]}) {
+class ViewWidget extends StatefulWidget {
+  ViewWidget(this.view) {
     Common.callbackHandler = _callbackHandler;
   }
 
-  final List<Layer> sublayers;
+  final View view;
 
   @override
-  State<StatefulWidget> createState() => _ViewState();
+  State<StatefulWidget> createState() => _ViewWidgetState();
 }
 
-@Class(IosPlatform(IosType('UIView')))
-class _ViewState extends State<View> {
-  _ViewState();
+class _ViewWidgetState extends State<ViewWidget> {
+  _ViewWidgetState();
 
   @Constructor()
-  _ViewState.initWithFrame(CGRect rect);
+  _ViewWidgetState.initWithFrame(CGRect rect);
 
   bool created = false;
-
-  $_ViewState view;
-
-  @Field()
-  final Layer layer = Layer._(Common.uuid.v4());
 
   @override
   void dispose() {
     super.dispose();
     invoke<void>(Common.channel, [
-      view.deallocate(),
-      layer.deallocate(),
+      widget.view.deallocate(),
+      widget.view.layer.deallocate(),
     ]);
-    _callbackHandler.removeWrapper(view);
+    _callbackHandler.removeWrapper(widget.view);
   }
 
   Iterable<MethodCall> handlePreviewLayer(CaptureVideoPreviewLayer layer) {
@@ -285,38 +279,51 @@ class _ViewState extends State<View> {
   @override
   void initState() {
     super.initState();
-    view = $_ViewState(Common.uuid.v4(), onCreateView: (CGRect cgRect) {
-      created = true;
-
-      final Iterable<MethodCall> sublayerCalls = widget.sublayers
-          .expand<MethodCall>((Layer sublayer) =>
-              sublayer is CaptureVideoPreviewLayer
-                  ? handlePreviewLayer(sublayer)
-                  : sublayer.methodCallStorageHelper.methodCalls);
-
-      return <MethodCall>[
-        view.$_ViewStateinitWithFrame(cgRect),
-        view.allocate(),
-        ...sublayerCalls,
-        view.$layer($newUniqueId: layer.uniqueId),
-        layer.allocate(),
-        for (Layer sublayer in widget.sublayers) layer.$addSublayer(sublayer),
-      ];
-    });
-    _callbackHandler.addWrapper(view);
+//    view = $_ViewState(Common.uuid.v4(), onCreateView: (CGRect cgRect) {
+//      created = true;
+//
+//      final Iterable<MethodCall> sublayerCalls = widget.sublayers
+//          .expand<MethodCall>((Layer sublayer) =>
+//              sublayer is CaptureVideoPreviewLayer
+//                  ? handlePreviewLayer(sublayer)
+//                  : sublayer.methodCallStorageHelper.methodCalls);
+//
+//      return <MethodCall>[
+//        view.$_ViewStateinitWithFrame(cgRect),
+//        view.allocate(),
+//        ...sublayerCalls,
+//        view.$layer($newUniqueId: layer.uniqueId),
+//        layer.allocate(),
+//        for (Layer sublayer in widget.sublayers) layer.$addSublayer(sublayer),
+//      ];
+//    });
+    _callbackHandler.addWrapper(widget.view);
   }
 
   @override
   Widget build(BuildContext context) {
     return UiKitView(
       viewType: '${Common.channel.name}/views',
-      creationParams: view.uniqueId,
+      creationParams: widget.view.uniqueId,
       creationParamsCodec: const StandardMessageCodec(),
     );
   }
+}
 
-  static FutureOr onAllocated($_ViewState wrapper) =>
-      throw UnimplementedError();
+@Class(IosPlatform(IosType('UIView')))
+class View extends $View {
+  @Constructor()
+  View.initWithFrame(CGRect rect) : super(Common.uuid.v4());
+
+  @Field()
+  final Layer layer = Layer._(Common.uuid.v4());
+
+  @Method(callback: true)
+  void layoutSubviews() {
+    print('oooooowe');
+  }
+
+  static FutureOr onAllocated($View wrapper) => throw UnimplementedError();
 }
 
 @Class(IosPlatform(IosType('AVCaptureVideoPreviewLayer',

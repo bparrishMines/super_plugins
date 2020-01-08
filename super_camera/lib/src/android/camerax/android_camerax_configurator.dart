@@ -14,13 +14,13 @@ class AndroidCameraXConfigurator extends CameraConfigurator {
   AndroidCameraXConfigurator(CameraInfoX infoX) : super(infoX);
 
   Completer<void> _initializeCompleter = Completer<void>();
-  TextureView _textureView;
+  TextureViewWidget _previewWidget;
 
   @override
   Future<Widget> getPreviewWidget() async {
     super.getPreviewWidget();
     await _initializeCompleter.future;
-    return _textureView;
+    return _previewWidget;
   }
 
   @override
@@ -34,7 +34,9 @@ class AndroidCameraXConfigurator extends CameraConfigurator {
       ..setOnPreviewOutputUpdateListener(
         _OnPreviewOutputUpdateListenerImpl(
           (PreviewOutput previewOutput) {
-            _textureView = TextureView(previewOutput.getSurfaceTexture());
+            final TextureView textureView = TextureView()
+              ..setSurfaceTexture(previewOutput.getSurfaceTexture());
+            _previewWidget = TextureViewWidget(textureView);
             _initializeCompleter.complete();
           },
         ),
@@ -60,7 +62,7 @@ class AndroidCameraXConfigurator extends CameraConfigurator {
   Future<void> dispose() {
     super.dispose();
 
-    _textureView = null;
+    _previewWidget = null;
     return CameraX.unbindAll();
   }
 }

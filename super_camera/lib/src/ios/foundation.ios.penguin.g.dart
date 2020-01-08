@@ -1,14 +1,14 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// PenguinGenerator
+// **************************************************************************
+
 part of 'foundation.dart';
 
 class $NSError extends IosWrapper {
-  $NSError(
-    String uniqueId, {
-    List<MethodCall> Function(CGRect cgRect) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'NSError',
-          onCreateView: onCreateView,
-        );
+  $NSError(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'NSError');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -19,14 +19,8 @@ class $NSError extends IosWrapper {
 }
 
 class $CaptureDeviceInput extends IosWrapper {
-  $CaptureDeviceInput(
-    String uniqueId, {
-    List<MethodCall> Function(CGRect cgRect) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'AVCaptureDeviceInput',
-          onCreateView: onCreateView,
-        );
+  $CaptureDeviceInput(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'AVCaptureDeviceInput');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -51,14 +45,8 @@ class $CaptureDeviceInput extends IosWrapper {
 }
 
 class $CaptureSession extends IosWrapper {
-  $CaptureSession(
-    String uniqueId, {
-    List<MethodCall> Function(CGRect cgRect) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'AVCaptureSession',
-          onCreateView: onCreateView,
-        );
+  $CaptureSession(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'AVCaptureSession');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -112,14 +100,8 @@ class $CaptureSession extends IosWrapper {
 }
 
 class $CaptureDevice extends IosWrapper {
-  $CaptureDevice(
-    String uniqueId, {
-    List<MethodCall> Function(CGRect cgRect) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'AVCaptureDevice',
-          onCreateView: onCreateView,
-        );
+  $CaptureDevice(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'AVCaptureDevice');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -175,14 +157,8 @@ class $CaptureDevice extends IosWrapper {
 }
 
 class $Array<T> extends IosWrapper {
-  $Array(
-    String uniqueId, {
-    List<MethodCall> Function(CGRect cgRect) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'NSArray',
-          onCreateView: onCreateView,
-        );
+  $Array(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'NSArray');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -224,24 +200,21 @@ class $Array<T> extends IosWrapper {
   }
 }
 
-class $_ViewState extends IosWrapper {
-  $_ViewState(
-    String uniqueId, {
-    List<MethodCall> Function(CGRect cgRect) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'UIView',
-          onCreateView: onCreateView,
-        );
+class $View extends IosWrapper {
+  $View(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'UIView');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
     switch (call.method) {
+      case 'UIView#layoutSubviews':
+        (this as View).layoutSubviews();
+        break;
     }
     throw UnimplementedError('No implementation for ${call.method}.');
   }
 
-  MethodCall $_ViewStateinitWithFrame(
+  MethodCall $ViewinitWithFrame(
     CGRect rect,
   ) {
     return MethodCall(
@@ -266,17 +239,29 @@ class $_ViewState extends IosWrapper {
       },
     );
   }
+
+  MethodCall $layoutSubviews([
+    String $newUniqueId,
+  ]) {
+    return MethodCall(
+      'UIView#layoutSubviews',
+      <String, dynamic>{
+        r'$uniqueId': uniqueId,
+        r'$newUniqueId': $newUniqueId,
+        r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+            ? _GenericHelper.getWrapperForType<void>('').platformClassName
+            : null,
+      },
+    );
+  }
 }
 
 class $CaptureVideoPreviewLayer extends IosWrapper {
-  $CaptureVideoPreviewLayer(
-    String uniqueId, {
-    List<MethodCall> Function(CGRect cgRect) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'AVCaptureVideoPreviewLayer',
-          onCreateView: onCreateView,
-        );
+  $CaptureVideoPreviewLayer(String uniqueId)
+      : super(
+            uniqueId: uniqueId,
+            platformClassName: 'AVCaptureVideoPreviewLayer');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -328,14 +313,8 @@ class $CaptureVideoPreviewLayer extends IosWrapper {
 }
 
 class $Layer extends IosWrapper {
-  $Layer(
-    String uniqueId, {
-    List<MethodCall> Function(CGRect cgRect) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'CALayer',
-          onCreateView: onCreateView,
-        );
+  $Layer(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'CALayer');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -379,8 +358,8 @@ class _GenericHelper {
       return $CaptureDevice(uniqueId);
     } else if (isTypeOf<T, Array>()) {
       return $Array(uniqueId);
-    } else if (isTypeOf<T, _ViewState>()) {
-      return $_ViewState(uniqueId);
+    } else if (isTypeOf<T, View>()) {
+      return $View(uniqueId);
     } else if (isTypeOf<T, CaptureVideoPreviewLayer>()) {
       return $CaptureVideoPreviewLayer(uniqueId);
     } else if (isTypeOf<T, Layer>()) {
@@ -403,8 +382,8 @@ class _GenericHelper {
       return CaptureDevice.onAllocated(wrapper as $CaptureDevice);
     } else if (wrapper is $Array) {
       return Array.onAllocated(wrapper as $Array);
-    } else if (wrapper is $_ViewState) {
-      return _ViewState.onAllocated(wrapper as $_ViewState);
+    } else if (wrapper is $View) {
+      return View.onAllocated(wrapper as $View);
     } else if (wrapper is $CaptureVideoPreviewLayer) {
       return CaptureVideoPreviewLayer.onAllocated(
           wrapper as $CaptureVideoPreviewLayer);

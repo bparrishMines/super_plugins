@@ -1,14 +1,14 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+// **************************************************************************
+// PenguinGenerator
+// **************************************************************************
+
 part of 'texture_registry.dart';
 
 class $SurfaceTextureEntry extends AndroidWrapper {
-  $SurfaceTextureEntry(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'SurfaceTextureEntry',
-          onCreateView: onCreateView,
-        );
+  $SurfaceTextureEntry(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'SurfaceTextureEntry');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -67,14 +67,8 @@ class $SurfaceTextureEntry extends AndroidWrapper {
 }
 
 class $SurfaceTexture extends AndroidWrapper {
-  $SurfaceTexture(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'SurfaceTexture',
-          onCreateView: onCreateView,
-        );
+  $SurfaceTexture(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'SurfaceTexture');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -85,14 +79,8 @@ class $SurfaceTexture extends AndroidWrapper {
 }
 
 class $TextureRegistry extends AndroidWrapper {
-  $TextureRegistry(
-    String uniqueId, {
-    List<MethodCall> Function(Context context) onCreateView,
-  }) : super(
-          uniqueId: uniqueId,
-          platformClassName: 'TextureRegistry',
-          onCreateView: onCreateView,
-        );
+  $TextureRegistry(String uniqueId)
+      : super(uniqueId: uniqueId, platformClassName: 'TextureRegistry');
 
   @override
   Future<void> onMethodCall(MethodCall call) async {

@@ -3,6 +3,7 @@
 // **************************************************************************
 // PenguinGenerator
 // **************************************************************************
+
 #include <objc/message.h>
   
 #import "ChannelHandler+Generated.h"
@@ -628,11 +629,15 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 @end
 
+@interface $UIViewImpl : NSObject<UIView>
+@end
 
+@implementation $UIViewImpl
+@end
 
 @implementation $UIView {
   
-  UIView *
+  id<UIView>
   
   _value;
 }
@@ -640,7 +645,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 - (instancetype _Nonnull)initWithWrapperManager:(WrapperManager *_Nonnull)wrapperManager
                                        uniqueId:(NSString *_Nonnull)uniqueId
                                           value:(
-  UIView *
+  id<UIView>
    _Nullable)value {
   self = [super initWithWrapperManager:wrapperManager uniqueId:uniqueId];
   if (self) {
@@ -658,7 +663,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   self.callbackChannel = callbackChannel;
   
   if ([@"UIView(initWithFrame)" isEqualToString:call.method]) {
-    _value = [[UIView alloc] initWithFrame
+    _value = [[$UIViewImpl alloc] initWithFrame
       
 :[NSValue getCGRect:[[wrapperManager getWrapper:call.arguments[@"rect"]] getValue]]
   
@@ -666,6 +671,11 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   }
   
   
+  
+  class_replaceMethod([(id)_value class], NSSelectorFromString(@"layoutSubviews"),
+    class_getMethodImplementation([self class], NSSelectorFromString(@"layoutSubviews$Callback")),
+    method_getTypeEncoding(class_getInstanceMethod([(id)_value class], NSSelectorFromString(@"layoutSubviews"))));  
+  objc_setAssociatedObject(_value, wrapperCallbackKey, self, OBJC_ASSOCIATION_RETAIN);
   
   
   return self;
@@ -687,6 +697,10 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
     return [NSNull null];
   }
   
+  else if ([@"UIView#layoutSubviews" isEqualToString:call.method]) {
+    return [self layoutSubviews:wrapperManager call:call];
+  }
+  
   else if ([@"UIView.layer" isEqualToString:call.method]) {
     return [self layer:wrapperManager call:call];
   }
@@ -695,6 +709,11 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   @throw [[NotImplementedException alloc] initWithMethod:call.method];
 }
 
+
+- (void)layoutSubviews$Callback {
+  $UIView *wrapper = objc_getAssociatedObject(self, wrapperCallbackKey);
+  [wrapper.callbackChannel invokeMethod:@"UIView#layoutSubviews" arguments:@{@"$uniqueId": wrapper.$uniqueId}];
+}
 
 
 
@@ -714,6 +733,20 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 
+
+- (NSObject *)layoutSubviews:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
+  
+  
+  
+  [_value layoutSubviews
+  
+  ]
+  
+  
+  ;
+  return [NSNull null];
+  
+}
 
 
 - (id)getValue {
