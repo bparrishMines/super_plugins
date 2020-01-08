@@ -471,10 +471,10 @@ class _GenericHelper {
       return $PreviewConfigBuilder(uniqueId);
     } else if (isTypeOf<T, _TextureViewState>()) {
       return $_TextureViewState(uniqueId);
-    } else if (isTypeOf<T, Context>()) {
-      return $Context(uniqueId);
     } else if (isTypeOf<T, SurfaceTexture>()) {
       return $SurfaceTexture(uniqueId);
+    } else if (isTypeOf<T, Context>()) {
+      return $Context(uniqueId);
     }
 
     throw UnsupportedError('Could not instantiate class ${T.toString()}');
@@ -504,10 +504,10 @@ class _GenericHelper {
       return PreviewConfigBuilder.onAllocated(wrapper as $PreviewConfigBuilder);
     } else if (wrapper is $_TextureViewState) {
       return _TextureViewState.onAllocated(wrapper as $_TextureViewState);
-    } else if (wrapper is $Context) {
-      return Context.onAllocated(wrapper as $Context);
     } else if (wrapper is $SurfaceTexture) {
       return SurfaceTexture.onAllocated(wrapper as $SurfaceTexture);
+    } else if (wrapper is $Context) {
+      return Context.onAllocated(wrapper as $Context);
     }
 
     throw UnsupportedError(

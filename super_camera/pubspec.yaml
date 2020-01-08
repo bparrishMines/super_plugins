@@ -15,7 +15,9 @@ dependencies:
   uuid: 2.0.1
   flutter_plugin_android_lifecycle: ^1.0.3
   penguin_plugin:
-    path: ../../penguin/penguin_plugin
+    git:
+      url: git://github.com/bparrishMines/penguin.git
+      path: penguin_plugin
   penguin:
     git:
       url: git://github.com/bparrishMines/penguin.git

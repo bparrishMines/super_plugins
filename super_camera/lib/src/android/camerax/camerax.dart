@@ -452,14 +452,19 @@ class _TextureViewState extends State<TextureView> {
       Common.uuid.v4(),
       onCreateView: (Context context) {
         created = true;
+
         return <MethodCall>[
           textureView.$_TextureViewStateforCodeGen(context),
           textureView.allocate(),
           if (widget.surfaceTexture != null)
             textureView.$setSurfaceTexture(widget.surfaceTexture)
         ];
+
+
       },
     );
+
+
     CameraX._callbackHandler.addWrapper(textureView);
   }
 

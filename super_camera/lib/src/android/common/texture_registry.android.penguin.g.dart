@@ -130,8 +130,6 @@ class _GenericHelper {
       return $SurfaceTexture(uniqueId);
     } else if (isTypeOf<T, TextureRegistry>()) {
       return $TextureRegistry(uniqueId);
-    } else if (isTypeOf<T, Context>()) {
-      return $Context(uniqueId);
     }
 
     throw UnsupportedError('Could not instantiate class ${T.toString()}');
@@ -144,8 +142,6 @@ class _GenericHelper {
       return SurfaceTexture.onAllocated(wrapper as $SurfaceTexture);
     } else if (wrapper is $TextureRegistry) {
       return TextureRegistry.onAllocated(wrapper as $TextureRegistry);
-    } else if (wrapper is $Context) {
-      return Context.onAllocated(wrapper as $Context);
     }
 
     throw UnsupportedError(

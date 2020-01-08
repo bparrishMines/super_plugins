@@ -200,8 +200,6 @@ class _GenericHelper {
       return $Camera(uniqueId);
     } else if (isTypeOf<T, CameraInfo>()) {
       return $CameraInfo(uniqueId);
-    } else if (isTypeOf<T, Context>()) {
-      return $Context(uniqueId);
     } else if (isTypeOf<T, SurfaceTexture>()) {
       return $SurfaceTexture(uniqueId);
     }
@@ -214,8 +212,6 @@ class _GenericHelper {
       return Camera.onAllocated(wrapper as $Camera);
     } else if (wrapper is $CameraInfo) {
       return CameraInfo.onAllocated(wrapper as $CameraInfo);
-    } else if (wrapper is $Context) {
-      return Context.onAllocated(wrapper as $Context);
     } else if (wrapper is $SurfaceTexture) {
       return SurfaceTexture.onAllocated(wrapper as $SurfaceTexture);
     }
