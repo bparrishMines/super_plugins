@@ -8,13 +8,11 @@ import 'package:uuid/uuid.dart';
 class Common {
   static final Uuid uuid = Uuid();
 
-  static const MethodChannel channel = const MethodChannel(
+  static final MethodChannel channel = const MethodChannel(
     'super_plugins/super_camera',
-  );
-
-  static set callbackHandler(CallbackHandler handler) {
-    channel.setMethodCallHandler(handler?.methodCallHandler);
-  }
+  )..setMethodCallHandler(
+      (MethodCall call) => PenguinPlugin.methodCallHandler(channel)(call),
+    );
 
   static String deallocatedMsg(dynamic object) =>
       'This `${object.runtimeType}` is no longer in memory.';

@@ -75,30 +75,33 @@ public class ChannelGenerated {
     @Override
     public PlatformView create(final Context context, int viewId, final Object args) {
       final FrameLayout frameLayout = new FrameLayout(context);
-      
-      final $Context contextWrapper = new $Context(wrapperManager, UUID.randomUUID().toString(), context);
+
+      final Wrapper contextWrapper;
+      try {
+        final Class wrapperClass = Class.forName(String.format("super_plugins.super_camera.ChannelGenerated$$%s", Context.class.getSimpleName()));
+        final Constructor constructor = wrapperClass.getConstructor(WrapperManager.class, String.class, Context.class);
+        contextWrapper = (Wrapper) constructor.newInstance(wrapperManager, UUID.randomUUID().toString(), context);
+      } catch (Exception exception) {
+        exception.printStackTrace();
+        return null;
+      }
 
       final HashMap<String, Object> arguments = new HashMap<>();
       arguments.put("context", contextWrapper.$uniqueId);
-      arguments.put("$uniqueId", args);
-      
-      callbackChannel.invokeMethod("CreateView", arguments, new Result() {
+      arguments.put("callbackId", args);
+
+      callbackChannel.invokeMethod("onCreateView", arguments, new Result() {
         @Override
         public void success(Object result) {
+          final View view;
           try {
-            wrapperManager.addTemporaryWrapper(contextWrapper);
-
-            final MethodCallHandlerImpl handlerImpl = (MethodCallHandlerImpl) methodCallHandler;
-            handlerImpl.onMethodCall(new MethodCall("MultiInvoke", result));
-
-            final View view = wrapperManager.getWrapper((String) args).getView();
-            frameLayout.addView(view,
-                new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-          } catch (Exception exception) {
+            view = wrapperManager.getWrapper((String) result).getView();
+          } catch (WrapperNotFoundException exception) {
             exception.printStackTrace();
-          } finally {
-            wrapperManager.clearTemporaryWrappers();
+            return;
           }
+          frameLayout.addView(view,
+              new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
 
         @Override
@@ -120,7 +123,7 @@ public class ChannelGenerated {
 
         @Override
         public void dispose() {
-          // Do nothing
+          contextWrapper.deallocate(wrapperManager);
         }
       };
     }
@@ -242,8 +245,9 @@ public class ChannelGenerated {
   private static abstract class Wrapper implements PlatformView {
     final String $uniqueId;
     
-    private Wrapper(String uniqueId) {
+    private Wrapper(WrapperManager wrapperManager, String uniqueId) {
       this.$uniqueId = uniqueId;
+      wrapperManager.addAllocatedWrapper(this);
     }
 
     abstract Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception;
@@ -340,19 +344,17 @@ public class ChannelGenerated {
     private final Camera $value;
 
     public $Camera(final WrapperManager wrapperManager, final String uniqueId, final Camera value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $Camera(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -425,7 +427,7 @@ public class ChannelGenerated {
     
     static Object open(WrapperManager wrapperManager, MethodCall call) throws Exception {
       
-      new $Camera(wrapperManager, (String) call.argument("$newUniqueId"),
+      final Camera result =
       
       
       Camera.open(
@@ -434,8 +436,9 @@ public class ChannelGenerated {
       
       )
       
-      );
-      return null;
+      ;
+      if (result == null) return null;
+      return new $Camera(wrapperManager, UUID.randomUUID().toString(), result).$uniqueId;
       
     }
     
@@ -517,13 +520,12 @@ public class ChannelGenerated {
     private final Camera.CameraInfo $value;
 
     public $CameraCameraInfo(final WrapperManager wrapperManager, final String uniqueId, final Camera.CameraInfo value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $CameraCameraInfo(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         case "CameraCameraInfo()":
@@ -535,7 +537,6 @@ public class ChannelGenerated {
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -549,10 +550,10 @@ public class ChannelGenerated {
     @Override
     public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
       switch(call.method) {
-        case "Camera.CameraInfo#allocate":
+        case "CameraCameraInfo#allocate":
           allocate(wrapperManager);
           return null;
-        case "Camera.CameraInfo#deallocate":
+        case "CameraCameraInfo#deallocate":
           deallocate(wrapperManager);
           return null;
         
@@ -574,13 +575,7 @@ public class ChannelGenerated {
     
     
      private Object facing(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      if (((HashMap<String, Object>) call.arguments).containsKey("facing")) {
-         $value.facing =
-         
-      call.argument("facing") != null ? (Integer) call.argument("facing") : null
       
-        ;
-      }
       
       
       return
@@ -594,13 +589,7 @@ public class ChannelGenerated {
     }
     
      private Object orientation(WrapperManager wrapperManager, MethodCall call) throws Exception {
-      if (((HashMap<String, Object>) call.arguments).containsKey("orientation")) {
-         $value.orientation =
-         
-      call.argument("orientation") != null ? (Integer) call.argument("orientation") : null
       
-        ;
-      }
       
       
       return
@@ -622,19 +611,17 @@ public class ChannelGenerated {
     private final SurfaceTextureEntry $value;
 
     public $SurfaceTextureEntry(final WrapperManager wrapperManager, final String uniqueId, final SurfaceTextureEntry value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $SurfaceTextureEntry(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -692,15 +679,16 @@ public class ChannelGenerated {
     
      Object surfaceTexture(WrapperManager wrapperManager, MethodCall call) throws Exception {
       
-      new $SurfaceTexture(wrapperManager, (String) call.argument("$newUniqueId"),
+      final SurfaceTexture result =
       
       
       $value.surfaceTexture(
       
       )
       
-      );
-      return null;
+      ;
+      if (result == null) return null;
+      return new $SurfaceTexture(wrapperManager, UUID.randomUUID().toString(), result).$uniqueId;
       
     }
     
@@ -724,19 +712,17 @@ public class ChannelGenerated {
     private final SurfaceTexture $value;
 
     public $SurfaceTexture(final WrapperManager wrapperManager, final String uniqueId, final SurfaceTexture value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $SurfaceTexture(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -777,19 +763,17 @@ public class ChannelGenerated {
     private final TextureRegistry $value;
 
     public $TextureRegistry(final WrapperManager wrapperManager, final String uniqueId, final TextureRegistry value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $TextureRegistry(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -828,15 +812,16 @@ public class ChannelGenerated {
     
      Object createSurfaceTexture(WrapperManager wrapperManager, MethodCall call) throws Exception {
       
-      new $SurfaceTextureEntry(wrapperManager, (String) call.argument("$newUniqueId"),
+      final SurfaceTextureEntry result =
       
       
       $value.createSurfaceTexture(
       
       )
       
-      );
-      return null;
+      ;
+      if (result == null) return null;
+      return new $SurfaceTextureEntry(wrapperManager, UUID.randomUUID().toString(), result).$uniqueId;
       
     }
     
@@ -847,19 +832,17 @@ public class ChannelGenerated {
     private final UseCase $value;
 
     public $UseCase(final WrapperManager wrapperManager, final String uniqueId, final UseCase value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $UseCase(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -900,19 +883,17 @@ public class ChannelGenerated {
     private final LensFacing $value;
 
     public $LensFacing(final WrapperManager wrapperManager, final String uniqueId, final LensFacing value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $LensFacing(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -956,14 +937,15 @@ public class ChannelGenerated {
       
       
       
-      new $LensFacing(wrapperManager, (String) call.argument("$newUniqueId"),
+      final LensFacing result =
       
       
       LensFacing.BACK
       
       
-      );
-      return null;
+      ;
+      if (result == null) return null;
+      return new $LensFacing(wrapperManager, UUID.randomUUID().toString(), result).$uniqueId;
       
     }
     
@@ -971,14 +953,15 @@ public class ChannelGenerated {
       
       
       
-      new $LensFacing(wrapperManager, (String) call.argument("$newUniqueId"),
+      final LensFacing result =
       
       
       LensFacing.FRONT
       
       
-      );
-      return null;
+      ;
+      if (result == null) return null;
+      return new $LensFacing(wrapperManager, UUID.randomUUID().toString(), result).$uniqueId;
       
     }
     
@@ -991,19 +974,17 @@ public class ChannelGenerated {
     private final CameraInfo $value;
 
     public $CameraInfo(final WrapperManager wrapperManager, final String uniqueId, final CameraInfo value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $CameraInfo(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -1060,19 +1041,17 @@ public class ChannelGenerated {
     private final CameraX $value;
 
     public $CameraX(final WrapperManager wrapperManager, final String uniqueId, final CameraX value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $CameraX(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -1137,7 +1116,7 @@ public class ChannelGenerated {
     
     static Object getCameraInfo(WrapperManager wrapperManager, MethodCall call) throws Exception {
       
-      new $CameraInfo(wrapperManager, (String) call.argument("$newUniqueId"),
+      final CameraInfo result =
       
       
       CameraX.getCameraInfo(
@@ -1146,8 +1125,9 @@ public class ChannelGenerated {
       
       )
       
-      );
-      return null;
+      ;
+      if (result == null) return null;
+      return new $CameraInfo(wrapperManager, UUID.randomUUID().toString(), result).$uniqueId;
       
     }
     
@@ -1171,19 +1151,17 @@ public class ChannelGenerated {
     private final LifecycleOwner $value;
 
     public $LifecycleOwner(final WrapperManager wrapperManager, final String uniqueId, final LifecycleOwner value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $LifecycleOwner(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -1224,13 +1202,12 @@ public class ChannelGenerated {
     private final Preview $value;
 
     public $Preview(final WrapperManager wrapperManager, final String uniqueId, final Preview value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $Preview(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         case "Preview()":
@@ -1244,7 +1221,6 @@ public class ChannelGenerated {
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -1303,13 +1279,12 @@ public class ChannelGenerated {
     private final OnPreviewOutputUpdateListener $value;
 
     public $OnPreviewOutputUpdateListener(final WrapperManager wrapperManager, final String uniqueId, final OnPreviewOutputUpdateListener value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $OnPreviewOutputUpdateListener(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         case "OnPreviewOutputUpdateListener()":
@@ -1341,7 +1316,6 @@ public class ChannelGenerated {
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -1400,19 +1374,17 @@ public class ChannelGenerated {
     private final PreviewOutput $value;
 
     public $PreviewOutput(final WrapperManager wrapperManager, final String uniqueId, final PreviewOutput value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $PreviewOutput(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -1451,15 +1423,16 @@ public class ChannelGenerated {
     
      Object getSurfaceTexture(WrapperManager wrapperManager, MethodCall call) throws Exception {
       
-      new $SurfaceTexture(wrapperManager, (String) call.argument("$newUniqueId"),
+      final SurfaceTexture result =
       
       
       $value.getSurfaceTexture(
       
       )
       
-      );
-      return null;
+      ;
+      if (result == null) return null;
+      return new $SurfaceTexture(wrapperManager, UUID.randomUUID().toString(), result).$uniqueId;
       
     }
     
@@ -1470,19 +1443,17 @@ public class ChannelGenerated {
     private final PreviewConfig $value;
 
     public $PreviewConfig(final WrapperManager wrapperManager, final String uniqueId, final PreviewConfig value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $PreviewConfig(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -1523,13 +1494,12 @@ public class ChannelGenerated {
     private final PreviewConfig.Builder $value;
 
     public $PreviewConfigBuilder(final WrapperManager wrapperManager, final String uniqueId, final PreviewConfig.Builder value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $PreviewConfigBuilder(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         case "PreviewConfigBuilder()":
@@ -1541,7 +1511,6 @@ public class ChannelGenerated {
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -1555,10 +1524,10 @@ public class ChannelGenerated {
     @Override
     public Object onMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
       switch(call.method) {
-        case "PreviewConfig.Builder#allocate":
+        case "PreviewConfigBuilder#allocate":
           allocate(wrapperManager);
           return null;
-        case "PreviewConfig.Builder#deallocate":
+        case "PreviewConfigBuilder#deallocate":
           deallocate(wrapperManager);
           return null;
         
@@ -1598,15 +1567,16 @@ public class ChannelGenerated {
     
      Object build(WrapperManager wrapperManager, MethodCall call) throws Exception {
       
-      new $PreviewConfig(wrapperManager, (String) call.argument("$newUniqueId"),
+      final PreviewConfig result =
       
       
       $value.build(
       
       )
       
-      );
-      return null;
+      ;
+      if (result == null) return null;
+      return new $PreviewConfig(wrapperManager, UUID.randomUUID().toString(), result).$uniqueId;
       
     }
     
@@ -1617,13 +1587,12 @@ public class ChannelGenerated {
     private final TextureView $value;
 
     public $TextureView(final WrapperManager wrapperManager, final String uniqueId, final TextureView value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $TextureView(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         case "TextureView()":
@@ -1637,7 +1606,6 @@ public class ChannelGenerated {
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {
@@ -1696,19 +1664,17 @@ public class ChannelGenerated {
     private final Context $value;
 
     public $Context(final WrapperManager wrapperManager, final String uniqueId, final Context value) {
-      super(uniqueId);
+      super(wrapperManager, uniqueId);
       this.$value = value;
-      wrapperManager.addTemporaryWrapper(this);
     }
 
     private $Context(final MethodCallHandlerImpl methodCallHandler, final WrapperManager wrapperManager, final MethodChannel callbackChannel, final MethodCall call) throws Exception {
-      super((String) call.argument("$uniqueId"));
+      super(wrapperManager, (String) call.argument("$uniqueId"));
       switch(call.method) {
         
         default:
           this.$value = null;
       }
-      wrapperManager.addTemporaryWrapper(this);
     }
     
     static Object onStaticMethodCall(WrapperManager wrapperManager, MethodCall call) throws Exception {

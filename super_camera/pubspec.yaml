@@ -12,27 +12,29 @@ dependencies:
     sdk: flutter
 
   device_info: ^0.4.1+1
-  uuid: 2.0.1
+  uuid: ^2.0.1
   flutter_plugin_android_lifecycle: ^1.0.3
   penguin_plugin:
     git:
       url: git://github.com/bparrishMines/penguin.git
       path: penguin_plugin
+      ref: reference_counting
   penguin:
     git:
       url: git://github.com/bparrishMines/penguin.git
       path: penguin
+      ref: reference_counting
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   permission_handler: ^3.2.2
   build_runner: ^1.6.7
   penguin_generator:
     git:
       url: git://github.com/bparrishMines/penguin.git
       path: penguin_generator
+      ref: reference_counting
 
 flutter:
   plugin:

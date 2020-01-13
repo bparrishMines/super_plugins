@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
+import 'package:super_camera/android_camera.dart';
 
 import 'camera_controller.dart';
 import 'camera_interface.dart';
@@ -26,7 +27,7 @@ class _CameraPreviewState extends State<CameraPreview> {
     final CameraDescription description =
         controller.configurator.cameraDescription;
 
-    if (description is CameraInfo &&
+    if (description is AndroidCameraDescription &&
         description.direction == LensDirection.front) {
       rotation = (description.orientation + 180) % 360;
       cameraWidget = Transform(
@@ -34,7 +35,7 @@ class _CameraPreviewState extends State<CameraPreview> {
         child: cameraWidget,
         alignment: Alignment.center,
       );
-    } else if (description is CameraInfo &&
+    } else if (description is AndroidCameraDescription &&
         description.direction == LensDirection.back) {
       rotation = description.orientation;
     }

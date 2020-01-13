@@ -66,8 +66,6 @@ class CameraController {
   ///
   /// This will choose the appropriate Camera API for the current device.
   static Future<List<CameraDescription>> availableCameras() async {
-    final List<CameraDescription> descriptions = <CameraDescription>[];
-
     final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
     AndroidDeviceInfo androidInfo;
@@ -75,26 +73,23 @@ class CameraController {
       androidInfo = await deviceInfo.androidInfo;
     }
 
-    if (Platform.isAndroid && androidInfo.version.sdkInt < 21) {
-      final int cameraCount = await Camera.getNumberOfCameras();
-      for (int i = 0; i < cameraCount; i++) {
-        final CameraInfo info = CameraInfo();
-        await Camera.getCameraInfo(i, info);
-        descriptions.add(info);
-      }
-    } else if (Platform.isAndroid && androidInfo.version.sdkInt >= 21) {
-      // TODO(bparrishMines): Check if there exists a front/back camera.
-      descriptions.add(await CameraX.getCameraInfo(LensFacing.FRONT));
-      descriptions.add(await CameraX.getCameraInfo(LensFacing.BACK));
-    } else if (Platform.isIOS) {
-      final Array<CaptureDevice> devices =
-          await CaptureDevice.devicesWithMediaType(MediaType.video);
-      descriptions.addAll(devices.toList());
-    } else {
+    if (Platform.isAndroid) {
+      //&& androidInfo.version.sdkInt < 21) {
+      return AndroidCameraConfigurator.availableCameras();
+    }
+//    else if (Platform.isAndroid && androidInfo.version.sdkInt >= 21) {
+//      // TODO(bparrishMines): Check if there exists a front/back camera.
+//      descriptions.add(await CameraX.getCameraInfo(LensFacing.FRONT));
+//      descriptions.add(await CameraX.getCameraInfo(LensFacing.BACK));
+//    } else if (Platform.isIOS) {
+//      final Array<CaptureDevice> devices =
+//          await CaptureDevice.devicesWithMediaType(MediaType.video);
+//      descriptions.addAll(devices.toList());
+//    }
+    else {
       throw UnsupportedError('${Platform.operatingSystem} is not supported.');
     }
-
-    return descriptions;
+    ;
   }
 
   /// Initializes the camera on the device.
@@ -146,13 +141,14 @@ class CameraController {
   static CameraConfigurator _createDefaultConfigurator(
     CameraDescription description,
   ) {
-    if (Platform.isAndroid && description is CameraInfo) {
+    if (Platform.isAndroid && description is AndroidCameraDescription) {
       return AndroidCameraConfigurator(description);
-    } else if (Platform.isAndroid && description is CameraInfoX) {
-      return AndroidCameraXConfigurator(description);
-    } else if (Platform.isIOS && description is CaptureDevice) {
-      return IosCameraConfigurator(description);
     }
+//    else if (Platform.isAndroid && description is CameraInfoX) {
+//      return AndroidCameraXConfigurator(description);
+//    } else if (Platform.isIOS && description is CaptureDevice) {
+//      return IosCameraConfigurator(description);
+//    }
 
     throw UnsupportedError(
       '${Platform.operatingSystem} is not supported with $CameraDescription `${description.runtimeType}`.',

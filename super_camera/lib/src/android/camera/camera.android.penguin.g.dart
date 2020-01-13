@@ -6,9 +6,12 @@
 
 part of 'camera.dart';
 
-class $Camera extends AndroidWrapper {
-  $Camera(String uniqueId)
-      : super(uniqueId: uniqueId, platformClassName: 'Camera');
+class $Camera extends Wrapper {
+  $Camera.fromUniqueId(String uniqueId, {MethodChannel channel})
+      : assert(uniqueId != null),
+        super(channel, uniqueId);
+
+  String get platformClassName => 'Camera';
 
   @override
   Future<void> onMethodCall(MethodCall call) async {
@@ -17,137 +20,107 @@ class $Camera extends AndroidWrapper {
     throw UnimplementedError('No implementation for ${call.method}.');
   }
 
-  static MethodCall $getNumberOfCameras([
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'Camera#getNumberOfCameras',
-      <String, dynamic>{
-        r'$newUniqueId': $newUniqueId,
-        r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
-        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
-            ? _GenericHelper.getWrapperForType<void>('').platformClassName
-            : null,
-      },
-    );
-  }
+  static MethodCall $getNumberOfCameras() => MethodCall(
+        'Camera#getNumberOfCameras',
+        <String, dynamic>{
+          r'$returnTypeIsWrapper': isTypeOf<int, Wrapper>(),
+          r'$returnTypePlatformName': isTypeOf<int, Wrapper>()
+              ? _GenericHelper.instance.getPlatformClassForType<int>()
+              : null,
+        },
+      );
 
   static MethodCall $open(
-    int cameraId, [
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'Camera#open',
-      <String, dynamic>{
-        r'$newUniqueId': $newUniqueId,
-        r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
-        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
-            ? _GenericHelper.getWrapperForType<void>('').platformClassName
-            : null,
-        'cameraId': cameraId,
-      },
-    );
-  }
+    int cameraId,
+  ) =>
+      MethodCall(
+        'Camera#open',
+        <String, dynamic>{
+          r'$returnTypeIsWrapper': isTypeOf<Camera, Wrapper>(),
+          r'$returnTypePlatformName': isTypeOf<Camera, Wrapper>()
+              ? _GenericHelper.instance.getPlatformClassForType<Camera>()
+              : null,
+          r'cameraId': _setParameter(cameraId),
+          r'cameraId$isWrapper': cameraId != null && cameraId is Wrapper,
+        },
+      );
 
   static MethodCall $getCameraInfo(
     int cameraId,
-    CameraInfo cameraInfo, [
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'Camera#getCameraInfo',
-      <String, dynamic>{
-        r'$newUniqueId': $newUniqueId,
-        r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
-        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
-            ? _GenericHelper.getWrapperForType<void>('').platformClassName
-            : null,
-        'cameraId': cameraId,
-        'cameraInfo': (cameraInfo as Wrapper)?.uniqueId,
-      },
-    );
-  }
+    CameraInfo cameraInfo,
+  ) =>
+      MethodCall(
+        'Camera#getCameraInfo',
+        <String, dynamic>{
+          r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+          r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+              ? _GenericHelper.instance.getPlatformClassForType<void>()
+              : null,
+          r'cameraId': _setParameter(cameraId),
+          r'cameraId$isWrapper': cameraId != null && cameraId is Wrapper,
+          r'cameraInfo': _setParameter(cameraInfo),
+          r'cameraInfo$isWrapper': cameraInfo != null && cameraInfo is Wrapper,
+        },
+      );
 
-  MethodCall $release([
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'Camera#release',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
-        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
-            ? _GenericHelper.getWrapperForType<void>('').platformClassName
-            : null,
-      },
-    );
-  }
+  MethodCall $release() => MethodCall(
+        'Camera#release',
+        <String, dynamic>{
+          r'$uniqueId': uniqueId,
+          r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+          r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+              ? _GenericHelper.instance.getPlatformClassForType<void>()
+              : null,
+        },
+      );
 
-  MethodCall $startPreview([
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'Camera#startPreview',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
-        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
-            ? _GenericHelper.getWrapperForType<void>('').platformClassName
-            : null,
-      },
-    );
-  }
+  MethodCall $startPreview() => MethodCall(
+        'Camera#startPreview',
+        <String, dynamic>{
+          r'$uniqueId': uniqueId,
+          r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+          r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+              ? _GenericHelper.instance.getPlatformClassForType<void>()
+              : null,
+        },
+      );
 
-  MethodCall $stopPreview([
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'Camera#stopPreview',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
-        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
-            ? _GenericHelper.getWrapperForType<void>('').platformClassName
-            : null,
-      },
-    );
-  }
+  MethodCall $stopPreview() => MethodCall(
+        'Camera#stopPreview',
+        <String, dynamic>{
+          r'$uniqueId': uniqueId,
+          r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+          r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+              ? _GenericHelper.instance.getPlatformClassForType<void>()
+              : null,
+        },
+      );
 
   MethodCall $setPreviewTexture(
-    SurfaceTexture surfaceTexture, [
-    String $newUniqueId,
-  ]) {
-    return MethodCall(
-      'Camera#setPreviewTexture',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
-        r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
-            ? _GenericHelper.getWrapperForType<void>('').platformClassName
-            : null,
-        'surfaceTexture': (surfaceTexture as Wrapper)?.uniqueId,
-      },
-    );
-  }
+    SurfaceTexture surfaceTexture,
+  ) =>
+      MethodCall(
+        'Camera#setPreviewTexture',
+        <String, dynamic>{
+          r'$uniqueId': uniqueId,
+          r'$returnTypeIsWrapper': isTypeOf<void, Wrapper>(),
+          r'$returnTypePlatformName': isTypeOf<void, Wrapper>()
+              ? _GenericHelper.instance.getPlatformClassForType<void>()
+              : null,
+          r'surfaceTexture': _setParameter(surfaceTexture),
+          r'surfaceTexture$isWrapper':
+              surfaceTexture != null && surfaceTexture is Wrapper,
+        },
+      );
 }
 
-class $CameraInfo extends AndroidWrapper {
-  $CameraInfo(String uniqueId)
-      : super(uniqueId: uniqueId, platformClassName: 'CameraCameraInfo');
+class $CameraInfo extends Wrapper {
+  $CameraInfo.fromUniqueId(String uniqueId, {MethodChannel channel})
+      : assert(uniqueId != null),
+        super(channel, uniqueId);
 
-  @override
-  Future<void> onMethodCall(MethodCall call) async {
-    switch (call.method) {
-    }
-    throw UnimplementedError('No implementation for ${call.method}.');
-  }
-
-  MethodCall $CameraInfo$Default() {
-    return MethodCall(
+  $CameraInfo.$Default({MethodChannel channel}) : super(channel) {
+    channel.invokeMethod<void>(
       'CameraCameraInfo()',
       <String, dynamic>{
         r'$uniqueId': uniqueId,
@@ -155,62 +128,90 @@ class $CameraInfo extends AndroidWrapper {
     );
   }
 
-  MethodCall $facing({
-    int facing,
-    String $newUniqueId,
-  }) {
-    return MethodCall(
-      'CameraCameraInfo.facing',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        if (facing != null) 'facing': facing,
-      },
-    );
+  String get platformClassName => 'CameraCameraInfo';
+
+  @override
+  Future<void> onMethodCall(MethodCall call) async {
+    switch (call.method) {
+    }
+    throw UnimplementedError('No implementation for ${call.method}.');
   }
 
-  MethodCall $orientation({
+  MethodCall $get$facing() => MethodCall(
+        'CameraCameraInfo.facing',
+        <String, dynamic>{
+          r'$uniqueId': uniqueId,
+        },
+      );
+
+  MethodCall $set$facing(
+    int facing,
+  ) =>
+      MethodCall(
+        'CameraCameraInfo.facing',
+        <String, dynamic>{
+          r'$uniqueId': uniqueId,
+          r'facing': _setParameter(facing),
+          r'facing$isWrapper': facing != null && facing is Wrapper,
+        },
+      );
+
+  MethodCall $get$orientation() => MethodCall(
+        'CameraCameraInfo.orientation',
+        <String, dynamic>{
+          r'$uniqueId': uniqueId,
+        },
+      );
+
+  MethodCall $set$orientation(
     int orientation,
-    String $newUniqueId,
-  }) {
-    return MethodCall(
-      'CameraCameraInfo.orientation',
-      <String, dynamic>{
-        r'$uniqueId': uniqueId,
-        r'$newUniqueId': $newUniqueId,
-        if (orientation != null) 'orientation': orientation,
-      },
-    );
-  }
+  ) =>
+      MethodCall(
+        'CameraCameraInfo.orientation',
+        <String, dynamic>{
+          r'$uniqueId': uniqueId,
+          r'orientation': _setParameter(orientation),
+          r'orientation$isWrapper':
+              orientation != null && orientation is Wrapper,
+        },
+      );
 }
 
-class _GenericHelper {
-  _GenericHelper._();
+class _GenericHelper extends GenericHelper {
+  const _GenericHelper._();
 
-  static Wrapper getWrapperForType<T>(String uniqueId) {
+  static final _GenericHelper instance = _GenericHelper._();
+
+  String getPlatformClassForType<T>() {
+    if (isTypeOf<T, Camera>()) {
+      return 'Camera';
+    } else if (isTypeOf<T, CameraInfo>()) {
+      return 'CameraCameraInfo';
+    } else if (isTypeOf<T, SurfaceTexture>()) {
+      return 'SurfaceTexture';
+    }
+
+    throw UnsupportedError(
+        'Could not find platform class name for ${T.toString()}');
+  }
+
+  T getWrapperForType<T>(String uniqueId) {
     assert(isTypeOf<T, Wrapper>());
 
     if (isTypeOf<T, Camera>()) {
-      return $Camera(uniqueId);
+      return Camera.fromUniqueId(uniqueId) as T;
     } else if (isTypeOf<T, CameraInfo>()) {
-      return $CameraInfo(uniqueId);
+      return CameraInfo.fromUniqueId(uniqueId) as T;
     } else if (isTypeOf<T, SurfaceTexture>()) {
-      return $SurfaceTexture(uniqueId);
+      return SurfaceTexture.fromUniqueId(uniqueId) as T;
     }
 
     throw UnsupportedError('Could not instantiate class ${T.toString()}');
   }
+}
 
-  static FutureOr<dynamic> onAllocated(Wrapper wrapper) {
-    if (wrapper is $Camera) {
-      return Camera.onAllocated(wrapper as $Camera);
-    } else if (wrapper is $CameraInfo) {
-      return CameraInfo.onAllocated(wrapper as $CameraInfo);
-    } else if (wrapper is $SurfaceTexture) {
-      return SurfaceTexture.onAllocated(wrapper as $SurfaceTexture);
-    }
-
-    throw UnsupportedError(
-        'Could not instantiate class ${wrapper.runtimeType}');
-  }
+dynamic _setParameter(dynamic parameter) {
+  if (parameter == null) return null;
+  if (parameter is Wrapper) return (parameter as Wrapper).uniqueId;
+  return parameter;
 }

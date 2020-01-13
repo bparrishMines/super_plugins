@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:penguin/penguin.dart';
 import 'package:penguin_plugin/penguin_plugin.dart';
-import 'package:penguin_plugin/android_wrapper.dart';
-import 'package:super_camera/src/interface/camera_interface.dart';
 
 import '../common/texture_registry.dart';
 import '../../common/channel.dart';
@@ -20,9 +18,8 @@ part 'camera.android.penguin.g.dart';
 /// API and is deprecated for Android versions 21+.
 @Class(AndroidPlatform(AndroidType('android.hardware', <String>['Camera'])))
 class Camera extends $Camera {
-  Camera._(String uniqueId) : super(uniqueId);
-
-  bool _isReleased = false;
+  Camera.fromUniqueId(String uniqueId)
+      : super.fromUniqueId(uniqueId, channel: Common.channel);
 
   /// Returns the number of physical cameras available on this device.
   ///
@@ -46,74 +43,39 @@ class Camera extends $Camera {
   /// application should only have one Camera object active at a time for a
   /// particular hardware camera.
   @Method()
-  static Camera open(int cameraId) {
-    final Camera camera = Camera._(Common.uuid.v4());
-    invoke<void>(
-      Common.channel,
-      <MethodCall>[
-        $Camera.$open(cameraId, camera.uniqueId),
-        camera.allocate(),
-      ],
-    );
-    return camera;
-  }
+  static Future<Camera> open(int cameraId) => invoke<Camera>(
+        Common.channel,
+        [$Camera.$open(cameraId)],
+        genericHelper: _GenericHelper.instance,
+      );
 
   /// Returns the information about a particular camera.
   ///
   /// If [Camera.getNumberOfCameras] returns N, the valid id is 0 to N-1.
   @Method()
-  static Future<void> getCameraInfo(int cameraId, CameraInfo cameraInfo) async {
-    final List<dynamic> result = await invokeForAll(
-      Common.channel,
-      <MethodCall>[
-        cameraInfo.$CameraInfo$Default(),
+  static Future<void> getCameraInfo(int cameraId, CameraInfo cameraInfo) =>
+      invoke<void>(Common.channel, [
         $Camera.$getCameraInfo(cameraId, cameraInfo),
-        cameraInfo.$facing(),
-        cameraInfo.$orientation(),
-      ],
-    );
-
-    cameraInfo.id = cameraId;
-    cameraInfo.facing = result[2];
-    cameraInfo.orientation = result[3];
-  }
+      ]);
 
   /// Disconnects and releases the Camera object resources.
   ///
   /// You must call this as soon as you're done with the Camera object.
   @Method()
-  FutureOr<void> release() {
-    if (_isReleased) return null;
-    _isReleased = true;
-
-    final Completer<void> completer = Completer<void>();
-
-    invoke<void>(
-      Common.channel,
-      <MethodCall>[$release(), deallocate()],
-    ).then((_) => completer.complete());
-
-    return completer.future;
-  }
+  FutureOr<void> release() => invoke<void>(Common.channel, [$release()]);
 
   /// Starts capturing and drawing preview frames to the screen.
   ///
   /// Preview will not actually start until a surface is supplied with
   /// [setPreviewTexture].
   @Method()
-  Future<void> startPreview() {
-    assert(!_isReleased, Common.deallocatedMsg(this));
-    return invoke<void>(Common.channel, [$startPreview()]);
-  }
+  Future<void> startPreview() => invoke<void>(Common.channel, [$startPreview()]);
 
   /// Stops capturing and drawing preview frames to the surface.
   ///
   /// Resets the camera for a future call to [startPreview].
   @Method()
-  Future<void> stopPreview() {
-    assert(!_isReleased, Common.deallocatedMsg(this));
-    return invoke<void>(Common.channel, [$stopPreview()]);
-  }
+  Future<void> stopPreview() => invoke<void>(Common.channel, [$stopPreview()]);
 
   /// Sets the SurfaceTexture to be used for live preview.
   ///
@@ -129,15 +91,7 @@ class Camera extends $Camera {
   /// and surface creation to happen in parallel, saving time.) The preview
   /// surface texture may not otherwise change while preview is running.
   @Method()
-  Future<void> setPreviewTexture(SurfaceTexture surfaceTexture) {
-    assert(!_isReleased, Common.deallocatedMsg(this));
-    return invoke<void>(
-      Common.channel,
-      [$setPreviewTexture(surfaceTexture)],
-    );
-  }
-
-  static FutureOr<Camera> onAllocated($Camera wrapper) => Camera._(wrapper.uniqueId);
+  Future<void> setPreviewTexture(SurfaceTexture surfaceTexture) => invoke<void>(Common.channel, [$setPreviewTexture(surfaceTexture)]);
 }
 
 /// Information about a camera.
@@ -146,9 +100,11 @@ class Camera extends $Camera {
 @Class(AndroidPlatform(
   AndroidType('android.hardware', <String>['Camera', 'CameraInfo']),
 ))
-class CameraInfo extends $CameraInfo implements CameraDescription {
+class CameraInfo extends $CameraInfo {
   @Constructor()
-  CameraInfo() : super(Common.uuid.v4());
+  CameraInfo() : super.$Default(channel: Common.channel);
+
+  CameraInfo.fromUniqueId(String uniqueId) : super.fromUniqueId(uniqueId, channel: Common.channel);
 
   /// The facing of the camera is opposite to that of the screen.
   static const int CAMERA_FACING_BACK = 0;
@@ -166,7 +122,7 @@ class CameraInfo extends $CameraInfo implements CameraDescription {
   /// It should be [CameraInfo.CAMERA_FACING_BACK] or
   /// [CameraInfo.CAMERA_FACING_FRONT].
   @Field()
-  int facing;
+  Future<int> get facing => invoke<int>(Common.channel, [$get$facing()]);
 
   /// The orientation of the camera image.
   ///
@@ -181,24 +137,22 @@ class CameraInfo extends $CameraInfo implements CameraDescription {
   /// a front-facing camera sensor is aligned with the right of the screen,
   /// the value should be 270.
   @Field()
-  int orientation;
+  Future<int> get orientation => invoke<int>(Common.channel, [$get$orientation()]);
 
-  @override
-  LensDirection get direction {
-    switch (facing) {
-      case CAMERA_FACING_BACK:
-        return LensDirection.back;
-      case CAMERA_FACING_FRONT:
-        return LensDirection.front;
-    }
+//  @override
+//  LensDirection get direction {
+//    switch (facing) {
+//      case CAMERA_FACING_BACK:
+//        return LensDirection.back;
+//      case CAMERA_FACING_FRONT:
+//        return LensDirection.front;
+//    }
+//
+//    throw StateError(
+//      'Facing `$facing` should be either $CAMERA_FACING_FRONT or $CAMERA_FACING_BACK',
+//    );
+//  }
 
-    throw StateError(
-      'Facing `$facing` should be either $CAMERA_FACING_FRONT or $CAMERA_FACING_BACK',
-    );
-  }
-
-  @override
-  String get name => id.toString();
-
-  static FutureOr onAllocated($CameraInfo wrapper) => throw UnimplementedError();
+//  @override
+//  String get name => id.toString();
 }

@@ -95,7 +95,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   if (self) {
     _$uniqueId = uniqueId;
   }
-  [wrapperManager addTemporaryWrapper:self];
+  [wrapperManager addAllocatedWrapper:self];
   return self;
 }
 
@@ -245,7 +245,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
       
 :![call.arguments[@"device"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"device"]] getValue] : nil
   
-  error:nil
+  error:![call.arguments[@"error"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"error"]] getValue] : nil
   
     ];  
   }
@@ -499,7 +499,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 
 + (NSObject *)devicesWithMediaType:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
   
-  [[$NSArray alloc] initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$newUniqueId"] value:
+  NSObject *result =
   
   
   [AVCaptureDevice devicesWithMediaType
@@ -509,8 +509,11 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   ]
   
   
-  ];
-  return [NSNull null];
+  ;
+  if (!result) return [NSNull null];
+  return [[$NSArray alloc] initWithWrapperManager:wrapperManager
+                                                uniqueId:[[NSUUID UUID] UUIDString]
+                                                   value:result].$uniqueId;
   
 }
 
@@ -615,11 +618,13 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   
   
   ;
+  if (!result) return [NSNull null];
   if (![call.arguments[@"$returnTypeIsWrapper"] boolValue]) return result;
   NSString *wrapperClassName = [NSString stringWithFormat:@"$%@", call.arguments[@"$returnTypePlatformName"]];
   Class wrapperClass = NSClassFromString(wrapperClassName);
-  [[wrapperClass alloc] initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$newUniqueId"] value:result];
-  return [NSNull null];
+  return ((Wrapper *)[[wrapperClass alloc] initWithWrapperManager:wrapperManager
+                                             uniqueId:[[NSUUID UUID] UUIDString]
+                                                value:result]).$uniqueId;
   
 }
 
@@ -703,14 +708,17 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   
   
   
-  [[$CALayer alloc] initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$newUniqueId"] value:
+  NSObject *result =
   
 
   _value.layer
 
   
-  ];
-  return [NSNull null];
+  ;
+  if (!result) return [NSNull null];
+  return [[$CALayer alloc] initWithWrapperManager:wrapperManager
+                                                uniqueId:[[NSUUID UUID] UUIDString]
+                                                   value:result].$uniqueId;
   
 }
 
@@ -804,14 +812,17 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   }
   
   
-  [[$AVCaptureSession alloc] initWithWrapperManager:wrapperManager uniqueId:call.arguments[@"$newUniqueId"] value:
+  NSObject *result =
   
 
   _value.session
 
   
-  ];
-  return [NSNull null];
+  ;
+  if (!result) return [NSNull null];
+  return [[$AVCaptureSession alloc] initWithWrapperManager:wrapperManager
+                                                uniqueId:[[NSUUID UUID] UUIDString]
+                                                   value:result].$uniqueId;
   
 }
 
@@ -1082,7 +1093,6 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 }
 
 - (NSObject *)onMethodCall:(FlutterMethodCall *)call {
-  NSLog(@"%@", call.method);
   if ([@"MultiInvoke" isEqualToString:call.method]) {
     NSArray<NSDictionary*> *allMethodCalls = call.arguments;
     NSMutableArray<NSObject *> *resultData = [NSMutableArray array];
@@ -1161,29 +1171,23 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
 - (nonnull NSObject<FlutterPlatformView> *)createWithFrame:(CGRect)frame
                                             viewIdentifier:(int64_t)viewId
                                                  arguments:(id _Nullable)args {
-  __block NSString *uniqueId = args;
   __block PlatformViewFrame *viewFrame = [[PlatformViewFrame alloc] init];
   viewFrame.frame = [[UIView alloc] initWithFrame:frame];
   
   NSValue *rectValue = [NSValue valueWithBytes:&frame objCType:@encode(CGRect)];
-  __block $CGRect *cgRectWrapper = [[$CGRect alloc] initWithWrapperManager:_wrapperManager
-                                                                  uniqueId:[[NSUUID UUID] UUIDString]
-                                                                     value:rectValue];
   
-  NSDictionary *callbackArguments = @{@"cgRect": cgRectWrapper.$uniqueId, @"$uniqueId": args};
+  Class wrapperClass = NSClassFromString(@"$CGRect");
+  Wrapper *frameWrapper = (Wrapper *) [[wrapperClass alloc] initWithWrapperManager:_wrapperManager
+                                                                          uniqueId:[[NSUUID UUID] UUIDString]
+                                                                             value:rectValue];
   
-  [_callbackChannel invokeMethod:@"CreateView"
+  NSDictionary *callbackArguments = @{@"frame": frameWrapper.$uniqueId, @"callbackId": args};
+  
+  [_callbackChannel invokeMethod:@"onCreateView"
                        arguments:callbackArguments
-                          result:^(id  _Nullable result) {
-                            [self->_wrapperManager addTemporaryWrapper:cgRectWrapper];
-                            @try {
-                              FlutterMethodCall *methodCall = [FlutterMethodCall methodCallWithMethodName:@"MultiInvoke" arguments:result];
-                              [self->_methodCallHandler onMethodCall:methodCall];
-                              [viewFrame.frame addSubview:[[self->_wrapperManager getWrapper:uniqueId] getValue]];
-                              [viewFrame.frame subviews][0].autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-                            } @finally {
-                              [self->_wrapperManager clearTemporaryWrappers];
-                            }
+                          result:^(id _Nullable result) {
+                            [viewFrame.frame addSubview:[[self->_wrapperManager getWrapper:result] getValue]];
+                            [viewFrame.frame subviews][0].autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                           }];
   
   return viewFrame;
