@@ -77,12 +77,9 @@ class CameraController {
       return AndroidCameraConfigurator.availableCameras();
     } else if (Platform.isAndroid && androidInfo.version.sdkInt >= 21) {
       return AndroidCameraXConfigurator.availableCameras();
+    } else if (Platform.isIOS) {
+      return IosCameraConfigurator.availableCameras();
     }
-//    else if (Platform.isIOS) {
-//      final Array<CaptureDevice> devices =
-//          await CaptureDevice.devicesWithMediaType(MediaType.video);
-//      descriptions.addAll(devices.toList());
-//    }
 
     throw UnsupportedError('${Platform.operatingSystem} is not supported.');
   }
@@ -140,10 +137,9 @@ class CameraController {
       return AndroidCameraConfigurator(description);
     } else if (Platform.isAndroid && description is CameraXDescription) {
       return AndroidCameraXConfigurator(description);
+    } else if (Platform.isIOS && description is IosCameraDescription) {
+      return IosCameraConfigurator(description);
     }
-//    else if (Platform.isIOS && description is CaptureDevice) {
-//      return IosCameraConfigurator(description);
-//    }
 
     throw UnsupportedError(
       '${Platform.operatingSystem} is not supported with $CameraDescription `${description.runtimeType}`.',

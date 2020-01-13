@@ -7,9 +7,12 @@
 part of 'camerax.dart';
 
 class $UseCase extends Wrapper {
-  $UseCase.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $UseCase.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'UseCase';
 
@@ -22,9 +25,12 @@ class $UseCase extends Wrapper {
 }
 
 class $LensFacing extends Wrapper {
-  $LensFacing.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $LensFacing.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'LensFacing';
 
@@ -69,9 +75,12 @@ class $LensFacing extends Wrapper {
 }
 
 class $CameraInfoX extends Wrapper {
-  $CameraInfoX.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $CameraInfoX.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'CameraInfo';
 
@@ -95,9 +104,12 @@ class $CameraInfoX extends Wrapper {
 }
 
 class $CameraX extends Wrapper {
-  $CameraX.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $CameraX.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'CameraX';
 
@@ -153,9 +165,12 @@ class $CameraX extends Wrapper {
 }
 
 class $LifecycleOwner extends Wrapper {
-  $LifecycleOwner.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $LifecycleOwner.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'LifecycleOwner';
 
@@ -168,9 +183,12 @@ class $LifecycleOwner extends Wrapper {
 }
 
 class $Preview extends Wrapper {
-  $Preview.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $Preview.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   $Preview.$Default(PreviewConfig previewConfig, {MethodChannel channel})
       : super(channel) {
@@ -212,10 +230,12 @@ class $Preview extends Wrapper {
 }
 
 class $OnPreviewOutputUpdateListener extends Wrapper {
-  $OnPreviewOutputUpdateListener.fromUniqueId(String uniqueId,
-      {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $OnPreviewOutputUpdateListener.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   $OnPreviewOutputUpdateListener.$Default({MethodChannel channel})
       : super(channel) {
@@ -260,9 +280,12 @@ class $OnPreviewOutputUpdateListener extends Wrapper {
 }
 
 class $PreviewOutput extends Wrapper {
-  $PreviewOutput.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $PreviewOutput.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'PreviewOutput';
 
@@ -287,9 +310,12 @@ class $PreviewOutput extends Wrapper {
 }
 
 class $PreviewConfig extends Wrapper {
-  $PreviewConfig.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $PreviewConfig.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'PreviewConfig';
 
@@ -302,9 +328,12 @@ class $PreviewConfig extends Wrapper {
 }
 
 class $PreviewConfigBuilder extends Wrapper {
-  $PreviewConfigBuilder.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $PreviewConfigBuilder.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   $PreviewConfigBuilder.$Default({MethodChannel channel}) : super(channel) {
     channel.invokeMethod<void>(
@@ -353,9 +382,12 @@ class $PreviewConfigBuilder extends Wrapper {
 }
 
 class $TextureView extends Wrapper {
-  $TextureView.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $TextureView.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   $TextureView.$Default(Context context, {MethodChannel channel})
       : super(channel) {

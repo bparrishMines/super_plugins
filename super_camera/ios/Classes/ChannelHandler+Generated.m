@@ -245,7 +245,7 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
       
 :![call.arguments[@"device"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"device"]] getValue] : nil
   
-  error:![call.arguments[@"error"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"error"]] getValue] : nil
+  error:nil
   
     ];  
   }
@@ -352,6 +352,10 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
     return [self addInput:wrapperManager call:call];
   }
   
+  else if ([@"AVCaptureSession#stopRunning" isEqualToString:call.method]) {
+    return [self stopRunning:wrapperManager call:call];
+  }
+  
   
   @throw [[NotImplementedException alloc] initWithMethod:call.method];
 }
@@ -382,6 +386,20 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   [_value addInput
   
 :![call.arguments[@"input"] isEqual:[NSNull null]] ? [[wrapperManager getWrapper:call.arguments[@"input"]] getValue] : nil
+  
+  ]
+  
+  
+  ;
+  return [NSNull null];
+  
+}
+
+- (NSObject *)stopRunning:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
+  
+  
+  
+  [_value stopRunning
   
   ]
   
@@ -437,6 +455,10 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   
   if ([@"AVCaptureDevice#devicesWithMediaType" isEqualToString:call.method]) {
     return [$AVCaptureDevice devicesWithMediaType:wrapperManager call:call];
+  }
+  else
+  if ([@"AVCaptureDevice#deviceWithUniqueID" isEqualToString:call.method]) {
+    return [$AVCaptureDevice deviceWithUniqueID:wrapperManager call:call];
   }
   
   
@@ -512,6 +534,26 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   ;
   if (!result) return [NSNull null];
   return [[$NSArray alloc] initWithWrapperManager:wrapperManager
+                                                uniqueId:[[NSUUID UUID] UUIDString]
+                                                   value:result].$uniqueId;
+  
+}
+
++ (NSObject *)deviceWithUniqueID:(WrapperManager *)wrapperManager call:(FlutterMethodCall *)call {
+  
+  NSObject *result =
+  
+  
+  [AVCaptureDevice deviceWithUniqueID
+  
+:call.arguments[@"deviceUniqueId"]
+  
+  ]
+  
+  
+  ;
+  if (!result) return [NSNull null];
+  return [[$AVCaptureDevice alloc] initWithWrapperManager:wrapperManager
                                                 uniqueId:[[NSUUID UUID] UUIDString]
                                                    value:result].$uniqueId;
   
@@ -1131,6 +1173,10 @@ static void *wrapperCallbackKey = &wrapperCallbackKey;
   }
   
   else if ([@"AVCaptureDevice#devicesWithMediaType" isEqualToString:call.method]) {
+    return [$AVCaptureDevice onStaticMethodCall:_wrapperManager call:call];
+  }
+  
+  else if ([@"AVCaptureDevice#deviceWithUniqueID" isEqualToString:call.method]) {
     return [$AVCaptureDevice onStaticMethodCall:_wrapperManager call:call];
   }
   

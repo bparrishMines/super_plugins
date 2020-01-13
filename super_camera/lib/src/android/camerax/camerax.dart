@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:penguin/penguin.dart';
 import 'package:penguin_plugin/penguin_plugin.dart';
-import 'package:super_camera/src/interface/camera_interface.dart';
 
 import '../common/texture_registry.dart';
 import '../../common/channel.dart';
@@ -309,7 +308,6 @@ class PreviewConfigBuilder extends $PreviewConfigBuilder {
 class TextureViewWidget extends StatefulWidget {
   TextureViewWidget(this.surfaceTexture) {
     surfaceTexture.retain();
-    print('create');
   }
 
   final SurfaceTexture surfaceTexture;
@@ -325,7 +323,6 @@ class _TextureViewWidgetState extends State<TextureViewWidget> {
   @override
   void initState() {
     super.initState();
-    print('init');
     PenguinPlugin.addAndroidViewCreatorCallback(callbackId, onCreateView);
   }
 
@@ -338,7 +335,6 @@ class _TextureViewWidgetState extends State<TextureViewWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
     return AndroidView(
       viewType: '${Common.channel.name}/views',
       creationParams: callbackId,
@@ -347,7 +343,6 @@ class _TextureViewWidgetState extends State<TextureViewWidget> {
   }
 
   Future<String> onCreateView(Context context) {
-    print('onCreate');
     textureView = TextureView(context);
     textureView.setSurfaceTexture(widget.surfaceTexture);
     return Future<String>.value(textureView.autoReleasePool().uniqueId);

@@ -7,9 +7,12 @@
 part of 'texture_registry.dart';
 
 class $SurfaceTextureEntry extends Wrapper {
-  $SurfaceTextureEntry.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $SurfaceTextureEntry.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'SurfaceTextureEntry';
 
@@ -56,9 +59,12 @@ class $SurfaceTextureEntry extends Wrapper {
 }
 
 class $SurfaceTexture extends Wrapper {
-  $SurfaceTexture.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $SurfaceTexture.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'SurfaceTexture';
 
@@ -71,9 +77,12 @@ class $SurfaceTexture extends Wrapper {
 }
 
 class $TextureRegistry extends Wrapper {
-  $TextureRegistry.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $TextureRegistry.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'TextureRegistry';
 

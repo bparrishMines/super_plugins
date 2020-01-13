@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.UUID;
-
-import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -76,7 +74,6 @@ public class ChannelGenerated {
 
     @Override
     public PlatformView create(final Context context, int viewId, final Object args) {
-      Log.d("handle", "createview");
       final FrameLayout frameLayout = new FrameLayout(context);
 
       final Wrapper contextWrapper;
@@ -96,7 +93,6 @@ public class ChannelGenerated {
       callbackChannel.invokeMethod("onCreateView", arguments, new Result() {
         @Override
         public void success(Object result) {
-          Log.d("handle", "success" + result.toString());
           final View view;
           try {
             view = wrapperManager.getWrapper((String) result).getView();
@@ -110,13 +106,11 @@ public class ChannelGenerated {
 
         @Override
         public void error(String errorCode, String errorMessage, Object errorDetails) {
-          Log.d("handle", "error" + errorMessage.toString());
           throw new RuntimeException(errorMessage);
         }
 
         @Override
         public void notImplemented() {
-          Log.d("handle", "notIMp");
           throw new RuntimeException("notImplemented");
         }
       });
@@ -151,7 +145,6 @@ public class ChannelGenerated {
     }
   
     private Object onMethodCall(MethodCall call) throws Exception {
-      Log.d("handle", call.method);
       switch(call.method) {
         case "MultiInvoke":
           final ArrayList<HashMap<String, Object>> allMethodCallData = (ArrayList<HashMap<String, Object>>) call.arguments;
@@ -1265,7 +1258,7 @@ public class ChannelGenerated {
 
     
      Object setOnPreviewOutputUpdateListener(WrapperManager wrapperManager, MethodCall call) throws Exception {
-
+      
       
       
       $value.setOnPreviewOutputUpdateListener(

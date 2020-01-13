@@ -7,9 +7,12 @@
 part of 'camera.dart';
 
 class $Camera extends Wrapper {
-  $Camera.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $Camera.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   String get platformClassName => 'Camera';
 
@@ -115,9 +118,12 @@ class $Camera extends Wrapper {
 }
 
 class $CameraInfo extends Wrapper {
-  $CameraInfo.fromUniqueId(String uniqueId, {MethodChannel channel})
-      : assert(uniqueId != null),
-        super(channel, uniqueId);
+  $CameraInfo.fromUniqueId(
+    String uniqueId, {
+    MethodChannel channel,
+    bool addToManager = true,
+  })  : assert(uniqueId != null),
+        super(channel, uniqueId, addToManager);
 
   $CameraInfo.$Default({MethodChannel channel}) : super(channel) {
     channel.invokeMethod<void>(
