@@ -138,21 +138,4 @@ class CameraInfo extends $CameraInfo {
   /// the value should be 270.
   @Field()
   Future<int> get orientation => invoke<int>(Common.channel, [$get$orientation()]);
-
-//  @override
-//  LensDirection get direction {
-//    switch (facing) {
-//      case CAMERA_FACING_BACK:
-//        return LensDirection.back;
-//      case CAMERA_FACING_FRONT:
-//        return LensDirection.front;
-//    }
-//
-//    throw StateError(
-//      'Facing `$facing` should be either $CAMERA_FACING_FRONT or $CAMERA_FACING_BACK',
-//    );
-//  }
-
-//  @override
-//  String get name => id.toString();
 }

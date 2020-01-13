@@ -11,7 +11,7 @@ import 'camera.dart';
 /// This configurator is created when using the default constructor for
 /// [CameraController] and the current device is an Android, versions 16-20.
 class AndroidCameraConfigurator extends CameraConfigurator {
-  /// Creates a [CameraConfigurator] using the camera specified by [info].
+  /// Creates a [CameraConfigurator] using the camera specified by [description].
   AndroidCameraConfigurator(AndroidCameraDescription description)
       : super(description);
 

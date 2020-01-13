@@ -51,7 +51,7 @@ class _CameraPreviewState extends State<CameraPreview> {
     final CameraConfigurator configurator = widget.controller.configurator;
 
     widget.controller.initialize();
-    widget.controller.stop();
+    widget.controller.start();
     return FutureBuilder<Widget>(
       future: configurator.getPreviewWidget(),
       builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
@@ -61,7 +61,6 @@ class _CameraPreviewState extends State<CameraPreview> {
           case ConnectionState.waiting:
             return Container();
           case ConnectionState.done:
-            widget.controller.start();
             return _buildPreviewWidget(snapshot.data);
         }
         return null; // unreachable
