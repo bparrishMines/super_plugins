@@ -21,13 +21,13 @@ class AndroidCameraConfigurator with MethodChannelReferenceHolder implements Cam
     throw UnimplementedError();
   }
 
-  Future<void> initialize() => channel.invokeMethod('methodcall', <dynamic>[this, 'initialize']);
+  Future<void> initialize() => channel.invokeMethod('METHODCALL', <dynamic>[this, 'initialize']);
 
-  Future<void> start() => channel.invokeMethod('methodcall', <dynamic>[this, 'start']);
+  Future<void> start() => channel.invokeMethod('METHODCALL', <dynamic>[this, 'start']);
 
-  Future<void> stop() => channel.invokeMethod('methodcall', <dynamic>[this, 'stop']);
+  Future<void> stop() => channel.invokeMethod('METHODCALL', <dynamic>[this, 'stop']);
 
-  Future<void> dispose() => channel.invokeMethod('methodcall', <dynamic>[this, 'dispose']);
+  Future<void> dispose() => channel.invokeMethod('METHODCALL', <dynamic>[this, 'dispose']);
 
   @override
   MethodChannel get channel => CameraPlatform.channel;

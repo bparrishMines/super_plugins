@@ -48,25 +48,31 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
     lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding);
 
     final MethodChannel channel = new MethodChannel(flutterBinding.getBinaryMessenger(), CHANNEL_NAME);
-    final ChannelGenerated channelGenerated = new ChannelGenerated(channel);
-    channel.setMethodCallHandler(channelGenerated.methodCallHandler);
-
-    final ChannelGenerated.$TextureRegistry textureRegistryWrapper = new ChannelGenerated.$TextureRegistry(
-        channelGenerated.wrapperManager,
-        TEXTURE_REGISTRY_ID,
-        flutterBinding.getTextureRegistry());
-
-    final ChannelGenerated.$LifecycleOwner lifecycleOwnerWrapper =
-        new ChannelGenerated.$LifecycleOwner(channelGenerated.wrapperManager,
-            LIFECYCLE_OWNER_ID,
-            this);
-
-    channelGenerated.wrapperManager.addAllocatedWrapper(textureRegistryWrapper);
-    channelGenerated.wrapperManager.addAllocatedWrapper(lifecycleOwnerWrapper);
-
-    flutterBinding.getPlatformViewRegistry().registerViewFactory(
-        PLATFORM_VIEW_FACTORY_NAME,
-        channelGenerated.viewFactory);
+    channel.setMethodCallHandler(new PenguinMethodCallHandler(new CameraInterface.CameraInstanceFactory() {
+      @Override
+      CameraInterface.CameraConfigurator createCameraConfigurator(CameraInterface.CameraConfigurator configurator) {
+        return new MyCameraConfigurator(configurator);
+      }
+    }));
+//    final ChannelGenerated channelGenerated = new ChannelGenerated(channel);
+//    channel.setMethodCallHandler(channelGenerated.methodCallHandler);
+//
+//    final ChannelGenerated.$TextureRegistry textureRegistryWrapper = new ChannelGenerated.$TextureRegistry(
+//        channelGenerated.wrapperManager,
+//        TEXTURE_REGISTRY_ID,
+//        flutterBinding.getTextureRegistry());
+//
+//    final ChannelGenerated.$LifecycleOwner lifecycleOwnerWrapper =
+//        new ChannelGenerated.$LifecycleOwner(channelGenerated.wrapperManager,
+//            LIFECYCLE_OWNER_ID,
+//            this);
+//
+//    channelGenerated.wrapperManager.addAllocatedWrapper(textureRegistryWrapper);
+//    channelGenerated.wrapperManager.addAllocatedWrapper(lifecycleOwnerWrapper);
+//
+//    flutterBinding.getPlatformViewRegistry().registerViewFactory(
+//        PLATFORM_VIEW_FACTORY_NAME,
+//        channelGenerated.viewFactory);
   }
 
   @Override
