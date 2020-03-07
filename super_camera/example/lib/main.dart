@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:permission_handler/permission_handler.dart';
-import 'package:super_camera/super_camera.dart';
-import 'package:super_camera/ios_camera.dart';
+import 'package:super_camera/src/interface/camera_preview.dart';
+import 'package:super_camera/src/experimental/camera.interface.dart';
 
 void main() {
   runApp(MaterialApp(home: MyApp()));
@@ -15,8 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  CameraController _controller;
-  LensDirection _lensDirection = LensDirection.back;
+  CameraConfigurator configurator;
   double _deviceRotation = 0;
 
   @override
@@ -28,42 +27,46 @@ class _MyAppState extends State<MyApp> {
     ]);
 
     _getCameraPermission().then((bool success) {
-      if (success) _setupCamera();
+      //if (success) _setupCamera();
+      print('SUCCESS');
+      setState(() {
+        configurator = CameraConfigurator(CameraDescription.back);
+      });
     });
   }
 
-  Future<void> _toggleLensDirection() {
-    _controller.dispose();
-    setState(() {
-      _controller = null;
-    });
+//  Future<void> _toggleLensDirection() {
+//    _controller.dispose();
+//    setState(() {
+//      _controller = null;
+//    });
+//
+//    switch (_lensDirection) {
+//      case LensDirection.front:
+//        _lensDirection = LensDirection.back;
+//        break;
+//      case LensDirection.back:
+//        _lensDirection = LensDirection.front;
+//        break;
+//      case LensDirection.unknown:
+//        _lensDirection = LensDirection.front;
+//        break;
+//    }
+//
+//    return _setupCamera();
+//  }
 
-    switch (_lensDirection) {
-      case LensDirection.front:
-        _lensDirection = LensDirection.back;
-        break;
-      case LensDirection.back:
-        _lensDirection = LensDirection.front;
-        break;
-      case LensDirection.unknown:
-        _lensDirection = LensDirection.front;
-        break;
-    }
-
-    return _setupCamera();
-  }
-
-  Future<void> _setupCamera() async {
-    final List<CameraDescription> cameras =
-        await CameraController.availableCameras();
-    final CameraDescription camera = cameras.firstWhere(
-      (CameraDescription desc) => desc.direction == _lensDirection,
-    );
-
-    setState(() {
-      _controller = CameraController(description: camera);
-    });
-  }
+//  Future<void> _setupCamera() async {
+//    final List<CameraDescription> cameras =
+//        await CameraController.availableCameras();
+//    final CameraDescription camera = cameras.firstWhere(
+//      (CameraDescription desc) => desc.direction == _lensDirection,
+//    );
+//
+//    setState(() {
+//      _controller = CameraController(description: camera);
+//    });
+//  }
 
   Widget _buildPictureButton() {
     return InkResponse(
@@ -108,8 +111,8 @@ class _MyAppState extends State<MyApp> {
         children: <Widget>[
           Expanded(
             child: Container(
-              child: _controller != null
-                  ? CameraPreview(_controller)
+              child: configurator != null
+                  ? CameraPreview(configurator)
                   : Container(),
               decoration: BoxDecoration(
                 color: Colors.black,
@@ -131,7 +134,7 @@ class _MyAppState extends State<MyApp> {
                         color: Colors.white,
                         size: 32,
                       ),
-                      onPressed: _toggleLensDirection,
+                      onPressed: () => null,
                     ),
                   ),
                 ),
@@ -151,6 +154,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     super.dispose();
-    _controller.dispose();
+    configurator.dispose();
   }
 }

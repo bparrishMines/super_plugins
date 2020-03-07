@@ -4,8 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
@@ -19,6 +19,7 @@ public class PenguinMethodCallHandler implements MethodChannel.MethodCallHandler
 
   @Override
   public void onMethodCall(MethodCall call, MethodChannel.Result result) {
+    Log.d("handle", call.method);
     switch(call.method) {
       case "CREATE":
         if (call.arguments instanceof CameraInterface.CameraConfigurator) {
@@ -38,19 +39,33 @@ public class PenguinMethodCallHandler implements MethodChannel.MethodCallHandler
           } else {
             methodArguments = new ArrayList<>();
           }
-          final Method method = caller.getClass().getMethod((String) arguments.get(1), getClasses(methodArguments));
-          method.invoke(caller, methodArguments);
+          final Method method;
+          Log.d("handle", caller.getClass().getSimpleName());
+          Log.d("handle", "" + methodArguments.size());
+          Log.d("handle", "" + arguments.get(1));
+//          if (methodArguments.size() == 0) {
+//            method = caller.getClass().getMethod((String) arguments.get(1));
+//          } else {
+            method = caller.getClass().getMethod((String) arguments.get(1), getClasses(methodArguments));
+          //}
+          Log.d("handle", "caller" + method.getName());
+          result.success(method.invoke(caller, methodArguments.toArray()));
         } catch (NoSuchMethodException e) {
-          result.error(null, null, null);
+          Log.d("handle", "NoSuchMethodException");
+          result.error("NoSuchMethodException", e.getMessage(), null);
           return;
         } catch (IllegalAccessException e) {
+          Log.d("handle", "IllegalAccessException");
           result.error(null, null, null);
           return;
         } catch (InvocationTargetException e) {
+          Log.d("handle", "InvocationTargetException");
           result.error(null, null, null);
           return;
         }
         break;
+       default:
+         result.notImplemented();
     }
   }
 

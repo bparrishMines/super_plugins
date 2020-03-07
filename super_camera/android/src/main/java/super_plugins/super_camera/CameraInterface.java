@@ -40,23 +40,24 @@ public class CameraInterface {
       this.cameraDescription = cameraDescription;
     }
 
-    Object getPreviewWidget() {
+    // TODO: make these capture all exceptions.
+    public Object getPreviewWidget() {
       throw new UnsupportedOperationException();
     }
 
-    Object initialize() {
+    public Object initialize() {
       throw new UnsupportedOperationException();
     }
 
-    Object start() {
+    public Object start() {
       throw new UnsupportedOperationException();
     }
 
-    Object stop() {
+    public Object stop() {
       throw new UnsupportedOperationException();
     }
 
-    Object dispose() {
+    public Object dispose() {
       throw new UnsupportedOperationException();
     }
   }

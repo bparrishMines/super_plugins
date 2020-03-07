@@ -1,20 +1,21 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
-import 'package:super_camera/android_camera.dart';
+//import 'package:super_camera/android_camera.dart';
 
-import 'camera_controller.dart';
-import 'camera_interface.dart';
-import '../android/camera/camera.dart';
+//import 'camera_controller.dart';
+//import 'camera_interface.dart';
+//import '../android/camera/camera.dart';
+import '../experimental/camera.interface.dart';
 
 /// Helper widget to display camera preview frames.
 ///
 /// This widget will automatically orient the preview to display the camera.
 class CameraPreview extends StatefulWidget {
-  CameraPreview(this.controller) : assert(controller != null);
+  CameraPreview(this.configurator) : assert(configurator != null);
 
   /// Controls a device camera.
-  final CameraController controller;
+  final CameraConfigurator configurator;
 
   @override
   State<StatefulWidget> createState() => _CameraPreviewState();
@@ -22,22 +23,19 @@ class CameraPreview extends StatefulWidget {
 
 class _CameraPreviewState extends State<CameraPreview> {
   RotatedBox _buildPreviewWidget(Widget cameraWidget) {
-    final CameraController controller = widget.controller;
+    final CameraConfigurator configurator = widget.configurator;
     int rotation = 0;
-    final CameraDescription description =
-        controller.configurator.cameraDescription;
+    final CameraDescription description = configurator.cameraDescription;
 
-    if (description is AndroidCameraDescription &&
-        description.direction == LensDirection.front) {
-      rotation = (description.orientation + 180) % 360;
+    if (description.direction == LensDirection.front) {
+      rotation = (270 + 180) % 360;
       cameraWidget = Transform(
         transform: Matrix4.rotationY(pi),
         child: cameraWidget,
         alignment: Alignment.center,
       );
-    } else if (description is AndroidCameraDescription &&
-        description.direction == LensDirection.back) {
-      rotation = description.orientation;
+    } else if (description.direction == LensDirection.back) {
+      rotation = 90;
     }
 
     return RotatedBox(
@@ -48,10 +46,10 @@ class _CameraPreviewState extends State<CameraPreview> {
 
   @override
   Widget build(BuildContext context) {
-    final CameraConfigurator configurator = widget.controller.configurator;
+    final CameraConfigurator configurator = widget.configurator;
 
-    widget.controller.initialize();
-    widget.controller.start();
+    widget.configurator.initialize();
+    widget.configurator.start();
     return FutureBuilder<Widget>(
       future: configurator.getPreviewWidget(),
       builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
@@ -66,5 +64,11 @@ class _CameraPreviewState extends State<CameraPreview> {
         return null; // unreachable
       },
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    widget.configurator.dispose();
   }
 }

@@ -3,6 +3,7 @@ package super_plugins.super_camera;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 
+import io.flutter.Log;
 import io.flutter.plugin.common.StandardMessageCodec;
 
 public class CameraMessageCodec extends StandardMessageCodec {
@@ -30,6 +31,7 @@ public class CameraMessageCodec extends StandardMessageCodec {
   }
 
   protected Object readValueOfType(byte type, ByteBuffer buffer) {
+    Log.d("handle", "" + type);
     switch (type) {
       case LENS_DIRECTION:
         return new CameraInterface.LensDirection((String) readValueOfType(buffer.get(), buffer));

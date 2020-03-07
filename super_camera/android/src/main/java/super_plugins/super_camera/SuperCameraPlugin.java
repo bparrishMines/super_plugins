@@ -23,20 +23,20 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
 
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), CHANNEL_NAME);
-    final ChannelGenerated channelGenerated = new ChannelGenerated(channel);
-    channel.setMethodCallHandler(channelGenerated.methodCallHandler);
-
-    final ChannelGenerated.$TextureRegistry textureRegistryWrapper = new ChannelGenerated.$TextureRegistry(
-        channelGenerated.wrapperManager,
-        TEXTURE_REGISTRY_ID,
-        registrar.textures());
-    channelGenerated.wrapperManager.addAllocatedWrapper(textureRegistryWrapper);
-    registrar
-        .platformViewRegistry()
-        .registerViewFactory(
-            PLATFORM_VIEW_FACTORY_NAME,
-            channelGenerated.viewFactory);
+//    final MethodChannel channel = new MethodChannel(registrar.messenger(), CHANNEL_NAME);
+//    final ChannelGenerated channelGenerated = new ChannelGenerated(channel);
+//    channel.setMethodCallHandler(channelGenerated.methodCallHandler);
+//
+//    final ChannelGenerated.$TextureRegistry textureRegistryWrapper = new ChannelGenerated.$TextureRegistry(
+//        channelGenerated.wrapperManager,
+//        TEXTURE_REGISTRY_ID,
+//        registrar.textures());
+//    channelGenerated.wrapperManager.addAllocatedWrapper(textureRegistryWrapper);
+//    registrar
+//        .platformViewRegistry()
+//        .registerViewFactory(
+//            PLATFORM_VIEW_FACTORY_NAME,
+//            channelGenerated.viewFactory);
   }
 
   @Override
@@ -54,7 +54,7 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
     channel.setMethodCallHandler(new PenguinMethodCallHandler(new CameraInterface.CameraInstanceFactory() {
       @Override
       CameraInterface.CameraConfigurator createCameraConfigurator(CameraInterface.CameraConfigurator configurator) {
-        return new MyCameraConfigurator(configurator);
+        return new MyCameraConfigurator(configurator, flutterBinding.getTextureRegistry());
       }
     }));
 //    final ChannelGenerated channelGenerated = new ChannelGenerated(channel);
