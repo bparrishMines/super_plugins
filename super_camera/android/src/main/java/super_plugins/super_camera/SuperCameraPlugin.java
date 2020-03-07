@@ -9,6 +9,7 @@ import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+import io.flutter.plugin.common.StandardMethodCodec;
 
 /** SuperCameraPlugin */
 public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, LifecycleOwner {
@@ -47,7 +48,9 @@ public class SuperCameraPlugin implements FlutterPlugin, ActivityAware, Lifecycl
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(binding);
 
-    final MethodChannel channel = new MethodChannel(flutterBinding.getBinaryMessenger(), CHANNEL_NAME);
+    final MethodChannel channel = new MethodChannel(flutterBinding.getBinaryMessenger(),
+        CHANNEL_NAME,
+        new StandardMethodCodec(CameraMessageCodec.INSTANCE));
     channel.setMethodCallHandler(new PenguinMethodCallHandler(new CameraInterface.CameraInstanceFactory() {
       @Override
       CameraInterface.CameraConfigurator createCameraConfigurator(CameraInterface.CameraConfigurator configurator) {

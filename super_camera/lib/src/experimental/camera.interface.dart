@@ -83,6 +83,9 @@ class LensDirection {
 class CameraDescription {
   CameraDescription(this.direction, this.name);
 
+  static final CameraDescription back = CameraDescription(LensDirection.back, '0');
+  static final CameraDescription front = CameraDescription(LensDirection.front, '1');
+
   final LensDirection direction;
 
   final String name;
