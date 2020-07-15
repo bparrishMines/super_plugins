@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:reference/reference.dart';
 
 import 'camera1.dart';
@@ -23,7 +24,8 @@ class RemoteHandler extends MethodChannelRemoteHandler {
 }
 
 class LocalHandler with LocalReferenceCommunicationHandler {
-  const LocalHandler(this.createCamera);
+  const LocalHandler({@required this.createCamera})
+      : assert(createCamera != null);
 
   final Camera Function() createCamera;
 

@@ -5,8 +5,9 @@ import 'package:reference/reference.dart';
 
 import 'camera1_manager.dart';
 
-ReferencePairManager _manager = Camera1Manager(LocalHandler(() => Camera._()))
-  ..initialize();
+ReferencePairManager _manager = Camera1Manager(
+  LocalHandler(createCamera: () => Camera._()),
+)..initialize();
 
 class Camera1 implements LocalReference {
   Camera1._() {
@@ -58,6 +59,7 @@ class Camera implements LocalReference {
   }
 
   RemoteReference _remoteReference;
+  int _currentTexture;
 
   /// Disconnects and releases the [Camera] object resources.
   ///
@@ -65,7 +67,8 @@ class Camera implements LocalReference {
   Future<void> release() async {
     if (_remoteReference == null) return;
     _remoteReference = null;
-    await _manager.invokeRemoteMethod(_remoteReference, 'release');
+    _manager.invokeRemoteMethod(_remoteReference, 'release');
+    await _manager.disposePairWithLocalReference(this);
   }
 
   /// Starts capturing and drawing preview frames to the screen.
@@ -93,21 +96,22 @@ class Camera implements LocalReference {
     );
   }
 
-  Future<int> addToTexture() {
+  Future<int> attachPreviewToTexture() async {
     assert(_remoteReference != null);
 
-    return _manager.invokeRemoteMethod(
+    return _currentTexture ??= await _manager.invokeRemoteMethod(
       _manager.getPairedRemoteReference(this),
-      'addToTexture',
+      'attachPreviewToTexture',
     );
   }
 
-  Future<void> removeFromTexture() {
+  Future<void> releaseTexture() {
     assert(_remoteReference != null);
 
+    _currentTexture = null;
     return _manager.invokeRemoteMethod(
       _manager.getPairedRemoteReference(this),
-      'removeFromTexture',
+      'releaseTexture',
     );
   }
 
