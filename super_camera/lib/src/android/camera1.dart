@@ -54,20 +54,17 @@ class Camera1 implements LocalReference {
 /// This uses the [Camera](https://developer.android.com/reference/android/hardware/Camera)
 /// API and is deprecated for Android versions 21+.
 class Camera implements LocalReference {
-  Camera._() {
-    _remoteReference = _manager.getPairedRemoteReference(this);
-  }
+  Camera._();
 
-  RemoteReference _remoteReference;
   int _currentTexture;
 
   /// Disconnects and releases the [Camera] object resources.
   ///
   /// You must call this as soon as you're done with the [Camera] object.
   Future<void> release() async {
-    if (_remoteReference == null) return;
-    _remoteReference = null;
-    _manager.invokeRemoteMethod(_remoteReference, 'release');
+    if (_manager.getPairedRemoteReference(this) == null) return;
+    _manager.invokeRemoteMethod(
+        _manager.getPairedRemoteReference(this), 'release');
     await _manager.disposePairWithLocalReference(this);
   }
 
@@ -76,10 +73,10 @@ class Camera implements LocalReference {
   /// Preview will not actually start until a texture is supplied with
   /// [addToTexture].
   Future<void> startPreview() {
-    assert(_remoteReference != null);
+    assert(_manager.getPairedRemoteReference(this) != null);
 
     return _manager.invokeRemoteMethod(
-      _remoteReference,
+      _manager.getPairedRemoteReference(this),
       'startPreview',
     );
   }
@@ -88,7 +85,7 @@ class Camera implements LocalReference {
   ///
   /// Resets the camera for a future call to [startPreview].
   Future<void> stopPreview() {
-    assert(_remoteReference != null);
+    assert(_manager.getPairedRemoteReference(this) != null);
 
     return _manager.invokeRemoteMethod(
       _manager.getPairedRemoteReference(this),
@@ -97,7 +94,7 @@ class Camera implements LocalReference {
   }
 
   Future<int> attachPreviewToTexture() async {
-    assert(_remoteReference != null);
+    assert(_manager.getPairedRemoteReference(this) != null);
 
     return _currentTexture ??= await _manager.invokeRemoteMethod(
       _manager.getPairedRemoteReference(this),
@@ -106,7 +103,7 @@ class Camera implements LocalReference {
   }
 
   Future<void> releaseTexture() {
-    assert(_remoteReference != null);
+    assert(_manager.getPairedRemoteReference(this) != null);
 
     _currentTexture = null;
     return _manager.invokeRemoteMethod(
