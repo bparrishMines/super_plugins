@@ -1,22 +1,24 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:reference/reference.dart';
 
-import 'camera1.dart';
 import '../common.dart';
+import 'camerax.dart';
 
 class RemoteHandler extends MethodChannelRemoteHandler {
-  RemoteHandler() : super('$baseChannelName/camera1');
+  RemoteHandler() : super('$baseChannelName/camerax');
 
   @override
   List<Object> getCreationArguments(LocalReference localReference) {
     switch (localReference.referenceType) {
-      case Camera1:
+      case Preview:
         return <Object>[];
-      case Camera:
+      case ProcessCameraProvider:
         return <Object>[];
-      case CameraInfo:
-        final CameraInfo value = localReference;
-        return <Object>[value.cameraId, value.facing, value.orientation];
+      case CameraSelector:
+        final CameraSelector value = localReference;
+        return <Object>[value.lensFacing];
+      case SuccessListener:
+        return <Object>[];
       default:
         throw ArgumentError.value(localReference);
     }
@@ -37,12 +39,6 @@ class LocalHandler with LocalReferenceCommunicationHandler {
   ) {
     if (referenceType == Camera) {
       return createCamera();
-    } else if (referenceType == CameraInfo) {
-      return CameraInfo(
-        cameraId: arguments[0],
-        facing: arguments[1],
-        orientation: arguments[2],
-      );
     }
 
     throw ArgumentError.value(referenceType);
@@ -55,20 +51,37 @@ class LocalHandler with LocalReferenceCommunicationHandler {
     String methodName,
     List<Object> arguments,
   ) {
+    if (localReference is SuccessListener) {
+      switch (methodName) {
+        case 'onSuccess':
+          localReference.onSuccess();
+          return null;
+        case 'onError':
+          localReference.onError(arguments[0], arguments[1]);
+          return null;
+      }
+    }
     throw ArgumentError.value(<Object>[localReference, methodName]);
   }
 }
 
-class Camera1Manager extends MethodChannelReferencePairManager {
-  Camera1Manager(this.localHandler)
+// TODO Object<?> java
+class CameraXManager extends MethodChannelReferencePairManager {
+  CameraXManager(this.localHandler)
       : assert(localHandler != null),
         super(
-          <Type>[Camera1, Camera, CameraInfo],
-          '$baseChannelName/camera1',
+          <Type>[
+            Camera,
+            ProcessCameraProvider,
+            CameraSelector,
+            Preview,
+            SuccessListener,
+          ],
+          '$baseChannelName/camerax',
         );
 
   @override
-  final LocalHandler localHandler;
+  final LocalReferenceCommunicationHandler localHandler;
 
   @override
   MethodChannelRemoteHandler get remoteHandler => RemoteHandler();

@@ -38,9 +38,7 @@ public class Camera1Manager extends MethodChannelReferencePairManager {
     @Override
     public LocalReference create(ReferencePairManager referencePairManager, Class<? extends LocalReference> referenceClass, List<Object> arguments) {
       if (referenceClass == Camera1.class) {
-        final Camera1 camera = Camera1.instance;
-        camera.manager = (Camera1Manager) referencePairManager;
-        return camera;
+        return Camera1.getInstance((Camera1Manager) referencePairManager);
       }
 
       throw new IllegalArgumentException(referenceClass.toString());

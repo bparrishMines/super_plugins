@@ -27,6 +27,6 @@ public class SuperCameraPlugin implements FlutterPlugin {
   }
 
   private void initialize(BinaryMessenger binaryMessenger, TextureRegistry textureRegistry) {
-    new Camera1Manager(binaryMessenger, textureRegistry).initialize();;
+    new Camera1Manager(binaryMessenger, textureRegistry).initialize();
   }
 }

@@ -15,7 +15,8 @@ class Camera implements LocalReference {
     this.manager = manager;
   }
 
-  void release() {
+  void release() throws IOException {
+    releaseTexture();
     camera.release();
   }
 

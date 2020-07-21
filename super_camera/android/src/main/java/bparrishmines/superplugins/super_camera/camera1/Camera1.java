@@ -5,9 +5,14 @@ import java.util.List;
 import github.penguin.reference.reference.LocalReference;
 
 class Camera1 implements LocalReference {
-  static final Camera1 instance = new Camera1();
+  static private final Camera1 instance = new Camera1();
 
-  Camera1Manager manager;
+  private Camera1Manager manager;
+
+  static Camera1 getInstance(Camera1Manager manager) {
+    instance.manager = manager;
+    return instance;
+  }
 
   private Camera1() {}
 

@@ -9,6 +9,7 @@ ReferencePairManager _manager = Camera1Manager(
   LocalHandler(createCamera: () => Camera._()),
 )..initialize();
 
+// Singleton Class
 class Camera1 implements LocalReference {
   Camera1._() {
     _manager.pairWithNewRemoteReference(this);
@@ -53,6 +54,7 @@ class Camera1 implements LocalReference {
 ///
 /// This uses the [Camera](https://developer.android.com/reference/android/hardware/Camera)
 /// API and is deprecated for Android versions 21+.
+// Instanced Class
 class Camera implements LocalReference {
   Camera._();
 
@@ -119,6 +121,7 @@ class Camera implements LocalReference {
 /// Information about a camera.
 ///
 /// Retrieve by calling [Camera.getAllCameraInfo].
+// DataClass
 class CameraInfo implements LocalReference {
   CameraInfo({this.cameraId, this.facing, this.orientation})
       : assert(cameraId != null),
