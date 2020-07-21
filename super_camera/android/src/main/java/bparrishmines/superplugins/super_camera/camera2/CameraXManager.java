@@ -15,8 +15,8 @@ import io.flutter.view.TextureRegistry;
 
 public class CameraXManager extends MethodChannelReferencePairManager {
   final TextureRegistry textureRegistry;
-  final Context context;
   final LifecycleOwner lifecycleOwner;
+  Context context;
 
   private static class RemoteHandler extends MethodChannelRemoteHandler {
     public RemoteHandler(BinaryMessenger binaryMessenger, String channelName) {
@@ -72,6 +72,15 @@ public class CameraXManager extends MethodChannelReferencePairManager {
             provider.unbindAll();
             return null;
         }
+      } else if (localReference.getReferenceClass() == Preview.class) {
+        final Preview preview = (Preview) localReference;
+        switch (methodName) {
+          case "attachToTexture":
+            return preview.attachToTexture();
+          case "releaseTexture":
+            preview.releaseTexture();
+            return null;
+        }
       }
 
       throw new IllegalArgumentException(Arrays.asList(localReference, methodName).toString());
@@ -91,6 +100,10 @@ public class CameraXManager extends MethodChannelReferencePairManager {
     this.textureRegistry = textureRegistry;
     this.context = context;
     this.lifecycleOwner = lifecycleOwner;
+  }
+
+  public void setContext(Context context) {
+    this.context = context;
   }
 
   @Override

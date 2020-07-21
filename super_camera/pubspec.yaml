@@ -9,8 +9,8 @@ environment:
   flutter: ">=1.17.0 <2.0.0"
 
 dependencies:
-  reference:
-    path: ../../penguin/reference
+  reference: ^0.1.2+1
+  flutter_plugin_android_lifecycle: ^1.0.8
   permission_handler: ^5.0.1+1
   flutter:
     sdk: flutter

@@ -23,7 +23,7 @@ class Preview with UseCase {
 
     return _currentTexture ??= await _manager.invokeRemoteMethod(
       _manager.getPairedRemoteReference(this),
-      'attachPreviewToTexture',
+      'attachToTexture',
     );
   }
 

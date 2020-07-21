@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:super_camera/super_camera.dart';
+import 'package:super_camera/src/android/camera1.dart' as camera1;
+import 'package:super_camera/src/android/camerax.dart' as camerax;
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -23,14 +24,38 @@ class _MyAppState extends State<MyApp> {
 
   void _getCameraPermission() async {
     while (!await Permission.camera.request().isGranted) {}
-    _setupCamera();
+    _setupCamera2();
   }
 
   void _setupCamera() async {
-    final Camera camera = await Camera1.instance.open(0);
+    final camera1.Camera camera = await camera1.Camera1.instance.open(0);
     _texture = Texture(textureId: await camera.attachPreviewToTexture());
     camera.startPreview();
     setState(() {});
+  }
+
+  void _setupCamera2() async {
+    final camerax.Preview preview = camerax.Preview();
+    final camerax.ProcessCameraProvider provider =
+        camerax.ProcessCameraProvider.instance;
+    provider.initialize(
+      camerax.SuccessListener(
+        onSuccess: () {
+          provider.bindToLifecycle(
+            camerax.CameraSelector(camerax.CameraSelector.lensFacingBack),
+            preview,
+          );
+          preview.attachToTexture().then((int textureId) {
+            setState(() {
+              _texture = Texture(textureId: textureId);
+            });
+          });
+        },
+        onError: (String code, String message) {
+          print('$code: $message');
+        },
+      ),
+    );
   }
 
   @override

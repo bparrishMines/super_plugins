@@ -20,7 +20,7 @@ class Preview extends UseCase {
     this.manager = manager;
   }
 
-  long attachPreviewToTexture() {
+  long attachToTexture() {
     if (currentTextureEntry != null) return currentTextureEntry.id();
 
     currentTextureEntry = manager.textureRegistry.createSurfaceTexture();
