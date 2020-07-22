@@ -65,7 +65,6 @@ class LocalHandler with LocalReferenceCommunicationHandler {
   }
 }
 
-// TODO Object<?> java
 class CameraXManager extends MethodChannelReferencePairManager {
   CameraXManager(this.localHandler)
       : assert(localHandler != null),

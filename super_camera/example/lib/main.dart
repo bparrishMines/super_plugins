@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
 
   void _getCameraPermission() async {
     while (!await Permission.camera.request().isGranted) {}
-    _setupCamera2();
+    //_setupCamera2();
   }
 
   void _setupCamera() async {

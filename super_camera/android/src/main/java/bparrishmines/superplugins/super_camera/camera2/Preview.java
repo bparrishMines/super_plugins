@@ -1,6 +1,5 @@
 package bparrishmines.superplugins.super_camera.camera2;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.Surface;
 import androidx.annotation.NonNull;

@@ -27,7 +27,7 @@ public class Camera1Manager extends MethodChannelReferencePairManager {
         return Collections.emptyList();
       } else if (localReference.getReferenceClass() == CameraInfo.class) {
         final CameraInfo info = (CameraInfo) localReference;
-        return Arrays.asList((Object) info.cameraId, info.facing, info.orientation);
+        return Arrays.asList(info.cameraId, info.facing, info.orientation);
       }
 
       throw new IllegalArgumentException(localReference.toString());

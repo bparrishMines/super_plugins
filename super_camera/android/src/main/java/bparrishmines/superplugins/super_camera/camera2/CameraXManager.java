@@ -31,7 +31,7 @@ public class CameraXManager extends MethodChannelReferencePairManager {
         return Collections.emptyList();
       } else if (localReference.getReferenceClass() == CameraSelector.class) {
         final CameraSelector selector = (CameraSelector) localReference;
-        return Collections.singletonList((Object) selector.lensFacing);
+        return Collections.singletonList(selector.lensFacing);
       } else if (localReference.getReferenceClass() == Camera.class) {
         return Collections.emptyList();
       }
