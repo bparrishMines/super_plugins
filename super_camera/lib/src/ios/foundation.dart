@@ -13,10 +13,9 @@ class Foundation implements LocalReference {
 
   static final Foundation instance = Foundation._();
 
-  static Future<List<CaptureDevice>> devicesWithMediaType(
-      String mediaType) async {
+  Future<List<CaptureDevice>> devicesWithMediaType(String mediaType) async {
     final List<Object> devices = await _manager.invokeRemoteMethod(
-      _manager.getPairedRemoteReference(instance),
+      _manager.getPairedRemoteReference(this),
       'devicesWithMediaType',
       <Object>[mediaType],
     );
