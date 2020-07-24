@@ -122,7 +122,7 @@ class _PreviewState extends State<Preview> {
   @override
   Widget build(BuildContext context) {
     return UiKitView(
-      viewType: '${_manager.channel}/$Preview',
+      viewType: '${_manager.channel.name}/$Preview',
       creationParams: _manager.getPairedRemoteReference(widget),
       creationParamsCodec: ReferenceMessageCodec(),
     );

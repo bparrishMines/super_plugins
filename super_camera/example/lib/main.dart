@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:super_camera/src/android/camera1.dart' as camera1;
 import 'package:super_camera/src/android/camerax.dart' as camerax;
+import 'package:super_camera/src/ios/foundation.dart' as ios;
 import 'package:permission_handler/permission_handler.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Texture _texture;
+  Widget _previewWidget;
 
   @override
   void initState() {
@@ -24,12 +25,12 @@ class _MyAppState extends State<MyApp> {
 
   void _getCameraPermission() async {
     while (!await Permission.camera.request().isGranted) {}
-    //_setupCamera2();
+    _setupIos();
   }
 
   void _setupCamera() async {
     final camera1.Camera camera = await camera1.Camera1.instance.open(0);
-    _texture = Texture(textureId: await camera.attachPreviewToTexture());
+    _previewWidget = Texture(textureId: await camera.attachPreviewToTexture());
     camera.startPreview();
     setState(() {});
   }
@@ -47,7 +48,7 @@ class _MyAppState extends State<MyApp> {
           );
           preview.attachToTexture().then((int textureId) {
             setState(() {
-              _texture = Texture(textureId: textureId);
+              _previewWidget = Texture(textureId: textureId);
             });
           });
         },
@@ -58,6 +59,17 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  void _setupIos() async {
+    final List<ios.CaptureDevice> devices =
+        await ios.Foundation.instance.devicesWithMediaType(ios.MediaType.video);
+    final ios.CaptureSession session = ios.CaptureSession(
+        <ios.CaptureDeviceInput>[ios.CaptureDeviceInput(devices[0])]);
+    session.startRunning();
+    setState(() {
+      _previewWidget = ios.Preview(session);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -66,7 +78,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Container(width: 200, height: 200, child: _texture),
+          child: Container(width: 200, height: 200, child: _previewWidget),
         ),
       ),
     );

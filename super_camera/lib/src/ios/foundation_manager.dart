@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:reference/reference.dart';
 
 import '../common.dart';

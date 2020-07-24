@@ -1,6 +1,6 @@
 #import "SCFoundation.h"
 
-NSString *const BASE_CHANNEL_NAME = @"bparrishMines.superplugins/super_camera";
+NSString *const BASE_CHANNEL_NAME = @"bparrishMines.superplugins/super_camera/foundation";
 
 @interface SCRemoteHandler : REFMethodChannelRemoteHandler
 @end
