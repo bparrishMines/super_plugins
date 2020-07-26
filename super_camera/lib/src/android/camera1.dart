@@ -66,7 +66,9 @@ class Camera implements LocalReference {
   Future<void> release() async {
     if (_manager.getPairedRemoteReference(this) == null) return;
     _manager.invokeRemoteMethod(
-        _manager.getPairedRemoteReference(this), 'release');
+      _manager.getPairedRemoteReference(this),
+      'release',
+    );
     await _manager.disposePairWithLocalReference(this);
   }
 

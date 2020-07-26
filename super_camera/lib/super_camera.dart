@@ -1,1 +1,1 @@
-export 'src/android/camera1.dart';
+export 'src/platform_interface.dart';

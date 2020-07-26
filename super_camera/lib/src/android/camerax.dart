@@ -19,7 +19,9 @@ class Preview with UseCase {
   int _currentTexture;
 
   Future<int> attachToTexture() async {
-    assert(_manager.getPairedRemoteReference(this) != null);
+    if (_manager.getPairedRemoteReference(this) == null) {
+      _manager.pairWithNewRemoteReference(this);
+    }
 
     return _currentTexture ??= await _manager.invokeRemoteMethod(
       _manager.getPairedRemoteReference(this),
@@ -27,8 +29,11 @@ class Preview with UseCase {
     );
   }
 
-  Future<void> releaseTexture() {
-    assert(_manager.getPairedRemoteReference(this) != null);
+  Future<void> releaseTexture() async {
+    if (_currentTexture == null ||
+        _manager.getPairedRemoteReference(this) == null) {
+      return;
+    }
 
     _currentTexture = null;
     return _manager.invokeRemoteMethod(
@@ -79,7 +84,9 @@ class ProcessCameraProvider implements LocalReference {
     CameraSelector selector,
     UseCase useCase,
   ) async {
-    _manager.pairWithNewRemoteReference(useCase);
+    if (_manager.getPairedRemoteReference(useCase) == null) {
+      _manager.pairWithNewRemoteReference(useCase);
+    }
     _dependentReferences.add(useCase);
 
     final Camera camera = await _manager.invokeRemoteMethod(
